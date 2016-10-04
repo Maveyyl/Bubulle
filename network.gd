@@ -20,7 +20,7 @@ func create_server():
 	get_tree().set_network_peer(peer)
 	# our model is authoritative server, so everything is set to role master
 	network_mode = NETWORK_MODE_MASTER
-	main.set_network_mode(network_mode)
+	get_tree().get_root().set_network_mode(network_mode)
 	# connect signals to monitor connexions
 	get_tree().connect("network_peer_connected", self, "client_connected")
 	get_tree().connect("network_peer_disconnected", self, "client_disconnected")
@@ -41,7 +41,7 @@ func create_client(ip_addr):
 	get_tree().set_network_peer(peer)
 	# our model is authoritative server, so everything is set to role slave
 	network_mode = NETWORK_MODE_SLAVE
-	main.set_network_mode(network_mode)
+	get_tree().get_root().set_network_mode(network_mode)
 	# connect signals to monitor connexions
 	get_tree().connect("connected_to_server", self, "connected_to_server")
 	
