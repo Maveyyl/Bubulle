@@ -1,13 +1,12 @@
 extends Node2D
 
-const solo = preload('res://game/game.tscn')
 
 func _ready():
 	pass
 
 
 func _on_button_solo_pressed():
-	get_tree().change_scene_to( solo )
+	global.main.change_scene_to_solo()
 	pass
 
 func _on_button_multi_pressed():
