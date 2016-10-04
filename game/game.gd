@@ -1,6 +1,6 @@
 extends Node2D
 
-const GRID_SIZE = Vector2(6, 14) # only 6,12 are visible, the uppest 2 rows are buffer
+const GRID_SIZE = Vector2(6, 12) # + 2 rows as buffer
 const TILE_SIZE = Vector2(30, 30)
 
 var BULLE_TYPE = {
@@ -23,6 +23,8 @@ var BULLE_SCENES = [
 	preload('res://game/bulles/black/bulle_black.tscn')
 ]
 
+
+onready var grid = get_node("grid")
 
 func _ready():
 	pass
