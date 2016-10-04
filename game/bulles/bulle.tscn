@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=1]
+
+[ext_resource path="res://game/bulles/bulle.gd" type="Script" id=1]
+[ext_resource path="res://game/bulles/base.png" type="Texture" id=2]
+[ext_resource path="res://game/bulles/extent_left.png" type="Texture" id=3]
+[ext_resource path="res://game/bulles/extent_top.png" type="Texture" id=4]
+[ext_resource path="res://game/bulles/extent_right.png" type="Texture" id=5]
+[ext_resource path="res://game/bulles/extent_bottom.png" type="Texture" id=6]
+
+[node name="bulle" type="Node2D"]
+
+script/script = ExtResource( 1 )
+
+[node name="base" type="Sprite" parent="."]
+
+texture = ExtResource( 2 )
+
+[node name="base_color" type="Sprite" parent="base"]
+
+[node name="extent_left" type="Sprite" parent="base"]
+
+visibility/visible = false
+texture = ExtResource( 3 )
+
+[node name="extent_left_color" type="Sprite" parent="base/extent_left"]
+
+[node name="extent_top" type="Sprite" parent="base"]
+
+visibility/visible = false
+texture = ExtResource( 4 )
+
+[node name="extent_top_color" type="Sprite" parent="base/extent_top"]
+
+[node name="extent_right" type="Sprite" parent="base"]
+
+visibility/visible = false
+texture = ExtResource( 5 )
+
+[node name="extent_right_color" type="Sprite" parent="base/extent_right"]
+
+[node name="extent_bottom" type="Sprite" parent="base"]
+
+visibility/visible = false
+texture = ExtResource( 6 )
+
+[node name="extent_bottom_color" type="Sprite" parent="base/extent_bottom"]
+
+

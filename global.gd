@@ -1,5 +1,7 @@
 extends Node
 
+const game_size = Vector2(6, 12)
+
 
 const DEFAULT_PORT = 4444
 const DEFAULT_IP = "127.0.0.1"
@@ -22,8 +24,8 @@ func create_server():
 	# link the peer to the tree
 	get_tree().set_network_peer(peer)
 	# our model is authoritative server, so everything is set to role master
-	network_role = NETWORK_MODE_MASTER
-	main.set_network_mode(network_role)
+	network_mode = NETWORK_MODE_MASTER
+	main.set_network_mode(network_mode)
 	# connect signals to monitor connexions
 	get_tree().connect("network_peer_connected", self, "client_connected")
 	get_tree().connect("network_peer_disconnected", self, "client_disconnected")
@@ -43,8 +45,8 @@ func create_client(ip_addr):
 	# link the peer to the tree
 	get_tree().set_network_peer(peer)
 	# our model is authoritative server, so everything is set to role slave
-	network_role = NETWORK_MODE_SLAVE
-	main.set_network_mode(network_role)
+	network_mode = NETWORK_MODE_SLAVE
+	main.set_network_mode(network_mode)
 	# connect signals to monitor connexions
 	get_tree().connect("connected_to_server", self, "connected_to_server")
 	
