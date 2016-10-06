@@ -5,6 +5,8 @@
 
 [node name="bulle_black" instance=ExtResource( 1 )]
 
+type = 5
+
 [node name="base_color" parent="base"]
 
 texture = ExtResource( 2 )
