@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=1]
 
-[ext_resource path="res://game/game.gd" type="Script" id=1]
+[ext_resource path="res://game/single_game_panel.gd" type="Script" id=1]
 [ext_resource path="res://game/grid.gd" type="Script" id=2]
 
 [node name="game" type="Node2D"]
@@ -9,7 +9,6 @@ script/script = ExtResource( 1 )
 
 [node name="grid" type="Node2D" parent="."]
 
-transform/pos = Vector2( 10, 10 )
 script/script = ExtResource( 2 )
 
 

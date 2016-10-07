@@ -5,7 +5,7 @@ onready var main = get_node("/root/main")
 
 
 const GRID_SIZE = Vector2(6, 12) # + 2 rows as buffer
-const TILE_SIZE = Vector2(60, 60)
+const BULLE_SIZE = Vector2(30, 30)
 
 var DIRECTIONS = {
 	"LEFT": 0,
@@ -27,11 +27,14 @@ var BULLE_TYPES = {
 }
 
 var BULLE_STATES = {
-	"PREVIEW": 0,
-	"POSITIONING": 1,
-	"FALLING": 2,
-	"IN_PLACE": 3,
-	"COUNT": 4
+	"IN_DOUBLET": 0,
+	"FALLING": 1,
+	"IN_GRID": 2
+}
+
+var DOUBLET_STATES = {
+	"IDLE": 0,
+	"FALLING": 1
 }
 
 

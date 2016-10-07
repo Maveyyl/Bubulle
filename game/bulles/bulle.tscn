@@ -14,7 +14,6 @@ type = null
 
 [node name="base" type="Sprite" parent="."]
 
-transform/scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 
 [node name="base_color" type="Sprite" parent="base"]

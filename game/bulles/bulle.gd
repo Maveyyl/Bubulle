@@ -1,7 +1,7 @@
 extends Node2D
 
 export(int, "RED","GREEN","YELLOW","PURPLE","CYAN","BLACK") var type
-var state = global.BULLE_STATES.POSITIONING
+var state = global.BULLE_STATES.IN_DOUBLET
 
 onready var extent_left = get_node("base/extent_left")
 onready var extent_top = get_node("base/extent_top")
@@ -17,13 +17,13 @@ func remove_extents():
 	extent_right.hide()
 	extent_bottom.hide()
 	
-func set_positioning():
+func set_in_doublet():
 	remove_extents()
 	
 func set_falling():
 	remove_extents()
 	
-func set_in_place( neighbours ):
+func set_in_grid( neighbours ):
 	if( neighbours[global.DIRECTIONS.LEFT] && neighbours[global.DIRECTIONS.LEFT].type == type ):
 		extent_left.show()
 	if( neighbours[global.DIRECTIONS.TOP] && neighbours[global.DIRECTIONS.TOP].type == type ):
