@@ -3,7 +3,7 @@
 [ext_resource path="res://game/single_game_panel.gd" type="Script" id=1]
 [ext_resource path="res://game/grid.gd" type="Script" id=2]
 
-[node name="game" type="Node2D"]
+[node name="single_game_panel" type="Node2D"]
 
 script/script = ExtResource( 1 )
 

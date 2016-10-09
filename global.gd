@@ -37,6 +37,9 @@ var DOUBLET_STATES = {
 	"FALLING": 1
 }
 
+var SCENES = {
+	"DOUBLET": preload('res://game/doublet.tscn')
+}
 
 var BULLE_SCENES = [
 	preload('res://game/bulles/red/bulle_red.tscn'),
