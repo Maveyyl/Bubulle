@@ -18,6 +18,10 @@ func _ready():
 
 func _process(delta):
 	if( doublet ):
+		var grid_pos
+		
+		
+		
 		doublet_falling_counter += delta
 		if( doublet_falling_counter >= doublet_initial_falling_speed ):
 			doublet_falling_counter = 0
