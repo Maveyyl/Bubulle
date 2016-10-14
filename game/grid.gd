@@ -14,15 +14,43 @@ func _ready():
 	
 func fixed_process(delta):
 	pass
+	
+
+func set_slot( grid_pos, item):
+	bulles[grid_pos.x][grid_pos.y] = item
+func get_slot( grid_pos ):
+	return bulles[grid_pos.x][grid_pos.y]
+func get_neighbour_grid_pos( grid_pos, direction ):
+	return grid_pos + global.DIRECTIONS_NORMALS[direction]
+func get_neighbour_slot_type( grid_pos, direction ):
+	var slot_type
+	var neighbour_grid_pos = get_neighbour_grid_pos( grid_pos, direction )
+	
+	if( neighbour_grid_pos.x < 0 ||
+	neighbour_grid_pos.y < 0 ||
+	neighbour_grid_pos.x+1 > global.GRID_SIZE.x ||
+	neighbour_grid_pos.y+1 > global.GRID_SIZE.y ):
+		slot_type=  global.GRID_SLOT_TYPES.WALL
+	elif( get_slot(neighbour_grid_pos) != null ):
+		slot_type= global.GRID_SLOT_TYPES.BULLE
+	else:
+		slot_type= global.GRID_SLOT_TYPES.EMPTY
+
+	return slot_type
+
 
 func pos_to_grid_coord( pixel_pos ):
 	var real_pos = pixel_pos - global.BULLE_SIZE/2
+	var grid_pos
 	# if fits in a slot
 	if( int(real_pos.x) % int(global.BULLE_SIZE.x) == 0 && int(real_pos.y) % int(global.BULLE_SIZE.y) == 0 ):
 		# compute the slot
-		return real_pos / global.BULLE_SIZE
+		grid_pos = real_pos / global.BULLE_SIZE
 	else:
-		return null
+		real_pos.y = real_pos.y - global.BULLE_SIZE.y/2
+		grid_pos = real_pos / global.BULLE_SIZE
+
+	return grid_pos
 		
 func has_empty_slots_bellow( grid_pos ):
 	var empty_slots_bellow = false
@@ -35,15 +63,14 @@ func has_empty_slots_bellow( grid_pos ):
 				break
 	
 	return empty_slots_bellow
-
-func get_airborne_bulles_in_column( column ):
-	var airborne_bulles = []
-	var empty_slot_scanned = false
 	
-	for y in range(global.GRID_SIZE.y, 0):
-		if( bulles[column][y] == null ):
-			empty_slot_scanned = true
-		elif( bulles[column][y] != null && empty_slot_scanned ):
-			airborne_bulles.append(bulles[column][y])
-			
-	return airborne_bulles
+func get_empty_slots_bellow_count( grid_pos ):
+	var empty_slots_count = 0
+	if( grid_pos.y+1 != global.GRID_SIZE.y ):
+		for y in range(grid_pos.y+1, global.GRID_SIZE.y ):
+			if( y < 0 ):
+				continue
+			if( bulles[grid_pos.x][y] == null ):
+				empty_slots_count +=1
+	return empty_slots_count
+		

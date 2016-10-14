@@ -14,6 +14,19 @@ var DIRECTIONS = {
 	"BOTTOM": 3,
 	"COUNT": 4
 }
+var DIRECTIONS_NORMALS = [
+	Vector2(-1,0),
+	Vector2(0,-1),
+	Vector2(1,0),
+	Vector2(0,1)
+]
+
+var GRID_SLOT_TYPES = {
+	"EMPTY": 0,
+	"BULLE": 1,
+	"WALL": 2,
+	"COUNT": 3
+}
 
 var BULLE_TYPES = {
 	"RED": 0,
