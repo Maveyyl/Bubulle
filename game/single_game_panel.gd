@@ -113,7 +113,7 @@ func _draw():
 	# right wall
 	draw_rect( Rect2( grid_pixel_size.x, 0, 10, grid_pixel_size.y), Color(0,0,0) )
 	# top wall
-	draw_rect( Rect2( 0, -10, grid_pixel_size.x, 10), Color(0,0,0) )
+	draw_rect( Rect2( 0, global.BULLE_SIZE.y*2-10, grid_pixel_size.x, 10), Color(0,0,0) )
 	# bottom wall
 	draw_rect( Rect2( 0, grid_pixel_size.y, grid_pixel_size.x, 10), Color(0,0,0) )
 	

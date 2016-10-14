@@ -4,7 +4,7 @@ extends Node
 onready var main = get_node("/root/main")
 
 
-const GRID_SIZE = Vector2(6, 12) # + 2 rows as buffer
+const GRID_SIZE = Vector2(6, 12+2) # + 2 rows as buffer
 const BULLE_SIZE = Vector2(30, 30)
 
 var DIRECTIONS = {
