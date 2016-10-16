@@ -8,11 +8,13 @@ onready var grid = get_node("grid")
 var grid_pixel_size = Vector2( global.GRID_SIZE.x * global.BULLE_SIZE.x , global.GRID_SIZE.y * global.BULLE_SIZE.y )
 
 var doublet_default_pos = Vector2( (1+global.GRID_SIZE.x/2) * global.BULLE_SIZE.x , global.BULLE_SIZE.y * 2 ) -  global.BULLE_SIZE/2
-var doublet_initial_falling_speed = 0.25 # time for one half bulle size
+var doublet_initial_falling_speed = 0.15 # time for one half bulle size
 var doublet_falling_counter = 0
 var doublet
 var doublet_lateral_move_timer = 0.15
 var doublet_lateral_move_counter = 0
+
+var falling_bulles_acceleration = 10 # pixel per second per second
 var falling_bulles = []
 
 func _ready():
@@ -23,6 +25,7 @@ func _fixed_process(delta):
 	if( doublet_lateral_move_counter < doublet_lateral_move_timer ):
 		doublet_lateral_move_counter+=delta
 	
+
 	if( doublet && falling_bulles.empty()):
 		doublet_falling_counter += delta
 		if( doublet_falling_counter >= doublet_initial_falling_speed ):
@@ -31,20 +34,39 @@ func _fixed_process(delta):
 				doublet.set_pos( doublet.get_pos() + Vector2( 0, global.BULLE_SIZE.x/2 ) )
 			else:
 				if( !can_doublet_main_bulle_move_bottom() ):
-					grid.set_slot( doublet.get_main_bulle_grid_pos(grid), doublet.main_bulle)
-					doublet.main_bulle.state = global.BULLE_STATES.IN_GRID
+					grid.add_bulle( doublet.main_bulle, doublet.get_main_bulle_grid_pos(grid) )
 				else:
-					falling_bulles.append( doublet.main_bulle )
-					doublet.main_bulle.state = global.BULLE_STATES.FALLING
-								
+					add_falling_bulle( doublet.main_bulle, doublet.get_main_bulle_pos() )
+
 				if( !can_doublet_second_bulle_move_bottom() ):
-					grid.set_slot( doublet.get_second_bulle_grid_pos(grid), doublet.second_bulle)
-					doublet.second_bulle.state = global.BULLE_STATES.IN_GRID
+					grid.add_bulle( doublet.second_bulle, doublet.get_second_bulle_grid_pos(grid) )
 				else:
-					falling_bulles.append( doublet.second_bulle )
-					doublet.second_bulle.state = global.BULLE_STATES.FALLING
+					add_falling_bulle( doublet.second_bulle, doublet.get_second_bulle_pos() )
 				
+				doublet.rotating = false
+				doublet.queue_free()
 				doublet = null
+
+	if( !falling_bulles.empty() ):
+		for i in range(falling_bulles.size()):
+			falling_bulles[i].bulle.set_pos( falling_bulles[i].bulle.get_pos() + Vector2( 0, falling_bulles[i].speed ) )
+
+			if( can_bulle_move_bottom( falling_bulles[i].bulle ) ):
+				falling_bulles[i].speed += falling_bulles_acceleration * delta
+			else:
+				grid.add_bulle( falling_bulles[i].bulle, grid.pos_to_grid_coord(falling_bulles[i].bulle.get_pos()) )
+				falling_bulles.remove(i)
+
+func add_falling_bulle( bulle, pos ):
+	bulle.get_parent().remove_child(bulle)
+	add_child(bulle)
+	bulle.set_pos(pos)
+	bulle.state = global.BULLE_STATES.FALLING
+	
+	falling_bulles.append({
+		'bulle': bulle,
+		'speed': 0
+	})
 	
 func set_doublet( doublet ):
 	self.doublet = doublet
@@ -96,10 +118,11 @@ func can_doublet_move_right( ):
 		return false
 	return true
 	
+func can_bulle_move_bottom(bulle):
+	return grid.get_neighbour_slot_type( grid.pos_to_grid_coord( bulle.get_pos() ), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
 func can_doublet_main_bulle_move_bottom():
 	return grid.get_neighbour_slot_type( doublet.get_main_bulle_grid_pos(grid), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
 func can_doublet_second_bulle_move_bottom():
-	print(doublet.get_second_bulle_grid_pos(grid))
 	return grid.get_neighbour_slot_type( doublet.get_second_bulle_grid_pos(grid), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
 func can_doublet_move_bottom():
 	return can_doublet_main_bulle_move_bottom() && can_doublet_second_bulle_move_bottom()

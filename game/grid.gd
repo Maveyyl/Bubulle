@@ -15,6 +15,13 @@ func _ready():
 func fixed_process(delta):
 	pass
 	
+func add_bulle( bulle, grid_pos ):
+	bulle.get_parent().remove_child(bulle)
+	add_child(bulle)
+	bulle.set_pos( grid_coord_to_pos( grid_pos ) )
+	set_slot( grid_pos, bulle)
+	bulle.state = global.BULLE_STATES.IN_GRID
+	
 
 func set_slot( grid_pos, item):
 	bulles[grid_pos.x][grid_pos.y] = item
@@ -47,10 +54,14 @@ func pos_to_grid_coord( pixel_pos ):
 		# compute the slot
 		grid_pos = real_pos / global.BULLE_SIZE
 	else:
-		real_pos.y = real_pos.y - global.BULLE_SIZE.y/2
+#		real_pos.y = real_pos.y - global.BULLE_SIZE.y/2
+		real_pos.y = int(real_pos.y) -int(real_pos.y) % int(global.BULLE_SIZE.y)
 		grid_pos = real_pos / global.BULLE_SIZE
 
-	return grid_pos
+	return grid_pos.snapped(Vector2(1,1))
+	
+func grid_coord_to_pos( grid_coord ):
+	return grid_coord * global.BULLE_SIZE + global.BULLE_SIZE/2
 		
 func has_empty_slots_bellow( grid_pos ):
 	var empty_slots_bellow = false
