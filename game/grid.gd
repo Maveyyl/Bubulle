@@ -2,6 +2,7 @@ extends Node2D
 
 
 var bulles 
+var state = global.GRID_STATES.IDLE
 
 func _ready():
 	bulles = []
@@ -16,6 +17,7 @@ func fixed_process(delta):
 	pass
 
 func solve():
+	state = global.GRID_STATES.SOLVING
 	var neighbours = [null,null,null,null]
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
@@ -28,9 +30,9 @@ func solve():
 func add_bulle( bulle, grid_pos ):
 	bulle.get_parent().remove_child(bulle)
 	add_child(bulle)
+	bulle.set_in_grid()
 	bulle.set_pos( grid_coord_to_pos( grid_pos ) )
 	set_slot( grid_pos, bulle)
-	bulle.state = global.BULLE_STATES.IN_GRID
 	
 
 func set_slot( grid_pos, item):

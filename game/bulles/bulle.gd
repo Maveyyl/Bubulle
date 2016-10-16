@@ -8,8 +8,28 @@ onready var extent_top = get_node("base/extent_top")
 onready var extent_right = get_node("base/extent_right")
 onready var extent_bottom = get_node("base/extent_bottom")
 
+
+var falling_acceleration = 10 # pixel per second per second
+var falling_speed = 0
+
 func _ready():
+	set_fixed_process(true)
 	pass
+
+func _fixed_process(delta):
+	if( state == global.BULLE_STATES.FALLING ):
+		set_pos(get_pos() + Vector2( 0, falling_speed ) )
+
+		if( can_move_bottom() ):
+			falling_speed += falling_acceleration * delta
+		else:
+			get_parent().remove_falling_bulle( self) # only happens when is child of single game panel
+	pass
+	
+
+func can_move_bottom():
+	var grid = get_parent().grid # moving bottom is only when bulle is in the single game panel
+	return grid.get_neighbour_slot_type( grid.pos_to_grid_coord( get_pos() ), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
 	
 func remove_extents():
 	extent_left.hide()
@@ -18,13 +38,18 @@ func remove_extents():
 	extent_bottom.hide()
 	
 func set_in_doublet():
+	state = global.BULLE_STATES.IN_DOUBLET
 	remove_extents()
 	
 func set_falling():
+	falling_speed = 0
+	state = global.BULLE_STATES.FALLING
 	remove_extents()
 	
-func set_neighbours( neighbours ):
+func set_in_grid():
+	state = global.BULLE_STATES.IN_GRID
 	
+func set_neighbours( neighbours ):
 	if( neighbours[global.DIRECTIONS.LEFT] && neighbours[global.DIRECTIONS.LEFT].type == type ):
 		extent_left.show()
 	if( neighbours[global.DIRECTIONS.TOP] && neighbours[global.DIRECTIONS.TOP].type == type ):

@@ -28,6 +28,7 @@ var GRID_SLOT_TYPES = {
 	"COUNT": 3
 }
 
+
 var BULLE_TYPES = {
 	"RED": 0,
 	"GREEN": 1,
@@ -39,16 +40,8 @@ var BULLE_TYPES = {
 	"COUNT": 6
 }
 
-var BULLE_STATES = {
-	"IN_DOUBLET": 0,
-	"FALLING": 1,
-	"IN_GRID": 2
-}
 
-var DOUBLET_STATES = {
-	"IDLE": 0,
-	"FALLING": 1
-}
+
 
 var SCENES = {
 	"DOUBLET": preload('res://game/doublet.tscn')
@@ -62,6 +55,34 @@ var BULLE_SCENES = [
 	preload('res://game/bulles/cyan/bulle_cyan.tscn'),
 	preload('res://game/bulles/black/bulle_black.tscn')
 ]
+
+
+
+
+
+var BULLE_STATES = {
+	"IN_DOUBLET": 0,
+	"FALLING": 1,
+	"IN_GRID": 2
+}
+var DOUBLET_STATES = {
+	"IDLE": 0,
+	"FALLING": 1
+}
+var GRID_STATES = {
+	"IDLE": 0,
+	"SOLVING": 1
+}
+var SINGLE_GAME_PANEL_STATES = {
+	"IDLE": 0,
+	"PLACING_DOUBLET": 1,
+	"PLACING_FALLING_BULLES": 2
+}
+
+
+
+
+
 
 
 func _ready():

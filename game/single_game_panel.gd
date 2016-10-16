@@ -5,6 +5,8 @@ extends Node2D
 
 onready var grid = get_node("grid")
 
+var state = global.SINGLE_GAME_PANEL_STATES.IDLE
+
 var grid_pixel_size = Vector2( global.GRID_SIZE.x * global.BULLE_SIZE.x , global.GRID_SIZE.y * global.BULLE_SIZE.y )
 
 var doublet_default_pos = Vector2( (1+global.GRID_SIZE.x/2) * global.BULLE_SIZE.x , global.BULLE_SIZE.y * 2 ) -  global.BULLE_SIZE/2
@@ -24,9 +26,10 @@ func _ready():
 func _fixed_process(delta):
 	if( doublet_lateral_move_counter < doublet_lateral_move_timer ):
 		doublet_lateral_move_counter+=delta
-	
 
-	if( doublet && falling_bulles.empty()):
+		
+	if( doublet && falling_bulles.empty() ):
+		state = global.SINGLE_GAME_PANEL_STATES.PLACING_DOUBLET
 		doublet_falling_counter += delta
 		if( doublet_falling_counter >= doublet_initial_falling_speed ):
 			if( can_doublet_move_bottom() ):
@@ -47,35 +50,27 @@ func _fixed_process(delta):
 				doublet.queue_free()
 				doublet = null
 
-	if( !falling_bulles.empty() ):
-		for i in range(falling_bulles.size()):
-			falling_bulles[i].bulle.set_pos( falling_bulles[i].bulle.get_pos() + Vector2( 0, falling_bulles[i].speed ) )
-
-			if( can_bulle_move_bottom( falling_bulles[i].bulle ) ):
-				falling_bulles[i].speed += falling_bulles_acceleration * delta
-			else:
-				grid.add_bulle( falling_bulles[i].bulle, grid.pos_to_grid_coord(falling_bulles[i].bulle.get_pos()) )
-				falling_bulles.remove(i)
-				
-	
-	if( !doublet && falling_bulles.empty()):
-		grid.solve()
 
 func add_falling_bulle( bulle, pos ):
 	bulle.get_parent().remove_child(bulle)
 	add_child(bulle)
 	bulle.set_pos(pos)
-	bulle.state = global.BULLE_STATES.FALLING
+	bulle.set_falling()
+	falling_bulles.append(bulle)
 	
-	falling_bulles.append({
-		'bulle': bulle,
-		'speed': 0
-	})
+func remove_falling_bulle( bulle ):
+	falling_bulles.remove( falling_bulles.find(bulle))
+	grid.add_bulle( bulle, grid.pos_to_grid_coord( bulle.get_pos() ) )
+	if( falling_bulles.empty() ):
+		grid.solve()
 	
 func set_doublet( doublet ):
-	self.doublet = doublet
 	add_child(doublet)
-	self.doublet.set_pos( doublet_default_pos )
+	doublet.set_pos( doublet_default_pos )
+	self.doublet = doublet
+	
+	
+	
 	
 func rotate_doublet_clockwise():
 	if( doublet && can_doublet_rotate_clockwise() ):
