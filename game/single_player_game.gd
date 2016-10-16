@@ -7,7 +7,7 @@ func _ready():
 	set_fixed_process(true)
 	
 func _fixed_process(delta):
-	if( !single_game_panel_player.doublet && single_game_panel_player.falling_bulles.empty() ):
+	if( single_game_panel_player.state == global.SINGLE_GAME_PANEL_STATES.IDLE ):
 		single_game_panel_player.set_doublet(generate_random_doublet())
 	
 	if( Input.is_action_pressed("up") ):
@@ -20,7 +20,10 @@ func _fixed_process(delta):
 	if( Input.is_action_pressed("right") ):
 		single_game_panel_player.move_doublet_right()
 		
-		
+	if( Input.is_action_pressed("speed") ):
+		single_game_panel_player.increase_doublet_falling_speed()
+	elif( !Input.is_action_pressed("speed") ):
+		single_game_panel_player.decrease_doublet_falling_speed()
 	
 
 func generate_random_doublet():

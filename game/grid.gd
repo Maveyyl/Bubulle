@@ -26,14 +26,6 @@ func solve():
 					neighbours[direction] = get_neighbour_slot( Vector2(x,y), direction )
 				bulles[x][y].set_neighbours( neighbours )
 	
-	
-func add_bulle( bulle, grid_pos ):
-	bulle.get_parent().remove_child(bulle)
-	add_child(bulle)
-	bulle.set_in_grid()
-	bulle.set_pos( grid_coord_to_pos( grid_pos ) )
-	set_slot( grid_pos, bulle)
-	
 
 func set_slot( grid_pos, item):
 	bulles[grid_pos.x][grid_pos.y] = item
