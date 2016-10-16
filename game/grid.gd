@@ -14,6 +14,16 @@ func _ready():
 	
 func fixed_process(delta):
 	pass
+
+func solve():
+	var neighbours = [null,null,null,null]
+	for x in range(global.GRID_SIZE.x):
+		for y in range(global.GRID_SIZE.y):
+			if ( bulles[x][y] ):
+				for direction in range(global.DIRECTIONS.COUNT):
+					neighbours[direction] = get_neighbour_slot( Vector2(x,y), direction )
+				bulles[x][y].set_neighbours( neighbours )
+	
 	
 func add_bulle( bulle, grid_pos ):
 	bulle.get_parent().remove_child(bulle)
@@ -45,6 +55,19 @@ func get_neighbour_slot_type( grid_pos, direction ):
 
 	return slot_type
 
+func get_neighbour_slot( grid_pos, direction):
+	var neighbour_grid_pos = get_neighbour_grid_pos( grid_pos, direction )
+	
+	if( neighbour_grid_pos.x < 0 ||
+	neighbour_grid_pos.y < 0 ||
+	neighbour_grid_pos.x+1 > global.GRID_SIZE.x ||
+	neighbour_grid_pos.y+1 > global.GRID_SIZE.y ):
+		return null
+	else:
+		return get_slot( neighbour_grid_pos )
+
+
+
 
 func pos_to_grid_coord( pixel_pos ):
 	var real_pos = pixel_pos - global.BULLE_SIZE/2
@@ -63,25 +86,25 @@ func pos_to_grid_coord( pixel_pos ):
 func grid_coord_to_pos( grid_coord ):
 	return grid_coord * global.BULLE_SIZE + global.BULLE_SIZE/2
 		
-func has_empty_slots_bellow( grid_pos ):
-	var empty_slots_bellow = false
-	if( grid_pos.y+1 != global.GRID_SIZE.y ):
-		for y in range(grid_pos.y+1, global.GRID_SIZE.y ):
-			if( y < 0 ):
-				continue
-			if( bulles[grid_pos.x][y] == null ):
-				empty_slots_bellow = true
-				break
-	
-	return empty_slots_bellow
-	
-func get_empty_slots_bellow_count( grid_pos ):
-	var empty_slots_count = 0
-	if( grid_pos.y+1 != global.GRID_SIZE.y ):
-		for y in range(grid_pos.y+1, global.GRID_SIZE.y ):
-			if( y < 0 ):
-				continue
-			if( bulles[grid_pos.x][y] == null ):
-				empty_slots_count +=1
-	return empty_slots_count
+#func has_empty_slots_bellow( grid_pos ):
+#	var empty_slots_bellow = false
+#	if( grid_pos.y+1 != global.GRID_SIZE.y ):
+#		for y in range(grid_pos.y+1, global.GRID_SIZE.y ):
+#			if( y < 0 ):
+#				continue
+#			if( bulles[grid_pos.x][y] == null ):
+#				empty_slots_bellow = true
+#				break
+#	
+#	return empty_slots_bellow
+#	
+#func get_empty_slots_bellow_count( grid_pos ):
+#	var empty_slots_count = 0
+#	if( grid_pos.y+1 != global.GRID_SIZE.y ):
+#		for y in range(grid_pos.y+1, global.GRID_SIZE.y ):
+#			if( y < 0 ):
+#				continue
+#			if( bulles[grid_pos.x][y] == null ):
+#				empty_slots_count +=1
+#	return empty_slots_count
 		

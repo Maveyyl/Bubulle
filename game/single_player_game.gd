@@ -7,7 +7,7 @@ func _ready():
 	set_fixed_process(true)
 	
 func _fixed_process(delta):
-	if( !single_game_panel_player.doublet ):
+	if( !single_game_panel_player.doublet && single_game_panel_player.falling_bulles.empty() ):
 		single_game_panel_player.set_doublet(generate_random_doublet())
 	
 	if( Input.is_action_pressed("up") ):

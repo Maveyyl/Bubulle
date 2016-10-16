@@ -23,7 +23,8 @@ func set_in_doublet():
 func set_falling():
 	remove_extents()
 	
-func set_in_grid( neighbours ):
+func set_neighbours( neighbours ):
+	
 	if( neighbours[global.DIRECTIONS.LEFT] && neighbours[global.DIRECTIONS.LEFT].type == type ):
 		extent_left.show()
 	if( neighbours[global.DIRECTIONS.TOP] && neighbours[global.DIRECTIONS.TOP].type == type ):

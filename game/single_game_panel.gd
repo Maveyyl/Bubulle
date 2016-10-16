@@ -56,6 +56,10 @@ func _fixed_process(delta):
 			else:
 				grid.add_bulle( falling_bulles[i].bulle, grid.pos_to_grid_coord(falling_bulles[i].bulle.get_pos()) )
 				falling_bulles.remove(i)
+				
+	
+	if( !doublet && falling_bulles.empty()):
+		grid.solve()
 
 func add_falling_bulle( bulle, pos ):
 	bulle.get_parent().remove_child(bulle)
