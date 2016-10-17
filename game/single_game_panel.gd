@@ -17,6 +17,8 @@ var doublet
 var falling_bulles_acceleration = 10 # pixel per second per second
 var falling_bulles = []
 
+var popping_bulles = []
+
 func _ready():
 	set_fixed_process(true)
 	pass
@@ -30,8 +32,10 @@ func _fixed_process(delta):
 func remove_doublet( ):
 	doublet = null
 	if( state != global.SINGLE_GAME_PANEL_STATES.PLACING_FALLING_BULLES ):
-		state = global.SINGLE_GAME_PANEL_STATES.IDLE
+		state = global.SINGLE_GAME_PANEL_STATES.SOLVING
 		grid.solve()
+		if( popping_bulles.empty() ):
+			state = global.SINGLE_GAME_PANEL_STATES.IDLE
 
 func add_bulle_to_grid( bulle, grid_pos ):
 	bulle.get_parent().remove_child(bulle)
@@ -39,9 +43,15 @@ func add_bulle_to_grid( bulle, grid_pos ):
 	bulle.set_pos( grid.grid_coord_to_pos( grid_pos ) )
 	bulle.set_in_grid(grid_pos)
 	grid.set_slot( grid_pos, bulle)
+	
+func remove_bulle_from_grid( bulle, grid_pos ):
+	grid.set_slot( grid_pos, null)
+	bulle.queue_free()
+	remove_child(bulle)
 
 func add_falling_bulle( bulle, pos ):
-	state = global.SINGLE_GAME_PANEL_STATES.PLACING_FALLING_BULLES
+	if( state != global.SINGLE_GAME_PANEL_STATES.SOLVING ):
+		state = global.SINGLE_GAME_PANEL_STATES.PLACING_FALLING_BULLES
 	bulle.get_parent().remove_child(bulle)
 	add_child(bulle)
 	bulle.set_pos(pos)
@@ -52,8 +62,23 @@ func remove_falling_bulle( bulle ):
 	falling_bulles.remove( falling_bulles.find(bulle))
 	add_bulle_to_grid(  bulle, grid.pos_to_grid_coord( bulle.get_pos() ) )
 	if( falling_bulles.empty() ):
-		state = global.SINGLE_GAME_PANEL_STATES.IDLE
+		state = global.SINGLE_GAME_PANEL_STATES.SOLVING
 		grid.solve()
+		if( popping_bulles.empty() ):
+			state = global.SINGLE_GAME_PANEL_STATES.IDLE
+
+func add_popping_bulle( bulle ):
+	popping_bulles.append(bulle)
+	bulle.set_popping()
+
+	
+func remove_popping_bulle( bulle ):
+	popping_bulles.remove( popping_bulles.find(bulle))
+	remove_bulle_from_grid(bulle, bulle.grid_pos)
+
+	if( popping_bulles.empty() ):
+		state = global.SINGLE_GAME_PANEL_STATES.IDLE
+
 	
 func set_doublet( doublet ):
 	self.doublet = doublet

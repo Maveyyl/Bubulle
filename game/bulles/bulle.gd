@@ -7,7 +7,7 @@ onready var extent_left = get_node("base/extent_left")
 onready var extent_top = get_node("base/extent_top")
 onready var extent_right = get_node("base/extent_right")
 onready var extent_bottom = get_node("base/extent_bottom")
-
+onready var animation_player = get_node("AnimationPlayer")
 
 var falling_acceleration = 10 # pixel per second per second
 var falling_speed = 0
@@ -55,6 +55,13 @@ func set_in_grid(grid_pos):
 	self.grid_pos = grid_pos
 	state = global.BULLE_STATES.IN_GRID
 	
+func set_popping():
+	state = global.BULLE_STATES.POPPING
+	animation_player.play("popping")
+	yield( animation_player, "finished" )
+	get_parent().remove_popping_bulle(self)
+	
+	
 func set_neighbours( neighbours ):
 	self.neighbours = []
 	for direction in range(global.DIRECTIONS.COUNT):
@@ -73,22 +80,25 @@ func explore_neighbourhood():
 	var neighbours_list = []
 	var neighbours_to_threat = [self]
 
+	var bulle
+	var neighbour
+
 	# while neighbours to threat list not empty
 	while( !neighbours_to_threat.empty() ):
 		# get first element of neighbours to threat list
-		var bulle = neighbours_to_threat[0]
+		bulle = neighbours_to_threat[0]
+		
 		# remove it from the list
 		neighbours_to_threat.pop_front()
 		# add it to neighbour list
-		neighbours_list.append(self)
+		neighbours_list.append(bulle)
 		# for each of that neighbour's neighbours
 		for direction in range(global.DIRECTIONS.COUNT):
-			var neighbour = bulle.neighbours[direction]
-			
-			print("hey")
-			if( neighbour && neighbour.type == bulle.type && !neighbours_list.has(neighbour)  ): 
+			neighbour = bulle.neighbours[direction]
+		
+			if( neighbour && neighbour.type == bulle.type && !neighbours_list.has(neighbour) && !neighbours_to_threat.has(neighbour)  ): 
 				neighbours_to_threat.append(neighbour)
-
+				
 	return neighbours_list
 
 func remove_extents():

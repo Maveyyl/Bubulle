@@ -2,7 +2,6 @@ extends Node2D
 
 
 var bulles 
-var state = global.GRID_STATES.IDLE
 
 func _ready():
 	bulles = []
@@ -17,7 +16,8 @@ func fixed_process(delta):
 	pass
 
 func solve():
-	state = global.GRID_STATES.SOLVING
+	var game = get_parent()
+	
 	var neighbours = [null,null,null,null]
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
@@ -26,11 +26,15 @@ func solve():
 					neighbours[direction] = get_neighbour_slot( Vector2(x,y), direction )
 				bulles[x][y].set_neighbours( neighbours )
 	
-	
+	var bulles_to_pop = []
+	var bulles_to_pop_tmp
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
-			if ( bulles[x][y] ):
-				print( bulles[x][y].explore_neighbourhood() )
+			if ( bulles[x][y] && bulles[x][y].state != global.BULLE_STATES.POPPING):
+				bulles_to_pop_tmp = bulles[x][y].explore_neighbourhood()
+				if( bulles_to_pop_tmp.size() > 3 ):
+					for bulleId in range(bulles_to_pop_tmp.size()):
+						game.add_popping_bulle( bulles_to_pop_tmp[bulleId] )
 
 func set_slot( grid_pos, item):
 	bulles[grid_pos.x][grid_pos.y] = item
@@ -84,26 +88,4 @@ func pos_to_grid_coord( pixel_pos ):
 	
 func grid_coord_to_pos( grid_coord ):
 	return grid_coord * global.BULLE_SIZE + global.BULLE_SIZE/2
-		
-#func has_empty_slots_bellow( grid_pos ):
-#	var empty_slots_bellow = false
-#	if( grid_pos.y+1 != global.GRID_SIZE.y ):
-#		for y in range(grid_pos.y+1, global.GRID_SIZE.y ):
-#			if( y < 0 ):
-#				continue
-#			if( bulles[grid_pos.x][y] == null ):
-#				empty_slots_bellow = true
-#				break
-#	
-#	return empty_slots_bellow
-#	
-#func get_empty_slots_bellow_count( grid_pos ):
-#	var empty_slots_count = 0
-#	if( grid_pos.y+1 != global.GRID_SIZE.y ):
-#		for y in range(grid_pos.y+1, global.GRID_SIZE.y ):
-#			if( y < 0 ):
-#				continue
-#			if( bulles[grid_pos.x][y] == null ):
-#				empty_slots_count +=1
-#	return empty_slots_count
 		
