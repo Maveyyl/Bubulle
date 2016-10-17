@@ -26,6 +26,11 @@ func solve():
 					neighbours[direction] = get_neighbour_slot( Vector2(x,y), direction )
 				bulles[x][y].set_neighbours( neighbours )
 	
+	
+	for x in range(global.GRID_SIZE.x):
+		for y in range(global.GRID_SIZE.y):
+			if ( bulles[x][y] ):
+				print( bulles[x][y].explore_neighbourhood() )
 
 func set_slot( grid_pos, item):
 	bulles[grid_pos.x][grid_pos.y] = item

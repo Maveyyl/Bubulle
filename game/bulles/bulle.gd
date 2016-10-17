@@ -12,6 +12,9 @@ onready var extent_bottom = get_node("base/extent_bottom")
 var falling_acceleration = 10 # pixel per second per second
 var falling_speed = 0
 
+var grid_pos
+var neighbours = []
+
 func _ready():
 	set_fixed_process(true)
 	pass
@@ -48,10 +51,15 @@ func set_falling():
 	state = global.BULLE_STATES.FALLING
 	remove_extents()
 	
-func set_in_grid():
+func set_in_grid(grid_pos):
+	self.grid_pos = grid_pos
 	state = global.BULLE_STATES.IN_GRID
 	
 func set_neighbours( neighbours ):
+	self.neighbours = []
+	for direction in range(global.DIRECTIONS.COUNT):
+		self.neighbours.append( neighbours[direction ] )
+	
 	if( neighbours[global.DIRECTIONS.LEFT] && neighbours[global.DIRECTIONS.LEFT].type == type ):
 		extent_left.show()
 	if( neighbours[global.DIRECTIONS.TOP] && neighbours[global.DIRECTIONS.TOP].type == type ):
@@ -60,7 +68,29 @@ func set_neighbours( neighbours ):
 		extent_right.show()
 	if( neighbours[global.DIRECTIONS.BOTTOM] && neighbours[global.DIRECTIONS.BOTTOM].type == type ):
 		extent_bottom.show()
-		
+
+func explore_neighbourhood():
+	var neighbours_list = []
+	var neighbours_to_threat = [self]
+
+	# while neighbours to threat list not empty
+	while( !neighbours_to_threat.empty() ):
+		# get first element of neighbours to threat list
+		var bulle = neighbours_to_threat[0]
+		# remove it from the list
+		neighbours_to_threat.pop_front()
+		# add it to neighbour list
+		neighbours_list.append(self)
+		# for each of that neighbour's neighbours
+		for direction in range(global.DIRECTIONS.COUNT):
+			var neighbour = bulle.neighbours[direction]
+			
+			print("hey")
+			if( neighbour && neighbour.type == bulle.type && !neighbours_list.has(neighbour)  ): 
+				neighbours_to_threat.append(neighbour)
+
+	return neighbours_list
+
 func remove_extents():
 	extent_left.hide()
 	extent_top.hide()

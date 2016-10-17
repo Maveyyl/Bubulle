@@ -37,7 +37,7 @@ func add_bulle_to_grid( bulle, grid_pos ):
 	bulle.get_parent().remove_child(bulle)
 	add_child(bulle)
 	bulle.set_pos( grid.grid_coord_to_pos( grid_pos ) )
-	bulle.set_in_grid()
+	bulle.set_in_grid(grid_pos)
 	grid.set_slot( grid_pos, bulle)
 
 func add_falling_bulle( bulle, pos ):

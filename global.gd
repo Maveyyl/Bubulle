@@ -57,13 +57,17 @@ var BULLE_SCENES = [
 ]
 
 
+func popping_score_computer( bulle_count ):
+	return 100 + 30 * (bulle_count-4)
+
 
 
 
 var BULLE_STATES = {
 	"IN_DOUBLET": 0,
 	"FALLING": 1,
-	"IN_GRID": 2
+	"IN_GRID": 2,
+	"POPPING": 3
 }
 var DOUBLET_STATES = {
 	"IDLE": 0,
