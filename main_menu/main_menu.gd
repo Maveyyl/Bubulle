@@ -24,3 +24,8 @@ func _on_button_options_pressed():
 func _on_button_leave_pressed():
 	get_tree().quit()
 	pass
+
+
+func _on_button_fork_pressed():
+	OS.execute(OS.get_executable_path(), OS.get_cmdline_args(), false)
+	pass

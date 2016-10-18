@@ -102,6 +102,22 @@ shortcut = null
 text = "Leave"
 flat = false
 
+[node name="button_fork" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 800.0
+margin/top = 10.0
+margin/right = 914.0
+margin/bottom = 30.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Duplicate Client"
+flat = false
+
 [connection signal="pressed" from="button_solo" to="." method="_on_button_solo_pressed"]
 
 [connection signal="pressed" from="button_multi" to="." method="_on_button_multi_pressed"]
@@ -113,5 +129,7 @@ flat = false
 [connection signal="pressed" from="button_options" to="." method="_on_button_options_pressed"]
 
 [connection signal="pressed" from="button_leave" to="." method="_on_button_leave_pressed"]
+
+[connection signal="pressed" from="button_fork" to="." method="_on_button_fork_pressed"]
 
 
