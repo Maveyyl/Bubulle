@@ -26,6 +26,8 @@ func solve():
 					neighbours[direction] = get_neighbour_slot( Vector2(x,y), direction )
 				bulles[x][y].set_neighbours( neighbours )
 	
+	var score = 0
+	
 	var bulles_to_pop = []
 	var bulles_to_pop_tmp
 	for x in range(global.GRID_SIZE.x):
@@ -35,6 +37,22 @@ func solve():
 				if( bulles_to_pop_tmp.size() > 3 ):
 					for bulleId in range(bulles_to_pop_tmp.size()):
 						game.add_popping_bulle( bulles_to_pop_tmp[bulleId] )
+					score += global.popping_score_compute(bulles_to_pop_tmp.size())
+					
+	return score
+						
+func solve_falling():
+	var game = get_parent()
+	var should_fall = false
+	for x in range(global.GRID_SIZE.x):
+		should_fall = false
+		
+		for y in range(global.GRID_SIZE.y-1, 0, -1):
+			if( !bulles[x][y] ):
+				should_fall = true
+			elif( should_fall ):
+				game.add_falling_bulle(bulles[x][y], bulles[x][y].get_pos())
+				set_slot( Vector2(x,y), null)
 
 func set_slot( grid_pos, item):
 	bulles[grid_pos.x][grid_pos.y] = item

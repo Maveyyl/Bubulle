@@ -67,6 +67,8 @@ func _fixed_process(delta):
 				# that doublet's bulles must be placed in grid
 				var game = get_parent()
 				var grid = game.grid
+				
+				game.remove_doublet()
 				# test for both bulle if they can move bottom
 				if( !can_main_bulle_move_bottom() ):
 					# place bulle to grid if cannot move bottom
@@ -82,7 +84,6 @@ func _fixed_process(delta):
 				
 				# remove the doublet from the game
 				rotating = false
-				get_parent().remove_doublet()
 				queue_free()
 
 # states altering functions

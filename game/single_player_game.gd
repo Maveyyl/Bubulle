@@ -33,3 +33,6 @@ func generate_random_doublet():
 	doublet.set_main_bulle( main_bulle )
 	doublet.set_second_bulle( second_bulle )
 	return doublet
+	
+func return_score(score):
+	print("score: ", score)

@@ -57,9 +57,10 @@ var BULLE_SCENES = [
 ]
 
 
-func popping_score_computer( bulle_count ):
+func popping_score_compute( bulle_count ):
 	return 100 + 30 * (bulle_count-4)
-
+func popping_combo_score_compute( score, combo):
+	return score + ( score * 5 * (combo-1) )
 
 
 
@@ -80,8 +81,10 @@ var DOUBLET_STATES = {
 var SINGLE_GAME_PANEL_STATES = {
 	"IDLE": 0,
 	"PLACING_DOUBLET": 1,
-	"PLACING_FALLING_BULLES": 2,
-	"SOLVING": 3
+	"DOUBLET_PLACED": 2,
+	"PLACING_FALLING_BULLES": 3,
+	"SOLVED": 4,
+	"SOLVING": 5
 }
 
 

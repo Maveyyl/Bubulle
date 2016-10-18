@@ -1,13 +1,16 @@
 extends Node2D
 
 export(int, "RED","GREEN","YELLOW","PURPLE","CYAN","BLACK") var type
-var state = global.BULLE_STATES.IN_DOUBLET
 
-onready var extent_left = get_node("base/extent_left")
-onready var extent_top = get_node("base/extent_top")
-onready var extent_right = get_node("base/extent_right")
-onready var extent_bottom = get_node("base/extent_bottom")
 onready var animation_player = get_node("AnimationPlayer")
+onready var extents = [
+	get_node("base/extent_left"),
+	get_node("base/extent_top"),
+	get_node("base/extent_right"),
+	get_node("base/extent_bottom")
+]
+
+var state = global.BULLE_STATES.IN_DOUBLET
 
 var falling_acceleration = 10 # pixel per second per second
 var falling_speed = 0
@@ -17,7 +20,6 @@ var neighbours = []
 
 func _ready():
 	set_fixed_process(true)
-	pass
 
 func _fixed_process(delta):
 	# if is in falling state, parent is game panel
@@ -64,17 +66,15 @@ func set_popping():
 	
 func set_neighbours( neighbours ):
 	self.neighbours = []
+	
 	for direction in range(global.DIRECTIONS.COUNT):
 		self.neighbours.append( neighbours[direction ] )
-	
-	if( neighbours[global.DIRECTIONS.LEFT] && neighbours[global.DIRECTIONS.LEFT].type == type ):
-		extent_left.show()
-	if( neighbours[global.DIRECTIONS.TOP] && neighbours[global.DIRECTIONS.TOP].type == type ):
-		extent_top.show()
-	if( neighbours[global.DIRECTIONS.RIGHT] && neighbours[global.DIRECTIONS.RIGHT].type == type  ):
-		extent_right.show()
-	if( neighbours[global.DIRECTIONS.BOTTOM] && neighbours[global.DIRECTIONS.BOTTOM].type == type ):
-		extent_bottom.show()
+		
+		if( neighbours[direction] && neighbours[direction].type == type ):
+			extents[direction].show()
+		else:
+			extents[direction].hide()
+
 
 func explore_neighbourhood():
 	var neighbours_list = []
@@ -85,24 +85,24 @@ func explore_neighbourhood():
 
 	# while neighbours to threat list not empty
 	while( !neighbours_to_threat.empty() ):
-		# get first element of neighbours to threat list
+		# get first element of neighbours to threat list and set it as current bulle
 		bulle = neighbours_to_threat[0]
-		
 		# remove it from the list
 		neighbours_to_threat.pop_front()
+		
 		# add it to neighbour list
 		neighbours_list.append(bulle)
+		
 		# for each of that neighbour's neighbours
 		for direction in range(global.DIRECTIONS.COUNT):
 			neighbour = bulle.neighbours[direction]
-		
+			# if neighbour exists, is of the same type as current bulle and hasn't been threated yet
 			if( neighbour && neighbour.type == bulle.type && !neighbours_list.has(neighbour) && !neighbours_to_threat.has(neighbour)  ): 
+				# add neighbour to the neighbours to threat list
 				neighbours_to_threat.append(neighbour)
 				
 	return neighbours_list
 
 func remove_extents():
-	extent_left.hide()
-	extent_top.hide()
-	extent_right.hide()
-	extent_bottom.hide()
+	for direction in range(global.DIRECTIONS.COUNT):
+		extents[direction].hide()
