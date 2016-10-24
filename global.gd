@@ -44,7 +44,7 @@ var BULLE_TYPES = {
 
 
 var SCENES = {
-	"DOUBLET": preload('res://game/doublet.tscn')
+	"DOUBLET": preload('res://game/doublet/doublet.tscn')
 }
 
 var BULLE_SCENES = [

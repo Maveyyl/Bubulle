@@ -1,8 +1,8 @@
 extends Node2D
 
 
-const solo = preload('res://game/single_player_game.tscn')
-const main_menu = preload('res://main_menu/main_menu.tscn')
+const solo = preload("res://game/solo_game/solo_game.tscn")
+const main_menu = preload("res://main_menu/main_menu.tscn")
 
 var current_scene
 
