@@ -16,7 +16,7 @@ func fixed_process(delta):
 	pass
 
 func solve():
-	var game = get_parent()
+	var game = get_parent().get_parent()
 	
 	var neighbours = [null,null,null,null]
 	for x in range(global.GRID_SIZE.x):
@@ -42,7 +42,7 @@ func solve():
 	return score
 						
 func solve_falling():
-	var game = get_parent()
+	var game = get_parent().get_parent()
 	var should_fall = false
 	for x in range(global.GRID_SIZE.x):
 		should_fall = false

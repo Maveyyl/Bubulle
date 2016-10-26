@@ -7,7 +7,7 @@ func _ready():
 	set_fixed_process(true)
 	
 func _fixed_process(delta):
-	if( game_panel_player.state == global.SINGLE_GAME_PANEL_STATES.IDLE ):
+	if( game_panel_player.state == global.GAME_PANEL_STATES.IDLE ):
 		game_panel_player.set_doublet(generate_random_doublet())
 	
 	if( Input.is_action_pressed("up") ):

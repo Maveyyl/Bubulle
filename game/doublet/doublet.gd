@@ -65,7 +65,7 @@ func _fixed_process(delta):
 			# if doublet cannot move bottom
 			else:
 				# that doublet's bulles must be placed in grid
-				var game = get_parent()
+				var game = get_parent().get_parent()
 				var grid = game.grid
 				
 				game.remove_doublet()
@@ -87,6 +87,8 @@ func _fixed_process(delta):
 				queue_free()
 
 # states altering functions
+func set_idle():
+	state = global.DOUBLET_STATES.IDLE
 func set_falling():
 	state = global.DOUBLET_STATES.FALLING
 	
@@ -102,9 +104,9 @@ func set_second_bulle( bulle ):
 	
 # falling functions	
 func can_main_bulle_move_bottom():
-	return get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
+	return get_parent().get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
 func can_second_bulle_move_bottom():
-	return get_parent().grid.get_neighbour_slot_type( get_second_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
+	return get_parent().get_parent().grid.get_neighbour_slot_type( get_second_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
 func can_move_bottom():
 	return can_main_bulle_move_bottom() && can_second_bulle_move_bottom()
 
@@ -117,16 +119,16 @@ func decrease_falling_speed():
 # lateral moves
 func can_move_left( ):
 	var grid_pos = get_grid_pos()
-	if( get_parent().grid.get_neighbour_slot_type( grid_pos.main_bulle, global.DIRECTIONS.LEFT ) != global.GRID_SLOT_TYPES.EMPTY ):
+	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.main_bulle, global.DIRECTIONS.LEFT ) != global.GRID_SLOT_TYPES.EMPTY ):
 		return false
-	if( get_parent().grid.get_neighbour_slot_type( grid_pos.second_bulle, global.DIRECTIONS.LEFT ) != global.GRID_SLOT_TYPES.EMPTY ):
+	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.second_bulle, global.DIRECTIONS.LEFT ) != global.GRID_SLOT_TYPES.EMPTY ):
 		return false
 	return true
 func can_move_right( ):
 	var grid_pos = get_grid_pos()
-	if( get_parent().grid.get_neighbour_slot_type( grid_pos.main_bulle, global.DIRECTIONS.RIGHT ) != global.GRID_SLOT_TYPES.EMPTY ):
+	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.main_bulle, global.DIRECTIONS.RIGHT ) != global.GRID_SLOT_TYPES.EMPTY ):
 		return false
-	if( get_parent().grid.get_neighbour_slot_type( grid_pos.second_bulle, global.DIRECTIONS.RIGHT ) != global.GRID_SLOT_TYPES.EMPTY ):
+	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.second_bulle, global.DIRECTIONS.RIGHT ) != global.GRID_SLOT_TYPES.EMPTY ):
 		return false
 	return true
 
@@ -147,11 +149,11 @@ func move_right():
 # rotation
 func can_rotate_clockwise():
 	var new_direction = (direction +1) % global.DIRECTIONS.COUNT
-	var slot_type = get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
+	var slot_type = get_parent().get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
 	return slot_type == global.GRID_SLOT_TYPES.EMPTY
 func can_rotate_counterclockwise():
 	var new_direction = (direction -1 + global.DIRECTIONS.COUNT) % global.DIRECTIONS.COUNT
-	var slot_type = get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
+	var slot_type = get_parent().get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
 	return slot_type == global.GRID_SLOT_TYPES.EMPTY
 
 func rotate_second_bulle( deg ):
@@ -187,11 +189,11 @@ func get_second_bulle_pos():
 	return get_pos()+second_bulle_goal_pos
 	
 func get_main_bulle_grid_pos():
-	return get_parent().grid.pos_to_grid_coord( get_main_bulle_pos() )
+	return get_parent().get_parent().grid.pos_to_grid_coord( get_main_bulle_pos() )
 func get_second_bulle_grid_pos():
-	return get_parent().grid.pos_to_grid_coord( get_second_bulle_pos() )
+	return get_parent().get_parent().grid.pos_to_grid_coord( get_second_bulle_pos() )
 func get_grid_pos( ):
-	var grid = get_parent().grid
+	var grid = get_parent().get_parent().grid
 	return {
 		'main_bulle': get_main_bulle_grid_pos( ),
 		'second_bulle': get_second_bulle_grid_pos( )

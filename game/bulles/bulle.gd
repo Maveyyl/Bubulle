@@ -32,12 +32,12 @@ func _fixed_process(delta):
 		# if bulle can't move bottom
 		if( !can_move_bottom() ):
 			# bulle fall anymore and must be placed in the grid
-			get_parent().remove_falling_bulle( self )
+			get_parent().get_parent().remove_falling_bulle( self )
 
 	
 
 func can_move_bottom():
-	var grid = get_parent().grid # moving bottom is only when bulle is in the single game panel
+	var grid = get_parent().get_parent().grid # moving bottom is only when bulle is in the single game panel
 	var grid_pos = grid.pos_to_grid_coord( get_pos() )
 	# cannot move bottom if the slot under it is full
 	return grid.get_neighbour_slot_type( grid_pos, global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
@@ -61,7 +61,7 @@ func set_popping():
 	state = global.BULLE_STATES.POPPING
 	animation_player.play("popping")
 	yield( animation_player, "finished" )
-	get_parent().remove_popping_bulle(self)
+	get_parent().get_parent().remove_popping_bulle(self)
 	
 	
 func set_neighbours( neighbours ):

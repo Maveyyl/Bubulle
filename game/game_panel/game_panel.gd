@@ -2,10 +2,10 @@ extends Node2D
 
 
 
+onready var panel = get_node("panel")
+onready var grid = get_node("panel/grid")
 
-onready var grid = get_node("grid")
-
-var state = global.SINGLE_GAME_PANEL_STATES.IDLE
+var state = global.GAME_PANEL_STATES.IDLE
 
 var grid_pixel_size = Vector2( global.GRID_SIZE.x * global.BULLE_SIZE.x , global.GRID_SIZE.y * global.BULLE_SIZE.y )
 
@@ -28,8 +28,8 @@ func _ready():
 
 func _fixed_process(delta):
 	# if a doublet has been placed or if was in falling bulles states but all bulles felt
-	if( state ==  global.SINGLE_GAME_PANEL_STATES.DOUBLET_PLACED || 
-		(state ==  global.SINGLE_GAME_PANEL_STATES.PLACING_FALLING_BULLES && falling_bulles.empty() )
+	if( state ==  global.GAME_PANEL_STATES.DOUBLET_PLACED || 
+		(state ==  global.GAME_PANEL_STATES.PLACING_FALLING_BULLES && falling_bulles.empty() )
 	):
 		# try solve the grid and eliminate chains
 		var score = grid.solve()
@@ -44,14 +44,14 @@ func _fixed_process(delta):
 			combo_count = 0
 	
 	# if game is solving, IE chains are being eliminated and bulles are all popped
-	if(  state == global.SINGLE_GAME_PANEL_STATES.SOLVING && popping_bulles.empty() ):
+	if(  state == global.GAME_PANEL_STATES.SOLVING && popping_bulles.empty() ):
 		# solve for falling bulles
 		grid.solve_falling()
 		
 	# if there's no bulle to fall and no bulles to pop and no doublet
 	if( !doublet && popping_bulles.empty() && falling_bulles.empty()):
 		# game is in idle state and waits for a doublet
-		state = global.SINGLE_GAME_PANEL_STATES.IDLE
+		state = global.GAME_PANEL_STATES.IDLE
 		if( cumulative_score > 0 ):
 			get_parent().return_score(cumulative_score)
 			cumulative_score = 0
@@ -59,35 +59,35 @@ func _fixed_process(delta):
 	# else if doublet is present
 	elif( doublet && popping_bulles.empty() && falling_bulles.empty()):
 		# game is in placing doublet state
-		state = global.SINGLE_GAME_PANEL_STATES.PLACING_DOUBLET
+		state = global.GAME_PANEL_STATES.PLACING_DOUBLET
 
 
 
 
 func set_doublet( doublet ):
-	state = global.SINGLE_GAME_PANEL_STATES.PLACING_DOUBLET
+	state = global.GAME_PANEL_STATES.PLACING_DOUBLET
 	self.doublet = doublet
-	add_child(doublet)
+	panel.add_child(doublet)
 	doublet.set_pos( doublet_default_pos )
 	doublet.set_falling()
 func remove_doublet( ):
-	state = global.SINGLE_GAME_PANEL_STATES.DOUBLET_PLACED
+	state = global.GAME_PANEL_STATES.DOUBLET_PLACED
 	doublet = null
 
 func add_bulle_to_grid( bulle, grid_pos ):
 	bulle.get_parent().remove_child(bulle)
-	add_child(bulle)
+	panel.add_child(bulle)
 	bulle.set_pos( grid.grid_coord_to_pos( grid_pos ) )
 	bulle.set_in_grid(grid_pos)
 	grid.set_slot( grid_pos, bulle)
 func remove_bulle_from_grid( bulle, grid_pos ):
 	grid.set_slot( grid_pos, null)
-	remove_child(bulle)
+	panel.remove_child(bulle)
 	
 func add_falling_bulle( bulle, pos ):
-	state = global.SINGLE_GAME_PANEL_STATES.PLACING_FALLING_BULLES
+	state = global.GAME_PANEL_STATES.PLACING_FALLING_BULLES
 	bulle.get_parent().remove_child(bulle)
-	add_child(bulle)
+	panel.add_child(bulle)
 	bulle.set_pos(pos)
 	bulle.set_falling()
 	falling_bulles.append(bulle)
@@ -96,7 +96,7 @@ func remove_falling_bulle( bulle ):
 	add_bulle_to_grid(  bulle, grid.pos_to_grid_coord( bulle.get_pos() ) )
 
 func add_popping_bulle( bulle ):
-	state = global.SINGLE_GAME_PANEL_STATES.SOLVING
+	state = global.GAME_PANEL_STATES.SOLVING
 	popping_bulles.append(bulle)
 	bulle.set_popping()
 func remove_popping_bulle( bulle ):
@@ -139,13 +139,13 @@ func can_bulle_move_bottom(bulle):
 
 
 
-func _draw():
-	# left wall
-	draw_rect( Rect2( -10, 0, 10, grid_pixel_size.y), Color(0,0,0) )
-	# right wall
-	draw_rect( Rect2( grid_pixel_size.x, 0, 10, grid_pixel_size.y), Color(0,0,0) )
-	# top wall
-	draw_rect( Rect2( 0, global.BULLE_SIZE.y*2-10, grid_pixel_size.x, 10), Color(0,0,0) )
-	# bottom wall
-	draw_rect( Rect2( 0, grid_pixel_size.y, grid_pixel_size.x, 10), Color(0,0,0) )
-	
+#func _draw():
+#	# left wall
+#	draw_rect( Rect2( -10, 0, 10, grid_pixel_size.y), Color(0,0,0) )
+#	# right wall
+#	draw_rect( Rect2( grid_pixel_size.x, 0, 10, grid_pixel_size.y), Color(0,0,0) )
+#	# top wall
+#	draw_rect( Rect2( 0, global.BULLE_SIZE.y*2-10, grid_pixel_size.x, 10), Color(0,0,0) )
+#	# bottom wall
+#	draw_rect( Rect2( 0, grid_pixel_size.y, grid_pixel_size.x, 10), Color(0,0,0) )
+#	

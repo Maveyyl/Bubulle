@@ -9,19 +9,25 @@
 
 script/script = ExtResource( 1 )
 
-[node name="grid" type="Node2D" parent="."]
+[node name="panel" type="Node2D" parent="."]
 
+transform/pos = Vector2( 30, 0 )
+
+[node name="grid" type="Node2D" parent="panel"]
+
+transform/pos = Vector2( -30, 0 )
 script/script = ExtResource( 2 )
 
 [node name="walls" type="Sprite" parent="."]
 
-transform/pos = Vector2( 90, 225 )
+transform/pos = Vector2( 120, 225 )
 z/z = 1
 texture = ExtResource( 3 )
 
 [node name="background" type="Sprite" parent="."]
 
-transform/pos = Vector2( 90, 225 )
+transform/pos = Vector2( 120, 225 )
+z/z = -1
 texture = ExtResource( 4 )
 
 
