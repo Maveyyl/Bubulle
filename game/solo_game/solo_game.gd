@@ -1,14 +1,20 @@
 extends Node2D
 
 onready var game_panel_player = get_node('game_panel_player')
+onready var info_panel_player = get_node('info_panel_player')
 
+onready var game_panel_AI = get_node('game_panel_AI')
+onready var info_panel_AI = get_node('info_panel_AI')
+var player_score = 0
 
 func _ready():
+	info_panel_player.set_doublet( generate_random_doublet() )
 	set_fixed_process(true)
 	
 func _fixed_process(delta):
 	if( game_panel_player.state == global.GAME_PANEL_STATES.IDLE ):
-		game_panel_player.set_doublet(generate_random_doublet())
+		game_panel_player.set_doublet(info_panel_player.doublet)
+		info_panel_player.set_doublet( generate_random_doublet() )
 	
 	if( Input.is_action_pressed("up") ):
 		game_panel_player.rotate_doublet_clockwise()
@@ -34,5 +40,6 @@ func generate_random_doublet():
 	doublet.set_second_bulle( second_bulle )
 	return doublet
 	
-func return_score(score):
-	print("score: ", score)
+func _on_game_panel_player_score( score ):
+	self.player_score += score
+	info_panel_player.set_score(self.player_score)

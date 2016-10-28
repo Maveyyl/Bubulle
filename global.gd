@@ -58,7 +58,7 @@ var BULLE_SCENES = [
 
 
 func popping_score_compute( bulle_count ):
-	return 100 + 30 * (bulle_count-4)
+	return 10 + 3 * (bulle_count-4)
 func popping_combo_score_compute( score, combo):
 	return score + ( score * 5 * (combo-1) )
 
@@ -85,11 +85,6 @@ var GAME_PANEL_STATES = {
 	"PLACING_FALLING_BULLES": 3,
 	"SOLVED": 4,
 	"SOLVING": 5
-}
-
-var INFO_PANEL_TYPE = {
-	"LEFT": 0,
-	"RIGHT": 1,
 }
 
 

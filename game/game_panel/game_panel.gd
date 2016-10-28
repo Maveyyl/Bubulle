@@ -1,9 +1,9 @@
 extends Node2D
 
-
-
 onready var panel = get_node("panel")
 onready var grid = get_node("panel/grid")
+
+var size = global.BULLE_SIZE.x * ( global.GRID_SIZE + Vector2(2,1) )
 
 var state = global.GAME_PANEL_STATES.IDLE
 
@@ -19,6 +19,7 @@ var falling_bulles = []
 
 var popping_bulles = []
 
+signal score(score)
 var cumulative_score = 0
 var combo_count = 0
 
@@ -36,12 +37,6 @@ func _fixed_process(delta):
 		if( score > 0 ):
 			combo_count += 1
 			cumulative_score += global.popping_combo_score_compute( score, combo_count)
-		
-		elif( score == 0 ):
-			if( cumulative_score > 0 ):
-				get_parent().return_score(cumulative_score)
-			cumulative_score = 0
-			combo_count = 0
 	
 	# if game is solving, IE chains are being eliminated and bulles are all popped
 	if(  state == global.GAME_PANEL_STATES.SOLVING && popping_bulles.empty() ):
@@ -53,7 +48,8 @@ func _fixed_process(delta):
 		# game is in idle state and waits for a doublet
 		state = global.GAME_PANEL_STATES.IDLE
 		if( cumulative_score > 0 ):
-			get_parent().return_score(cumulative_score)
+#			get_parent().return_score(cumulative_score)
+			emit_signal("score", cumulative_score)
 			cumulative_score = 0
 			combo_count = 0
 	# else if doublet is present
@@ -67,6 +63,7 @@ func _fixed_process(delta):
 func set_doublet( doublet ):
 	state = global.GAME_PANEL_STATES.PLACING_DOUBLET
 	self.doublet = doublet
+	doublet.get_parent().remove_child(doublet)
 	panel.add_child(doublet)
 	doublet.set_pos( doublet_default_pos )
 	doublet.set_falling()

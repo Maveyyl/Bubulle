@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://game/info_panel/info_panel_left.tscn" type="PackedScene" id=1]
+
+[node name="info_panel_right" instance=ExtResource( 1 )]
+
+[node name="doublet_slot" parent="."]
+
+transform/pos = Vector2( 135, 75 )
+
+[node name="score_label" parent="."]
+
+margin/left = 90.0
+margin/right = 150.0
+align = 2
+
+
