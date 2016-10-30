@@ -6,23 +6,20 @@ func _ready():
 
 
 func _on_button_solo_pressed():
-	scene_manager.change_scene_to("solo")
+	global.main.change_scene_to_solo()
 	pass
 
 func _on_button_multi_pressed():
-	scene_manager.change_scene_to("multi_menu")
+	global.main.change_scene_to_multi_menu()
 	pass
 
 func _on_button_tutorial_pressed():
-#	scene_manager.change_scene_to("tutorial")
 	pass
 
 func _on_button_training_pressed():
-#	scene_manager.change_scene_to("training")
 	pass
 
 func _on_button_options_pressed():
-#	scene_manager.change_scene_to("options")
 	pass
 
 func _on_button_leave_pressed():
