@@ -6,12 +6,13 @@ var second_bulle
 var direction = global.DIRECTIONS.TOP
 
 # falling
-var initial_falling_speed = 0.15 # time for one half bulle size
-var falling_speed = 0.15
+var initial_falling_speed = 0.05 # time for one move
+var falling_speed = 0.05
+var sped_up_falling_speed = 0.0075
 var falling_counter = 0
 
 # lateral moves
-var lateral_move_timer = 0.15
+var lateral_move_timer = 0.12
 var lateral_move_counter = 0
 
 # rotation
@@ -59,9 +60,9 @@ func _fixed_process(delta):
 			# if doublet can move bottom
 			if( can_move_bottom() ):
 				# reset the falling counter
-				falling_counter = 0
 				# move the doublet half a slot bottom
-				set_pos( get_pos() + Vector2( 0, global.BULLE_SIZE.x/2 ) )
+				set_pos( get_pos() + Vector2( 0, global.BULLE_SIZE.x/8 ) * int(falling_counter/falling_speed) )
+				falling_counter -=int(falling_counter/falling_speed) * falling_speed
 			# if doublet cannot move bottom
 			else:
 				# that doublet's bulles must be placed in grid
@@ -111,7 +112,7 @@ func can_move_bottom():
 	return can_main_bulle_move_bottom() && can_second_bulle_move_bottom()
 
 func increase_falling_speed():
-	falling_speed = initial_falling_speed / 6
+	falling_speed = sped_up_falling_speed
 func decrease_falling_speed():
 	falling_speed = initial_falling_speed
 

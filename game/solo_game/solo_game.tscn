@@ -1,28 +1,13 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=3 format=1]
 
 [ext_resource path="res://game/solo_game/solo_game.gd" type="Script" id=1]
-[ext_resource path="res://game/game_panel/game_panel.tscn" type="PackedScene" id=2]
-[ext_resource path="res://game/info_panel/info_panel_left.tscn" type="PackedScene" id=3]
-[ext_resource path="res://game/info_panel/info_panel_right.tscn" type="PackedScene" id=4]
+[ext_resource path="res://game/double_game_panel/double_game_panel.tscn" type="PackedScene" id=2]
 
 [node name="solo_game" type="Node2D"]
 
 script/script = ExtResource( 1 )
 
-[node name="game_panel_player" parent="." instance=ExtResource( 2 )]
-
-[node name="info_panel_player" parent="." instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 240, 0 )
-
-[node name="info_panel_AI" parent="." instance=ExtResource( 4 )]
-
-transform/pos = Vector2( 240, 0 )
-
-[node name="game_panel_AI" parent="." instance=ExtResource( 2 )]
-
-transform/pos = Vector2( 420, 0 )
-
-[connection signal="score" from="game_panel_player" to="." method="_on_game_panel_player_score"]
+[node name="double_game_panel" parent="." instance=ExtResource( 2 )]
 
 
+[editable path="double_game_panel"]

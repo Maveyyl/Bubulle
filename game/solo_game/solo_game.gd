@@ -1,11 +1,12 @@
 extends Node2D
 
-onready var game_panel_player = get_node('game_panel_player')
-onready var info_panel_player = get_node('info_panel_player')
+onready var double_game_panel = get_node('double_game_panel')
 
-onready var game_panel_AI = get_node('game_panel_AI')
-onready var info_panel_AI = get_node('info_panel_AI')
-var player_score = 0
+onready var game_panel_player = get_node('double_game_panel/game_panel_p1')
+onready var info_panel_player = get_node('double_game_panel/info_panel_p1')
+
+onready var game_panel_AI = get_node('double_game_panel/game_panel_p2')
+onready var info_panel_AI = get_node('double_game_panel/info_panel_p2')
 
 func _ready():
 	info_panel_player.set_doublet( generate_random_doublet() )
@@ -16,19 +17,19 @@ func _fixed_process(delta):
 		game_panel_player.set_doublet(info_panel_player.doublet)
 		info_panel_player.set_doublet( generate_random_doublet() )
 	
-	if( Input.is_action_pressed("up") ):
+	if( Input.is_action_pressed("up_p1") ):
 		game_panel_player.rotate_doublet_clockwise()
-	if( Input.is_action_pressed("down") ):
+	if( Input.is_action_pressed("down_p1") ):
 		game_panel_player.rotate_doublet_counterclockwise()
 		
-	if( Input.is_action_pressed("left") ):
+	if( Input.is_action_pressed("left_p1") ):
 		game_panel_player.move_doublet_left()
-	if( Input.is_action_pressed("right") ):
+	if( Input.is_action_pressed("right_p1") ):
 		game_panel_player.move_doublet_right()
 		
-	if( Input.is_action_pressed("speed") ):
+	if( Input.is_action_pressed("speed_p1") ):
 		game_panel_player.increase_doublet_falling_speed()
-	elif( !Input.is_action_pressed("speed") ):
+	elif( !Input.is_action_pressed("speed_p1") ):
 		game_panel_player.decrease_doublet_falling_speed()
 	
 
@@ -40,6 +41,3 @@ func generate_random_doublet():
 	doublet.set_second_bulle( second_bulle )
 	return doublet
 	
-func _on_game_panel_player_score( score ):
-	self.player_score += score
-	info_panel_player.set_score(self.player_score)
