@@ -3,18 +3,11 @@ extends Node2D
 onready var panel = get_node("panel")
 onready var grid = get_node("panel/grid")
 
-var size = global.BULLE_SIZE.x * ( global.GRID_SIZE + Vector2(2,1) )
-
 var state = global.GAME_PANEL_STATES.IDLE
 
-var grid_pixel_size = Vector2( global.GRID_SIZE.x * global.BULLE_SIZE.x , global.GRID_SIZE.y * global.BULLE_SIZE.y )
-
 var doublet_default_pos = Vector2( (1+global.GRID_SIZE.x/2) * global.BULLE_SIZE.x , global.BULLE_SIZE.y * 2 ) -  global.BULLE_SIZE/2
-var doublet_lateral_move_timer = 0.15
-var doublet_lateral_move_counter = 0
 var doublet
 
-var falling_bulles_acceleration = 10 # pixel per second per second
 var falling_bulles = []
 
 var popping_bulles = []
@@ -22,6 +15,10 @@ var popping_bulles = []
 signal score(score)
 var cumulative_score = 0
 var combo_count = 0
+
+var received_penalty = false
+var penalty_bulles = 0
+var black_bulles = []
 
 func _ready():
 	set_fixed_process(true)
@@ -45,8 +42,26 @@ func _fixed_process(delta):
 		
 	# if there's no bulle to fall and no bulles to pop and no doublet
 	if( !doublet && popping_bulles.empty() && falling_bulles.empty()):
-		# game is in idle state and waits for a doublet
-		state = global.GAME_PANEL_STATES.IDLE
+		# game is in an idle state
+		# if has to receive penalties
+		if( penalty_bulles != 0 && !received_penalty ):
+			received_penalty = true
+			# give penalty
+			var penalty_count
+			if( penalty_bulles > 10 ):
+				penalty_count = 10
+				penalty_bulles -= 10
+			else:
+				penalty_count = penalty_bulles
+				penalty_bulles = 0
+			var bulle_pos_array = global.get_penalty_random_slots( penalty_count )
+			for i in range (bulle_pos_array.size()):
+				var black_bulle = global.BULLE_SCENES[ global.BULLE_TYPES.BLACK ].instance() 
+				black_bulles.append( black_bulle )
+				add_falling_bulle( black_bulle, bulle_pos_array[i] )
+		else:
+			# else game is in idle state and waits for a doublet
+			state = global.GAME_PANEL_STATES.IDLE
 		if( cumulative_score > 0 ):
 #			get_parent().return_score(cumulative_score)
 			emit_signal("score", cumulative_score)
@@ -61,6 +76,9 @@ func _fixed_process(delta):
 
 
 func set_doublet( doublet ):
+#	if(randi()%2 == 1):
+#		penalty_bulles += 1
+	received_penalty = false
 	state = global.GAME_PANEL_STATES.PLACING_DOUBLET
 	self.doublet = doublet
 	doublet.get_parent().remove_child(doublet)
@@ -70,6 +88,14 @@ func set_doublet( doublet ):
 func remove_doublet( ):
 	state = global.GAME_PANEL_STATES.DOUBLET_PLACED
 	doublet = null
+	
+func add_penalty( penalty ):
+	penalty_bulles += penalty
+func remove_black_bulle( bulle ):
+	if( black_bulles.find(bulle) >= 0 ):
+		black_bulles.remove( black_bulles.find(bulle))
+		remove_bulle_from_grid(bulle, bulle.grid_pos)
+	
 
 func add_bulle_to_grid( bulle, grid_pos ):
 	bulle.get_parent().remove_child(bulle)
@@ -83,7 +109,8 @@ func remove_bulle_from_grid( bulle, grid_pos ):
 	
 func add_falling_bulle( bulle, pos ):
 	state = global.GAME_PANEL_STATES.PLACING_FALLING_BULLES
-	bulle.get_parent().remove_child(bulle)
+	if( bulle.get_parent() ):
+		bulle.get_parent().remove_child(bulle)
 	panel.add_child(bulle)
 	bulle.set_pos(pos)
 	bulle.set_falling()
@@ -132,17 +159,3 @@ func decrease_doublet_falling_speed():
 
 func can_bulle_move_bottom(bulle):
 	return grid.get_neighbour_slot_type( grid.pos_to_grid_coord( bulle.get_pos() ), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
-
-
-
-
-#func _draw():
-#	# left wall
-#	draw_rect( Rect2( -10, 0, 10, grid_pixel_size.y), Color(0,0,0) )
-#	# right wall
-#	draw_rect( Rect2( grid_pixel_size.x, 0, 10, grid_pixel_size.y), Color(0,0,0) )
-#	# top wall
-#	draw_rect( Rect2( 0, global.BULLE_SIZE.y*2-10, grid_pixel_size.x, 10), Color(0,0,0) )
-#	# bottom wall
-#	draw_rect( Rect2( 0, grid_pixel_size.y, grid_pixel_size.x, 10), Color(0,0,0) )
-#	

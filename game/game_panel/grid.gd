@@ -10,10 +10,6 @@ func _ready():
 		bulles[x] = []
 		bulles[x].resize(global.GRID_SIZE.y)
 	
-	fixed_process(true)
-	
-func fixed_process(delta):
-	pass
 
 func solve():
 	var game = get_parent().get_parent()
@@ -21,7 +17,7 @@ func solve():
 	var neighbours = [null,null,null,null]
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
-			if ( bulles[x][y] ):
+			if ( bulles[x][y] && bulles[x][y].type != global.BULLE_TYPES.BLACK ):
 				for direction in range(global.DIRECTIONS.COUNT):
 					neighbours[direction] = get_neighbour_slot( Vector2(x,y), direction )
 				bulles[x][y].set_neighbours( neighbours )
@@ -32,7 +28,7 @@ func solve():
 	var bulles_to_pop_tmp
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
-			if ( bulles[x][y] && bulles[x][y].state != global.BULLE_STATES.POPPING):
+			if ( bulles[x][y] && bulles[x][y].type != global.BULLE_TYPES.BLACK && bulles[x][y].state != global.BULLE_STATES.POPPING):
 				bulles_to_pop_tmp = bulles[x][y].explore_neighbourhood()
 				if( bulles_to_pop_tmp.size() > 3 ):
 					for bulleId in range(bulles_to_pop_tmp.size()):

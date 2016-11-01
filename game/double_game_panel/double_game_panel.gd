@@ -41,7 +41,9 @@ func generate_random_doublet():
 func _on_game_panel_p1_score( score ):
 	p1_score += score
 	info_panel_p1.set_score(p1_score)
+	game_panel_p2.add_penalty(global.score_to_penalty(score))
 
 func _on_game_panel_p2_score( score ):
 	p2_score += score
 	info_panel_p2.set_score(score)
+	game_panel_p1.add_penalty(global.score_to_penalty(score))

@@ -61,7 +61,8 @@ func popping_score_compute( bulle_count ):
 	return 10 + 3 * (bulle_count-4)
 func popping_combo_score_compute( score, combo):
 	return score + ( score * 5 * (combo-1) )
-
+func score_to_penalty( score ):
+	return int(pow(score/5,0.6))
 
 
 var BULLE_STATES = {
@@ -90,7 +91,32 @@ var GAME_PANEL_STATES = {
 
 
 
+func get_penalty_random_slots(penalty_count):
+	var slots_line_1 = []
+	var slots_line_2 = []
+	
+	for i in range( GRID_SIZE.x ):
+		slots_line_1.append(Vector2( i, 0) * BULLE_SIZE + BULLE_SIZE/2 )
+		if( penalty_count > 5 ):
+			slots_line_2.append(Vector2( i, 1) * BULLE_SIZE + BULLE_SIZE/2 )
 
+	if( penalty_count <= 5 ):
+		for i in range(6-penalty_count):
+			var rand = randi()%slots_line_1.size()
+			slots_line_1.remove(rand)
+	else:
+		for i in range(1):
+			var rand = randi()%slots_line_1.size()
+			slots_line_1.remove(rand)
+		penalty_count-=5
+		for i in range(6-penalty_count):
+			var rand = randi()%slots_line_2.size()
+			slots_line_2.remove(rand)
+	
+	for i in range(slots_line_2.size()):
+		slots_line_1.append(slots_line_2[i])
+		
+	return slots_line_1
 
 
 func _ready():

@@ -61,6 +61,9 @@ func set_popping():
 	state = global.BULLE_STATES.POPPING
 	animation_player.play("popping")
 	yield( animation_player, "finished" )
+	for direction in range(global.DIRECTIONS.COUNT):
+		if( neighbours[direction] && neighbours[direction].type == global.BULLE_TYPES.BLACK ):
+			get_parent().get_parent().remove_black_bulle( neighbours[direction] )
 	get_parent().get_parent().remove_popping_bulle(self)
 	
 	
