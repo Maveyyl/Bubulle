@@ -18,9 +18,9 @@ var combo_count = 0
 
 var received_penalty = false
 var penalty_bulles = 0
-var black_bulles = []
 
 func _ready():
+	add_penalty(10)
 	set_fixed_process(true)
 	pass
 
@@ -57,8 +57,9 @@ func _fixed_process(delta):
 			var bulle_pos_array = global.get_penalty_random_slots( penalty_count )
 			for i in range (bulle_pos_array.size()):
 				var black_bulle = global.BULLE_SCENES[ global.BULLE_TYPES.BLACK ].instance() 
-				black_bulles.append( black_bulle )
-				add_falling_bulle( black_bulle, bulle_pos_array[i] )
+				add_bulle_to_game(black_bulle)
+				black_bulle.set_pos(bulle_pos_array[i])
+				black_bulle.set_falling()
 		else:
 			# else game is in idle state and waits for a doublet
 			state = global.GAME_PANEL_STATES.IDLE
@@ -74,68 +75,100 @@ func _fixed_process(delta):
 
 
 
-
+func add_bulle_to_game( bulle ):
+	bulle.grid = grid
+	bulle.connect('started_falling', self, 'add_falling_bulle')
+	bulle.connect('stopped_falling', self, 'remove_falling_bulle')
+	
+	bulle.connect('started_popping', self, 'add_popping_bulle')
+	bulle.connect('stopped_popping', self, 'remove_popping_bulle')
+	
 func set_doublet( doublet ):
-#	if(randi()%2 == 1):
-#		penalty_bulles += 1
-	received_penalty = false
 	state = global.GAME_PANEL_STATES.PLACING_DOUBLET
 	self.doublet = doublet
-	doublet.get_parent().remove_child(doublet)
+	received_penalty = false
+	
+	if( doublet.get_parent() != null ):
+		doublet.get_parent().remove_child(doublet)
 	panel.add_child(doublet)
 	doublet.set_pos( doublet_default_pos )
 	doublet.set_falling()
-func remove_doublet( ):
+	doublet.grid = grid
+	
+	doublet.connect("placed", self, "remove_doublet")
+	
+	add_bulle_to_game(doublet.main_bulle)
+	add_bulle_to_game(doublet.second_bulle)
+
+func remove_doublet( main_bulle, second_bulle ):
 	state = global.GAME_PANEL_STATES.DOUBLET_PLACED
+	
+	# test for both bulle if they can move bottom
+	if( !grid.can_bulle_move_to( main_bulle, global.DIRECTIONS.BOTTOM ) ):
+		# place bulle to grid if cannot move bottom
+		add_bulle_to_grid( main_bulle )
+	else:
+		# else set it as falling
+		main_bulle.set_falling()
+
+	if( !grid.can_bulle_move_to( second_bulle, global.DIRECTIONS.BOTTOM  ) ):
+		add_bulle_to_grid( second_bulle  )
+	else:
+		second_bulle.set_falling()
+	
 	doublet = null
 	
 func add_penalty( penalty ):
 	penalty_bulles += penalty
 func remove_black_bulle( bulle ):
-	if( black_bulles.find(bulle) >= 0 ):
-		black_bulles.remove( black_bulles.find(bulle))
-		remove_bulle_from_grid(bulle, bulle.grid_pos)
+	remove_bulle_from_grid(bulle)
 	
 
-func add_bulle_to_grid( bulle, grid_pos ):
-	bulle.get_parent().remove_child(bulle)
+func add_bulle_to_grid( bulle ):
+	if( bulle.get_parent() != null):
+		bulle.get_parent().remove_child(bulle)
 	panel.add_child(bulle)
-	bulle.set_pos( grid.grid_coord_to_pos( grid_pos ) )
-	bulle.set_in_grid(grid_pos)
+	var grid_pos = grid.pos_to_grid_coord(bulle.get_pos())
+	# necessary to make sure the bulle is at the slot's position
+	var grid_real_pos =  grid.grid_coord_to_pos( grid_pos )
+	bulle.set_pos(grid_real_pos)
+	
+	bulle.set_in_grid( grid_pos )
 	grid.set_slot( grid_pos, bulle)
-func remove_bulle_from_grid( bulle, grid_pos ):
-	grid.set_slot( grid_pos, null)
+func remove_bulle_from_grid( bulle ):
+	grid.set_slot( bulle.grid_pos, null)
 	panel.remove_child(bulle)
 	
-func add_falling_bulle( bulle, pos ):
+func add_falling_bulle( bulle ):
 	state = global.GAME_PANEL_STATES.PLACING_FALLING_BULLES
 	if( bulle.get_parent() ):
 		bulle.get_parent().remove_child(bulle)
 	panel.add_child(bulle)
-	bulle.set_pos(pos)
-	bulle.set_falling()
 	falling_bulles.append(bulle)
 func remove_falling_bulle( bulle ):
 	falling_bulles.remove( falling_bulles.find(bulle))
-	add_bulle_to_grid(  bulle, grid.pos_to_grid_coord( bulle.get_pos() ) )
+	add_bulle_to_grid( bulle )
 
 func add_popping_bulle( bulle ):
 	state = global.GAME_PANEL_STATES.SOLVING
 	popping_bulles.append(bulle)
-	bulle.set_popping()
 func remove_popping_bulle( bulle ):
 	popping_bulles.remove( popping_bulles.find(bulle))
-	remove_bulle_from_grid(bulle, bulle.grid_pos)
-
+	remove_bulle_from_grid(bulle)
+	
+	for direction in range(global.DIRECTIONS.COUNT):
+		var neighbour = bulle.neighbours[direction]
+		if( neighbour && neighbour.type == global.BULLE_TYPES.BLACK ):
+			remove_black_bulle( neighbour )
+	
 	
 
 	
 	
-	
+# commands given by parents
 func rotate_doublet_clockwise():
 	if( doublet ):
 		doublet.rotate_clockwise()
-
 func rotate_doublet_counterclockwise():
 	if( doublet ) :
 		doublet.rotate_counterclockwise()
@@ -143,7 +176,6 @@ func rotate_doublet_counterclockwise():
 func move_doublet_left():
 	if( doublet ):
 		doublet.move_left()
-			
 func move_doublet_right():
 	if( doublet ):
 		doublet.move_right()
@@ -154,8 +186,3 @@ func increase_doublet_falling_speed():
 func decrease_doublet_falling_speed():
 	if( doublet ):
 		doublet.decrease_falling_speed()
-
-
-
-func can_bulle_move_bottom(bulle):
-	return grid.get_neighbour_slot_type( grid.pos_to_grid_coord( bulle.get_pos() ), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY

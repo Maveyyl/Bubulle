@@ -15,32 +15,37 @@ var state = global.BULLE_STATES.IN_DOUBLET
 var falling_acceleration = 10 # pixel per second per second
 var falling_speed = 0
 
+var grid
 var grid_pos
 var neighbours = []
+
+signal started_falling
+signal stopped_falling
+signal started_popping
+signal stopped_popping
 
 func _ready():
 	set_fixed_process(true)
 
-func _fixed_process(delta):
-	# if is in falling state, parent is game panel
+func _fixed_process(delta):	
 	if( state == global.BULLE_STATES.FALLING ):
-		# the falling
+		# move the bulle down
 		set_pos(get_pos() + Vector2( 0, falling_speed ) )
-		# increase acceleration
+		# increase speed
 		falling_speed += falling_acceleration * delta
 		
-		# if bulle can't move bottom
+		# if bulle can't move bottom further
 		if( !can_move_bottom() ):
-			# bulle fall anymore and must be placed in the grid
-			get_parent().get_parent().remove_falling_bulle( self )
+			# bulle emits a signal stating that it stopped falling
+			emit_signal("stopped_falling", self)
 
 	
 
 func can_move_bottom():
-	var grid = get_parent().get_parent().grid # moving bottom is only when bulle is in the single game panel
 	var grid_pos = grid.pos_to_grid_coord( get_pos() )
-	# cannot move bottom if the slot under it is full
-	return grid.get_neighbour_slot_type( grid_pos, global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
+	var neighbour_slot_type = grid.get_neighbour_slot_type( grid_pos, global.DIRECTIONS.BOTTOM )
+	# cannot move bottom if the slot under it is not empty
+	return neighbour_slot_type == global.GRID_SLOT_TYPES.EMPTY
 	
 
 	
@@ -49,27 +54,27 @@ func set_in_doublet():
 	remove_extents()
 	
 func set_falling():
-	falling_speed = 0
 	state = global.BULLE_STATES.FALLING
 	remove_extents()
+	falling_speed = 0
+	emit_signal("started_falling", self)
 	
 func set_in_grid(grid_pos):
-	self.grid_pos = grid_pos
 	state = global.BULLE_STATES.IN_GRID
+	self.grid_pos = grid_pos
 	
 func set_popping():
 	state = global.BULLE_STATES.POPPING
+	emit_signal("started_popping", self)
 	animation_player.play("popping")
-	yield( animation_player, "finished" )
-	for direction in range(global.DIRECTIONS.COUNT):
-		if( neighbours[direction] && neighbours[direction].type == global.BULLE_TYPES.BLACK ):
-			get_parent().get_parent().remove_black_bulle( neighbours[direction] )
-	get_parent().get_parent().remove_popping_bulle(self)
 	
+	yield( animation_player, "finished" )
+	emit_signal("stopped_popping", self)
+
 	
 func set_neighbours( neighbours ):
 	self.neighbours = []
-	
+
 	for direction in range(global.DIRECTIONS.COUNT):
 		self.neighbours.append( neighbours[direction ] )
 		
@@ -107,5 +112,6 @@ func explore_neighbourhood():
 	return neighbours_list
 
 func remove_extents():
-	for direction in range(global.DIRECTIONS.COUNT):
-		extents[direction].hide()
+	if( extents != null ):
+		for direction in range(global.DIRECTIONS.COUNT):
+			extents[direction].hide()

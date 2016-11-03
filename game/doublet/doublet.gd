@@ -5,6 +5,8 @@ var main_bulle
 var second_bulle
 var direction = global.DIRECTIONS.TOP
 
+var grid
+
 # falling
 var initial_falling_speed = 0.05 # time for one move
 var falling_speed = 0.05
@@ -23,6 +25,8 @@ var current_rotation = 0
 var rotation_goal = 0
 var second_bulle_goal_pos = Vector2(0, -global.BULLE_SIZE.y ) # this is to ensure rotations update even though the rotation hasn't finished
 
+# signals
+signal placed
 
 func _ready():
 	set_fixed_process(true)
@@ -65,23 +69,10 @@ func _fixed_process(delta):
 				falling_counter -=int(falling_counter/falling_speed) * falling_speed
 			# if doublet cannot move bottom
 			else:
-				# that doublet's bulles must be placed in grid
-				var game = get_parent().get_parent()
-				var grid = game.grid
-				
-				game.remove_doublet()
-				# test for both bulle if they can move bottom
-				if( !can_main_bulle_move_bottom() ):
-					# place bulle to grid if cannot move bottom
-					game.add_bulle_to_grid( main_bulle, get_main_bulle_grid_pos() )
-				else:
-					# else set it as falling
-					game.add_falling_bulle( main_bulle, get_main_bulle_pos() )
-	
-				if( !can_second_bulle_move_bottom() ):
-					game.add_bulle_to_grid( second_bulle, get_second_bulle_grid_pos() )
-				else:
-					game.add_falling_bulle( second_bulle, get_second_bulle_pos() )
+				# setting bulle's pos before releasing
+				main_bulle.set_pos(get_main_bulle_pos())
+				second_bulle.set_pos(get_second_bulle_pos())
+				emit_signal("placed", main_bulle, second_bulle)
 				
 				# remove the doublet from the game
 				rotating = false
@@ -103,14 +94,34 @@ func set_second_bulle( bulle ):
 	self.second_bulle.set_pos( -Vector2(0,global.BULLE_SIZE.y ) )
 	
 	
-# falling functions	
-func can_main_bulle_move_bottom():
-	return get_parent().get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
-func can_second_bulle_move_bottom():
-	return get_parent().get_parent().grid.get_neighbour_slot_type( get_second_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) == global.GRID_SLOT_TYPES.EMPTY
-func can_move_bottom():
-	return can_main_bulle_move_bottom() && can_second_bulle_move_bottom()
+# test moving functions	
+func can_bulle_move_to( grid_pos, direction ):
+	return grid.get_neighbour_slot_type(grid_pos, direction) == global.GRID_SLOT_TYPES.EMPTY
 
+func can_move_bottom():
+	return ( can_bulle_move_to( get_main_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) 
+		&& can_bulle_move_to( get_second_bulle_grid_pos(), global.DIRECTIONS.BOTTOM ) )
+
+func can_move_left( ):
+	return ( can_bulle_move_to( get_main_bulle_grid_pos(), global.DIRECTIONS.LEFT ) 
+		&& can_bulle_move_to( get_second_bulle_grid_pos(), global.DIRECTIONS.LEFT ) ) 
+	 
+func can_move_right( ):
+	return ( can_bulle_move_to( get_main_bulle_grid_pos(), global.DIRECTIONS.RIGHT )
+		&& can_bulle_move_to( get_second_bulle_grid_pos(), global.DIRECTIONS.RIGHT ) )
+	
+func can_rotate_clockwise():
+	var new_direction = (direction +1) % global.DIRECTIONS.COUNT
+	var slot_type = grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
+	return slot_type == global.GRID_SLOT_TYPES.EMPTY
+func can_rotate_counterclockwise():
+	var new_direction = (direction -1 + global.DIRECTIONS.COUNT) % global.DIRECTIONS.COUNT
+	var slot_type = grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
+	return slot_type == global.GRID_SLOT_TYPES.EMPTY
+
+
+
+# falling functions
 func increase_falling_speed():
 	falling_speed = sped_up_falling_speed
 func decrease_falling_speed():
@@ -118,21 +129,6 @@ func decrease_falling_speed():
 
 
 # lateral moves
-func can_move_left( ):
-	var grid_pos = get_grid_pos()
-	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.main_bulle, global.DIRECTIONS.LEFT ) != global.GRID_SLOT_TYPES.EMPTY ):
-		return false
-	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.second_bulle, global.DIRECTIONS.LEFT ) != global.GRID_SLOT_TYPES.EMPTY ):
-		return false
-	return true
-func can_move_right( ):
-	var grid_pos = get_grid_pos()
-	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.main_bulle, global.DIRECTIONS.RIGHT ) != global.GRID_SLOT_TYPES.EMPTY ):
-		return false
-	if( get_parent().get_parent().grid.get_neighbour_slot_type( grid_pos.second_bulle, global.DIRECTIONS.RIGHT ) != global.GRID_SLOT_TYPES.EMPTY ):
-		return false
-	return true
-
 func move_left():
 	if( lateral_move_counter > lateral_move_timer):
 		if( can_move_left() ):
@@ -148,15 +144,6 @@ func move_right():
 
 
 # rotation
-func can_rotate_clockwise():
-	var new_direction = (direction +1) % global.DIRECTIONS.COUNT
-	var slot_type = get_parent().get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
-	return slot_type == global.GRID_SLOT_TYPES.EMPTY
-func can_rotate_counterclockwise():
-	var new_direction = (direction -1 + global.DIRECTIONS.COUNT) % global.DIRECTIONS.COUNT
-	var slot_type = get_parent().get_parent().grid.get_neighbour_slot_type( get_main_bulle_grid_pos(), new_direction )
-	return slot_type == global.GRID_SLOT_TYPES.EMPTY
-
 func rotate_second_bulle( deg ):
 	var vector_pos = self.second_bulle.get_pos()
 	vector_pos = vector_pos.rotated(deg2rad( deg))
@@ -189,14 +176,9 @@ func get_main_bulle_pos():
 func get_second_bulle_pos():
 	return get_pos()+second_bulle_goal_pos
 	
+
 func get_main_bulle_grid_pos():
-	return get_parent().get_parent().grid.pos_to_grid_coord( get_main_bulle_pos() )
+	return grid.pos_to_grid_coord( get_main_bulle_pos() )
 func get_second_bulle_grid_pos():
-	return get_parent().get_parent().grid.pos_to_grid_coord( get_second_bulle_pos() )
-func get_grid_pos( ):
-	var grid = get_parent().get_parent().grid
-	return {
-		'main_bulle': get_main_bulle_grid_pos( ),
-		'second_bulle': get_second_bulle_grid_pos( )
-	}
+	return grid.pos_to_grid_coord( get_second_bulle_pos() )
 	

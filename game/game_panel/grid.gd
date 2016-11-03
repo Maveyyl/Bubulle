@@ -12,8 +12,6 @@ func _ready():
 	
 
 func solve():
-	var game = get_parent().get_parent()
-	
 	var neighbours = [null,null,null,null]
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
@@ -32,28 +30,33 @@ func solve():
 				bulles_to_pop_tmp = bulles[x][y].explore_neighbourhood()
 				if( bulles_to_pop_tmp.size() > 3 ):
 					for bulleId in range(bulles_to_pop_tmp.size()):
-						game.add_popping_bulle( bulles_to_pop_tmp[bulleId] )
+						bulles_to_pop_tmp[bulleId].set_popping()
 					score += global.popping_score_compute(bulles_to_pop_tmp.size())
 					
 	return score
 						
 func solve_falling():
-	var game = get_parent().get_parent()
 	var should_fall = false
+	# for each column
 	for x in range(global.GRID_SIZE.x):
 		should_fall = false
 		
+		# for each slot of the column, starting from the bottom
 		for y in range(global.GRID_SIZE.y-1, 0, -1):
+			# if there's a slot empty, all elements in slots above should fall
 			if( !bulles[x][y] ):
 				should_fall = true
+			# if slot is not empty and elements should fall
 			elif( should_fall ):
-				game.add_falling_bulle(bulles[x][y], bulles[x][y].get_pos())
+				# tell elements it should fall and remove these elements from the grid
+				bulles[x][y].set_falling()
 				set_slot( Vector2(x,y), null)
 
 func set_slot( grid_pos, item):
 	bulles[grid_pos.x][grid_pos.y] = item
 func get_slot( grid_pos ):
 	return bulles[grid_pos.x][grid_pos.y]
+	
 func get_neighbour_grid_pos( grid_pos, direction ):
 	return grid_pos + global.DIRECTIONS_NORMALS[direction]
 func get_neighbour_slot_type( grid_pos, direction ):
@@ -71,7 +74,6 @@ func get_neighbour_slot_type( grid_pos, direction ):
 		slot_type= global.GRID_SLOT_TYPES.EMPTY
 
 	return slot_type
-
 func get_neighbour_slot( grid_pos, direction):
 	var neighbour_grid_pos = get_neighbour_grid_pos( grid_pos, direction )
 	
@@ -83,7 +85,11 @@ func get_neighbour_slot( grid_pos, direction):
 	else:
 		return get_slot( neighbour_grid_pos )
 
-
+func can_bulle_move_to( bulle, direction ):
+	var bulle_grid_pos = pos_to_grid_coord(bulle.get_pos())
+	var neighbour_slot_type = get_neighbour_slot_type( bulle_grid_pos, direction )
+	return neighbour_slot_type == global.GRID_SLOT_TYPES.EMPTY
+	
 
 
 func pos_to_grid_coord( pixel_pos ):
