@@ -20,7 +20,6 @@ var received_penalty = false
 var penalty_bulles = 0
 
 func _ready():
-	add_penalty(10)
 	set_fixed_process(true)
 	pass
 

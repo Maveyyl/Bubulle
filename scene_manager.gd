@@ -3,9 +3,11 @@ extends Node
 const SCENES = {
 	"solo": preload("res://game/solo_game/solo_game.tscn"),
 	"multi_local": preload("res://game/multi_game_local/multi_game_local.tscn"),
-	
+	"multi_network": preload("res://game/multi_game_network/multi_game_network.tscn"),
+
 	"main_menu": preload("res://main_menu/main_menu.tscn"),
-	"multi_menu": preload("res://multi_menu/multi_menu.tscn")
+	"multi_menu": preload("res://main_menu/multi_menu/multi_menu.tscn"),
+	"network_menu": preload("res://main_menu/multi_menu/network_menu/network_menu.tscn")
 }
 
 var current_scene
