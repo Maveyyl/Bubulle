@@ -103,9 +103,9 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 310.0
+margin/left = 410.0
 margin/top = 10.0
-margin/right = 510.0
+margin/right = 610.0
 margin/bottom = 410.0
 
 [node name="label_client" type="Label" parent="panel_client"]

@@ -14,7 +14,9 @@ func _ready():
 	pass
 	
 func _fixed_process(delta):
-	
+	if ( Input.is_action_just_pressed("escape") ):
+		scene_manager.change_scene_to_previous()
+		
 	if( Input.is_action_pressed("up_p1") ):
 		game_panel_p1.rotate_doublet_clockwise()
 	if( Input.is_action_pressed("down_p1") ):

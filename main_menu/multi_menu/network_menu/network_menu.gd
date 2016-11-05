@@ -12,12 +12,20 @@ onready var client_button_connect_client = get_node("panel_client/button_connect
 onready var client_button_disconnect_client = get_node("panel_client/button_disconnect_client")
 
 func _ready():
+	set_fixed_process(true)
 	# server default values
 	server_text_edit_port.set_text( str(network_manager.DEFAULT_PORT) )
 	
 	# client default values
 	client_text_edit_ip_addr.set_text( network_manager.DEFAULT_IP_ADDR )
 	client_text_edit_port.set_text( str(network_manager.DEFAULT_PORT) )
+
+
+func _fixed_process(delta):
+	if ( Input.is_action_just_pressed("escape") ):
+		scene_manager.change_scene_to_previous()
+
+
 
 # server functions
 func _on_button_start_server_pressed():

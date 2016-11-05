@@ -26,7 +26,7 @@ func change_scene_to( scene_name, previous = false ):
 	current_scene_name = scene_name
 	current_scene = SCENES[scene_name].instance()
 	global.main.add_child(current_scene)
-	current_scene.set_pos(Vector2(100,100))
+	current_scene.set_pos(Vector2(0,0))
 	
 	if( previous_scenes_names.size() > 100 ):
 		previous_scenes_names.pop_back()
