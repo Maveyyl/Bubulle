@@ -14,8 +14,8 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 10.0
-margin/right = 210.0
-margin/bottom = 410.0
+margin/right = 160.0
+margin/bottom = 440.0
 
 [node name="button_local_game" type="Button" parent="panel"]
 
