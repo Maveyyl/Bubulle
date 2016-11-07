@@ -3,8 +3,8 @@ extends Node
 const DEFAULT_PORT = 4444
 const DEFAULT_IP_ADDR = "127.0.0.1"
 
-
-var network_mode
+var is_active = false
+var network_mode = NETWORK_MODE_SLAVE
 var peer 
 
 func _ready():
@@ -13,6 +13,7 @@ func _ready():
 
 
 func create_server(port):
+	disconnect()
 	if( port == null ):
 		port = DEFAULT_PORT
 	# create network peer
@@ -24,11 +25,13 @@ func create_server(port):
 	# our model is authoritative server, so everything is set to role master
 	network_mode = NETWORK_MODE_MASTER
 	get_tree().get_root().set_network_mode(network_mode)
+	is_active = true
 	
 
 
 	
 func create_client(ip_addr, port):
+	disconnect()
 	if( port == null ):
 		port = DEFAULT_PORT
 	# create network peer
@@ -40,7 +43,16 @@ func create_client(ip_addr, port):
 	# our model is authoritative server, so everything is set to role slave
 	network_mode = NETWORK_MODE_SLAVE
 	get_tree().get_root().set_network_mode(network_mode)
+	is_active = true
 	
+func disconnect():
+	if( peer != null ):
+		peer.close_connection()
+		peer = null
+		network_mode = -1
+		is_active = false
+	
+
 func set_signals():
 	get_tree().connect("server_disconnected", self, "server_disconnected")
 	# connect signals to monitor client connexions

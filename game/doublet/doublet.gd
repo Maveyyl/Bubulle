@@ -28,6 +28,25 @@ var second_bulle_goal_pos = Vector2(0, -global.BULLE_SIZE.y ) # this is to ensur
 # signals
 signal placed
 
+static func create_random( ):
+	var main_bulle = global.BULLE_SCENES[ randi()%(global.BULLE_TYPES.COUNT-1) ].instance()
+	var second_bulle = global.BULLE_SCENES[ randi()%(global.BULLE_TYPES.COUNT-1) ].instance()
+	var doublet = global.SCENES.DOUBLET.instance()
+	doublet.set_main_bulle( main_bulle )
+	doublet.set_second_bulle( second_bulle )
+	return doublet
+static func deserialize( data ):
+	var main_bulle = global.BULLE_SCENES[ data[0] ].instance()
+	var second_bulle = global.BULLE_SCENES[ data[1] ].instance()
+	var doublet = global.SCENES.DOUBLET.instance()
+	doublet.set_main_bulle( main_bulle )
+	doublet.set_second_bulle( second_bulle )
+	return doublet
+func serialize():
+	return [ main_bulle.type, second_bulle.type]
+
+
+
 func _ready():
 	set_fixed_process(true)
 

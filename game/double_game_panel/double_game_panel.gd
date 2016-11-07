@@ -9,22 +9,55 @@ onready var game_panel_p2 = get_node('game_panel_p2')
 onready var info_panel_p2 = get_node('info_panel_p2')
 var p2_score = 0
 
+var next_doublet_p1
+var next_doublet_p2
 
 func _ready():
-	info_panel_p1.set_doublet( generate_random_doublet() )
-	info_panel_p2.set_doublet( generate_random_doublet() )
 	set_fixed_process(true)
-	pass
+	
+	if( !network_manager.is_active || network_manager.network_mode == NETWORK_MODE_MASTER ):
+		var p1_doublet = global.SCRIPTS.DOUBLET.create_random()
+		info_panel_p1.set_doublet( p1_doublet )
+		if( network_manager.is_active ):
+			rpc("set_p1_info_doublet", p1_doublet.serialize())
+		
+		var p2_doublet = global.SCRIPTS.DOUBLET.create_random()
+		info_panel_p2.set_doublet( p2_doublet )
+		if( network_manager.is_active ):
+			rpc("set_p2_info_doublet", p2_doublet.serialize())
+
 	
 	
 func _fixed_process(delta):
-	if( game_panel_p1.state == global.GAME_PANEL_STATES.IDLE ):
-		game_panel_p1.set_doublet(info_panel_p1.doublet)
-		info_panel_p1.set_doublet( generate_random_doublet() )
+	if( !network_manager.is_active || network_manager.network_mode == NETWORK_MODE_MASTER ):
+		if( game_panel_p1.state == global.GAME_PANEL_STATES.IDLE ):
+			game_panel_p1.set_doublet(info_panel_p1.doublet)
+			var doublet = global.SCRIPTS.DOUBLET.create_random()
+			info_panel_p1.set_doublet( doublet )
+			if( network_manager.is_active ):
+				rpc("set_p1_info_doublet", doublet.serialize())
+			
+		if( game_panel_p2.state == global.GAME_PANEL_STATES.IDLE ):
+			game_panel_p2.set_doublet(info_panel_p2.doublet)
+			var doublet = global.SCRIPTS.DOUBLET.create_random()
+			info_panel_p2.set_doublet( doublet )
+			if( network_manager.is_active ):
+				rpc("set_p2_info_doublet", doublet.serialize())
+	else:
+		if( game_panel_p1.state == global.GAME_PANEL_STATES.IDLE ):
+			game_panel_p1.set_doublet(info_panel_p1.doublet)
+			info_panel_p1.set_doublet( next_doublet_p1 )
+			
+		if( game_panel_p2.state == global.GAME_PANEL_STATES.IDLE ):
+			game_panel_p2.set_doublet(info_panel_p2.doublet)
+			info_panel_p2.set_doublet( next_doublet_p2 )
 		
-	if( game_panel_p2.state == global.GAME_PANEL_STATES.IDLE ):
-		game_panel_p2.set_doublet(info_panel_p2.doublet)
-		info_panel_p2.set_doublet( generate_random_doublet() )
+			
+slave func set_p1_info_doublet(doublet_data):
+	next_doublet_p1 = global.SCRIPTS.DOUBLET.deserialize(doublet_data)
+	
+slave func set_p2_info_doublet(doublet_data):
+	next_doublet_p2 = global.SCRIPTS.DOUBLET.deserialize(doublet_data)
 	
 
 func generate_random_doublet():

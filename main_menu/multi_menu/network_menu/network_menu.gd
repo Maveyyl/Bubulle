@@ -32,6 +32,7 @@ onready var button_start_game = get_node("panel_game_starting/button_start_game"
 
 func _ready():
 	set_fixed_process(true)
+	
 	# server default values
 	server_text_edit_port.set_text( str(network_manager.DEFAULT_PORT) )
 	
@@ -51,6 +52,7 @@ func _ready():
 
 func _fixed_process(delta):
 	if ( Input.is_action_just_pressed("escape") ):
+		network_manager.disconnect()
 		scene_manager.change_scene_to_previous()
 
 
@@ -76,15 +78,12 @@ master func set_client_ready( readyness ):
 func server_disconnected():
 	set_ui_state_default()
 	client_label_status.set_text("Disconnected from server")
-	print("server disconnected")
 	
 func client_connected(id):
 	set_ui_state_client_connected()
-	print("client connected ", id)
 func client_disconnected(id):
 	set_ui_state_listenning()
 	server_label_status.set_text("Client disconnected")
-	print("client disconnected ", id)
 	
 	
 	
@@ -117,11 +116,9 @@ func _on_client_checkbox_ready_pressed():
 # client signals
 func connected_to_server():
 	set_ui_state_connected()
-	print("connected to server")
 func connection_failed():
 	set_ui_state_default()
 	client_label_status.set_text("Connection to server failed")
-	print("connection failed")
 
 
 
@@ -133,12 +130,19 @@ func server_update_game_starting_status():
 		panel_game_starting.show()
 		label_game_starting_status.set_text("Game ready\nto start")
 		button_start_game.show()
+	else:
+		rpc("client_update_game_starting_status")
+		panel_game_starting.hide()
+		
 		
 slave func client_update_game_starting_status():
 	if( client_checkbox_ready.is_pressed() && server_checkbox_ready.is_pressed() ):
 		panel_game_starting.show()
 		label_game_starting_status.set_text("Game ready\nto start\nWaiting for server\nto start")
 		button_start_game.hide()
+	else:
+		panel_game_starting.hide()
+		
 		
 func _on_button_start_game_pressed():
 	rpc("start_game")

@@ -42,7 +42,9 @@ var BULLE_TYPES = {
 
 
 
-
+var SCRIPTS = {
+	"DOUBLET": preload('res://game/doublet/doublet.gd')
+}
 var SCENES = {
 	"DOUBLET": preload('res://game/doublet/doublet.tscn')
 }
