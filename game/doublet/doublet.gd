@@ -29,8 +29,10 @@ var second_bulle_goal_pos = Vector2(0, -global.BULLE_SIZE.y ) # this is to ensur
 signal placed
 
 static func create_random( ):
-	var main_bulle = global.BULLE_SCENES[ randi()%(global.BULLE_TYPES.COUNT-1) ].instance()
-	var second_bulle = global.BULLE_SCENES[ randi()%(global.BULLE_TYPES.COUNT-1) ].instance()
+	var main_bulle_type = randi()%(global.BULLE_TYPES.COUNT-1)
+	var main_bulle = global.BULLE_SCENES[ main_bulle_type ].instance()
+	var second_bulle_type = randi()%(global.BULLE_TYPES.COUNT-1)
+	var second_bulle = global.BULLE_SCENES[ second_bulle_type ].instance()
 	var doublet = global.SCENES.DOUBLET.instance()
 	doublet.set_main_bulle( main_bulle )
 	doublet.set_second_bulle( second_bulle )
