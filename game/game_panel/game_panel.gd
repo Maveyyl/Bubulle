@@ -44,21 +44,7 @@ func _fixed_process(delta):
 		# game is in an idle state
 		# if has to receive penalties
 		if( penalty_bulles != 0 && !received_penalty ):
-			received_penalty = true
-			# give penalty
-			var penalty_count
-			if( penalty_bulles > 10 ):
-				penalty_count = 10
-				penalty_bulles -= 10
-			else:
-				penalty_count = penalty_bulles
-				penalty_bulles = 0
-			var bulle_pos_array = global.get_penalty_random_slots( penalty_count )
-			for i in range (bulle_pos_array.size()):
-				var black_bulle = global.BULLE_SCENES[ global.BULLE_TYPES.BLACK ].instance() 
-				add_bulle_to_game(black_bulle)
-				black_bulle.set_pos(bulle_pos_array[i])
-				black_bulle.set_falling()
+			state = global.GAME_PANEL_STATES.WAITING_FOR_PENALTIES
 		else:
 			# else game is in idle state and waits for a doublet
 			state = global.GAME_PANEL_STATES.IDLE
@@ -121,6 +107,14 @@ func add_penalty( penalty ):
 	penalty_bulles += penalty
 func remove_black_bulle( bulle ):
 	remove_bulle_from_grid(bulle)
+func add_penalties_to_game( bulle_pos_array ):
+	received_penalty = true
+	penalty_bulles -= bulle_pos_array.size()
+	for i in range (bulle_pos_array.size()):
+		var black_bulle = global.BULLE_SCENES[ global.BULLE_TYPES.BLACK ].instance() 
+		add_bulle_to_game(black_bulle)
+		black_bulle.set_pos(bulle_pos_array[i])
+		black_bulle.set_falling()
 	
 
 func add_bulle_to_grid( bulle ):
