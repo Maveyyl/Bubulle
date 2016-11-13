@@ -82,14 +82,18 @@ func _fixed_process(delta):
 		falling_counter += delta
 		# whenever the counter has ecceeded its maximum
 		if( falling_counter >= falling_speed ):
-			# if doublet can move bottom
-			if( can_move_bottom() ):
+			# if doublet can move bottom and if network is not active or network mode is master
+			if( can_move_bottom() && (!network_manager.is_active || get_network_mode() == NETWORK_MODE_MASTER) ):
 				# reset the falling counter
 				# move the doublet half a slot bottom
-				set_pos( get_pos() + Vector2( 0, global.BULLE_SIZE.x/8 ) * int(falling_counter/falling_speed) )
+				var pos = get_pos() + Vector2( 0, global.BULLE_SIZE.x/8 ) * int(falling_counter/falling_speed)
+				set_pos( pos )
 				falling_counter -=int(falling_counter/falling_speed) * falling_speed
+				# if node is master, set pos to slave nodes
+				if( get_network_mode() == NETWORK_MODE_MASTER ):
+					rpc( "set_doublet_pos", pos)
 			# if doublet cannot move bottom
-			else:
+			elif( !can_move_bottom() ):
 				# setting bulle's pos before releasing
 				main_bulle.set_pos(get_main_bulle_pos())
 				second_bulle.set_pos(get_second_bulle_pos())
@@ -98,6 +102,9 @@ func _fixed_process(delta):
 				# remove the doublet from the game
 				rotating = false
 				queue_free()
+
+slave func set_doublet_pos( pos ):
+	set_pos( pos )
 
 # states altering functions
 func set_idle():
@@ -178,6 +185,7 @@ func rotate_clockwise():
 		rotating = true
 		direction = (direction +1) % global.DIRECTIONS.COUNT
 		second_bulle_goal_pos = global.DIRECTIONS_NORMALS[ direction ]*global.BULLE_SIZE
+		
 
 func rotate_counterclockwise():
 	if( !rotating && can_rotate_counterclockwise() ):
@@ -187,7 +195,7 @@ func rotate_counterclockwise():
 		rotating = true
 		direction = (direction -1 + global.DIRECTIONS.COUNT) % global.DIRECTIONS.COUNT
 		second_bulle_goal_pos = global.DIRECTIONS_NORMALS[ direction ]*global.BULLE_SIZE
-		
+
 
 	
 	

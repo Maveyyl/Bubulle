@@ -114,11 +114,11 @@ func _fixed_process(delta):
 			rpc("right_s", true)
 		if( Input.is_action_just_released("right_p1") ):
 			rpc("right_s", false)
-			
-		if( Input.is_action_just_pressed("speed_p1") ):
-			rpc("speed_s", true)
-		if( Input.is_action_just_released("speed_p1") ):
-			rpc("speed_s", false)
+#			
+#		if( Input.is_action_just_pressed("speed_p1") ):
+#			rpc("speed_s", true)
+#		if( Input.is_action_just_released("speed_p1") ):
+#			rpc("speed_s", false)
 	else:
 		if( Input.is_action_just_pressed("up_p1") ):
 			rpc("up_m", true)
@@ -139,9 +139,9 @@ func _fixed_process(delta):
 			rpc("right_m", true)
 		if( Input.is_action_just_released("right_p1") ):
 			rpc("right_m", false)
-			
-		if( Input.is_action_just_pressed("speed_p1") ):
-			rpc("speed_m", true)
-		if( Input.is_action_just_released("speed_p1") ):
-			rpc("speed_m", false)
-			
+#			
+#		if( Input.is_action_just_pressed("speed_p1") ):
+#			rpc("speed_m", true)
+#		if( Input.is_action_just_released("speed_p1") ):
+#			rpc("speed_m", false)
+#			

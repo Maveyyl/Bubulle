@@ -21,12 +21,14 @@ func _ready():
 	if( !network_manager.is_active || network_manager.network_mode == NETWORK_MODE_MASTER ):
 		# create a doublet randomly and init it in the info panel
 		var p1_doublet = global.SCRIPTS.DOUBLET.create_random()
+		p1_doublet.set_network_mode( NETWORK_MODE_MASTER )
 		info_panel_p1.set_doublet( p1_doublet )
 		# if network is active, send doublet to peers
 		if( network_manager.is_active ):
 			rpc("set_p1_info_doublet", p1_doublet.serialize())
 		
 		var p2_doublet = global.SCRIPTS.DOUBLET.create_random()
+		p2_doublet.set_network_mode( NETWORK_MODE_SLAVE )
 		info_panel_p2.set_doublet( p2_doublet )
 		if( network_manager.is_active ):
 			rpc("set_p2_info_doublet", p2_doublet.serialize())
@@ -42,6 +44,7 @@ func _fixed_process(delta):
 			game_panel_p1.set_doublet(info_panel_p1.doublet)
 			# create a new random doublet
 			var doublet = global.SCRIPTS.DOUBLET.create_random()
+			doublet.set_network_mode( NETWORK_MODE_MASTER )
 			# set it in the info panel
 			info_panel_p1.set_doublet( doublet )
 			# if network is active
@@ -52,6 +55,7 @@ func _fixed_process(delta):
 		if( game_panel_p2.state == global.GAME_PANEL_STATES.IDLE ):
 			game_panel_p2.set_doublet(info_panel_p2.doublet)
 			var doublet = global.SCRIPTS.DOUBLET.create_random()
+			doublet.set_network_mode( NETWORK_MODE_SLAVE )
 			info_panel_p2.set_doublet( doublet )
 			if( network_manager.is_active ):
 				rpc("set_p2_info_doublet", doublet.serialize())
@@ -111,6 +115,7 @@ func _fixed_process(delta):
 slave func set_p1_info_doublet(doublet_data):
 	# create a doublet from raw data
 	var doublet = global.SCRIPTS.DOUBLET.deserialize(doublet_data)
+	doublet.set_network_mode( NETWORK_MODE_SLAVE )
 	# if there's no doublet in info panel, this is an initialization
 	if( !info_panel_p1.doublet):
 		info_panel_p1.set_doublet(doublet)
@@ -119,6 +124,7 @@ slave func set_p1_info_doublet(doublet_data):
 		next_doublet_p1 = doublet
 slave func set_p2_info_doublet(doublet_data):
 	var doublet = global.SCRIPTS.DOUBLET.deserialize(doublet_data)
+	doublet.set_network_mode( NETWORK_MODE_MASTER )
 	if( !info_panel_p2.doublet ):
 		info_panel_p2.set_doublet(doublet)
 	else:
