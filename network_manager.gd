@@ -20,6 +20,7 @@ func create_server(port):
 	peer = NetworkedMultiplayerENet.new()
 	# set it as a server listening to port DEFAULT_PORT, only 1 possible connection
 	peer.create_server(port, 1)
+#	peer.set_transfer_mode( NetworkedMultiplayerPeer.TRANSFER_MODE_RELIABLE )
 	# link the peer to the tree
 	get_tree().set_network_peer(peer)
 	# our model is authoritative server, so everything is set to role master
@@ -38,6 +39,7 @@ func create_client(ip_addr, port):
 	peer = NetworkedMultiplayerENet.new()
 	# set it as a client connectiong to ip_addr to port DEFAULT_PORT
 	peer.create_client(ip_addr, port)
+#	peer.set_transfer_mode( NetworkedMultiplayerPeer.TRANSFER_MODE_RELIABLE )
 	# link the peer to the tree
 	get_tree().set_network_peer(peer)
 	# our model is authoritative server, so everything is set to role slave

@@ -14,37 +14,16 @@ func _ready():
 	get_tree().connect("network_peer_disconnected", self, "peer_disconnected")
 	set_fixed_process(true)
 	
-var up_ad = false
-var down_ad = false
-var left_ad = false
-var right_ad = false
-var speed_ad = false
+master var up = false
+master var down = false
+master var left = false
+master var right = false
+master var speed = false
 
 
 
-master func up_m( val ):
-	up_ad = val
-master func down_m( val ):
-	down_ad = val
-master func left_m( val ):
-	left_ad = val
-master func right_m( val ):
-	right_ad = val
-master func speed_m( val ):
-	speed_ad = val
 	
-slave func up_s( val ):
-	up_ad = val
-slave func down_s( val ):
-	down_ad = val
-slave func left_s( val ):
-	left_ad = val
-slave func right_s( val ):
-	right_ad = val
-slave func speed_s( val ):
-	speed_ad = val
-	
-func peer_disconnected():
+func peer_disconnected( id ):
 	network_manager.disconnect()
 	scene_manager.change_scene_to_previous()
 	
@@ -55,7 +34,7 @@ func _fixed_process(delta):
 		
 	var game_panel
 	var game_panel_ad
-	if( network_manager.network_mode == NETWORK_MODE_MASTER ):
+	if( is_network_master() ):
 		game_panel = game_panel_p1
 		game_panel_ad = game_panel_p2
 	else:
@@ -78,70 +57,43 @@ func _fixed_process(delta):
 		game_panel.decrease_doublet_falling_speed()
 
 
-	if( up_ad ):
-		game_panel_ad.rotate_doublet_clockwise()
-	if( down_ad ):
-		game_panel_ad.rotate_doublet_counterclockwise()
-		
-	if( left_ad ):
-		game_panel_ad.move_doublet_left()
-	if( right_ad ):
-		game_panel_ad.move_doublet_right()
-		
-	if( speed_ad ):
-		game_panel_ad.increase_doublet_falling_speed()
-	elif( !speed_ad ):
-		game_panel_ad.decrease_doublet_falling_speed()
-	
-	
-	if( network_manager.network_mode == NETWORK_MODE_MASTER ):
-		if( Input.is_action_just_pressed("up_p1") ):
-			rpc("up_s", true)
-		if( Input.is_action_just_released("up_p1") ):
-			rpc("up_s", false)
+	if( is_network_master() ):
+		if( up ):
+			game_panel_ad.rotate_doublet_clockwise()
+		if( down ):
+			game_panel_ad.rotate_doublet_counterclockwise()
 			
-		if( Input.is_action_just_pressed("down_p1") ):
-			rpc("down_s", true)
-		if( Input.is_action_just_released("down_p1") ):
-			rpc("down_s", false)
+		if( left ):
+			game_panel_ad.move_doublet_left()
+		if( right ):
+			game_panel_ad.move_doublet_right()
 			
-		if( Input.is_action_just_pressed("left_p1") ):
-			rpc("left_s", true)
-		if( Input.is_action_just_released("left_p1") ):
-			rpc("left_s", false)
-			
-		if( Input.is_action_just_pressed("right_p1") ):
-			rpc("right_s", true)
-		if( Input.is_action_just_released("right_p1") ):
-			rpc("right_s", false)
-#			
-#		if( Input.is_action_just_pressed("speed_p1") ):
-#			rpc("speed_s", true)
-#		if( Input.is_action_just_released("speed_p1") ):
-#			rpc("speed_s", false)
+		if( speed ):
+			game_panel_ad.increase_doublet_falling_speed()
+		elif( !speed ):
+			game_panel_ad.decrease_doublet_falling_speed()
 	else:
 		if( Input.is_action_just_pressed("up_p1") ):
-			rpc("up_m", true)
+			rset("up", true)
 		if( Input.is_action_just_released("up_p1") ):
-			rpc("up_m", false)
+			rset("up", false)
 			
 		if( Input.is_action_just_pressed("down_p1") ):
-			rpc("down_m", true)
+			rset("down", true)
 		if( Input.is_action_just_released("down_p1") ):
-			rpc("down_m", false)
+			rset("down", false)
 			
 		if( Input.is_action_just_pressed("left_p1") ):
-			rpc("left_m", true)
+			rset("left", true)
 		if( Input.is_action_just_released("left_p1") ):
-			rpc("left_m", false)
+			rset("left", false)
 			
 		if( Input.is_action_just_pressed("right_p1") ):
-			rpc("right_m", true)
+			rset("right", true)
 		if( Input.is_action_just_released("right_p1") ):
-			rpc("right_m", false)
-#			
-#		if( Input.is_action_just_pressed("speed_p1") ):
-#			rpc("speed_m", true)
-#		if( Input.is_action_just_released("speed_p1") ):
-#			rpc("speed_m", false)
-#			
+			rset("right", false)
+			
+		if( Input.is_action_just_pressed("speed_p1") ):
+			rset("speed", true)
+		if( Input.is_action_just_released("speed_p1") ):
+			rset("speed", false)
