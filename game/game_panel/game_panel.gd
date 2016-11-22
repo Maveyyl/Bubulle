@@ -19,26 +19,24 @@ var combo_count = 0
 var received_penalty = false
 var penalty_bulles = 0
 
-static func fromDictionnary(d):
-	var game_panel = global.SCENES.GAME_PANEL.instance()
-	game_panel.state = d.state
+func fromDictionnary(d):
+	state = d.state
 	if( d.doublet ):
-		game_panel.doublet = global.SCENES.DOUBLET.instance()
-		game_panel.doublet.fromDictionnary( d.doublet )
-		game_panel.doublet.grid = grid
-		add_bulle_to_game( game_panel.doublet.main_bulle )
-		add_bulle_to_game( game_panel.doublet.second_bulle )
+		doublet = global.SCENES.DOUBLET.instance()
+		doublet.fromDictionnary( d.doublet )
+		doublet.grid = grid
+		add_bulle_to_game( doublet.main_bulle )
+		add_bulle_to_game( doublet.second_bulle )
 	for i in range(falling_bulles):
-		game_panel.falling_bulles.append( global.SCRIPTS.BULLE.fromDictionnary(d.falling_bulles[i] ))
-		add_bulle_to_game( game_panel.falling_bulles[i] )
+		falling_bulles.append( global.SCRIPTS.BULLE.fromDictionnary(d.falling_bulles[i] ))
+		add_bulle_to_game( falling_bulles[i] )
 	for i in range(popping_bulles):
-		game_panel.popping_bulles.append( global.SCRIPTS.BULLE.fromDictionnary(d.popping_bulles[i] ))
-		add_bulle_to_game( game_panel.popping_bulles[i] )
-	game_panel.cumulative_score = d.cumulative_score
-	game_panel.combo_count = d.combo_count
-	game_panel.received_penalty = d.received_penalty
-	game_panel.penalty_bulles = d.penalty_bulles
-	return game_panel
+		popping_bulles.append( global.SCRIPTS.BULLE.fromDictionnary(d.popping_bulles[i] ))
+		add_bulle_to_game( popping_bulles[i] )
+	cumulative_score = d.cumulative_score
+	combo_count = d.combo_count
+	received_penalty = d.received_penalty
+	penalty_bulles = d.penalty_bulles
 func toDictionnary():
 	var falling_bulles_data = []
 	for i in range(falling_bulles.size()):

@@ -25,9 +25,9 @@ signal started_popping
 signal stopped_popping
 
 func fromDictionnary( d ):
-	bulle.type = d.type
-	bulle.state = d.state
-	bulle.falling_speed = d.falling_speed
+	type = d.type
+	state = d.state
+	falling_speed = d.falling_speed
 	neighbours = []
 func toDictionnary():
 	return {

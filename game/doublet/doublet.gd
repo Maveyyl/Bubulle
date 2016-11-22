@@ -48,16 +48,16 @@ func serialize():
 	return [ main_bulle.type, second_bulle.type]
 
 func fromDictionnary( d ):
-	doublet.state = d.state
-	doublet.main_bulle = global.BULLE_SCENES[ d.main_bulle ].instance()
-	doublet.second_bulle = global.BULLE_SCENES[ d.second_bulle ].instance()
-	doublet.direction = d.direction
-	doublet.lateral_move_counter = d.lateral_move_counter
-	doublet.rotating = d.rotating
-	doublet.clockwise = d.clockwise
-	doublet.current_rotation = d.current_rotationate
-	doublet.rotation_goal = d.rotation_goal
-	doublet.second_bulle_goal_pos = d.second_bulle_goal_pos
+	state = d.state
+	main_bulle = global.BULLE_SCENES[ d.main_bulle ].instance()
+	second_bulle = global.BULLE_SCENES[ d.second_bulle ].instance()
+	direction = d.direction
+	lateral_move_counter = d.lateral_move_counter
+	rotating = d.rotating
+	clockwise = d.clockwise
+	current_rotation = d.current_rotationate
+	rotation_goal = d.rotation_goal
+	second_bulle_goal_pos = d.second_bulle_goal_pos
 func toDictionnary():
 	return {
 		"state": state,

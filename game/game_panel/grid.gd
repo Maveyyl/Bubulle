@@ -12,7 +12,7 @@ func fromDictionnary( d ):
 				bulles[x][y].set_in_grid(Vector2(x,y))
 			else:
 				d[x][y] = null
-	grid.compute_neighbours()
+	compute_neighbours()
 func toDictionnary():
 	var bulles_data = []
 	bulles_data.resize(global.GRID_SIZE.x)
