@@ -45,7 +45,7 @@ func _fixed_process(delta):
 
 	# if game is waiting for penalties to be placed
 	if( game_panel_p1.state == global.GAME_PANEL_STATES.WAITING_FOR_PENALTIES ):
-		add_random_penalties(game_panel_p2)
+		add_random_penalties(game_panel_p1)
 		
 	if( game_panel_p2.state == global.GAME_PANEL_STATES.WAITING_FOR_PENALTIES ):
 		add_random_penalties(game_panel_p2)
