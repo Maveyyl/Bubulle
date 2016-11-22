@@ -50,8 +50,8 @@ func serialize():
 static func fromDictionnary( d ):
 	var doublet = global.SCENES.DOUBLET.instance()
 	doublet.state = d.state
-	doublet.main_bulle = d.main_bulle
-	doublet.second_bulle = d.second_bulle
+	doublet.main_bulle = global.SCRIPTS.BULLE.fromDictionnary(d.main_bulle)
+	doublet.second_bulle = global.SCRIPTS.BULLE.fromDictionnary(d.second_bulle)
 	doublet.direction = d.direction
 	doublet.lateral_move_counter = d.lateral_move_counter
 	doublet.rotating = d.rotating
@@ -59,6 +59,7 @@ static func fromDictionnary( d ):
 	doublet.current_rotation = d.current_rotationate
 	doublet.rotation_goal = d.rotation_goal
 	doublet.second_bulle_goal_pos = d.second_bulle_goal_pos
+	return doublet
 func toDictionnary():
 	return {
 		"state": state,

@@ -43,10 +43,12 @@ var BULLE_TYPES = {
 
 
 var SCRIPTS = {
-	"DOUBLET": preload('res://game/doublet/doublet.gd')
+	"BULLE": preload('res://game/bulles/bulle.gd'),
+	"DOUBLET": preload('res://game/doublet/doublet.gd'),
+	"DOUBLET": preload('res://game/game_panel/grid.gd'),
 }
 var SCENES = {
-	"BULLES": preload('res://game/bulles/bulle.tscn'),
+	"BULLE": preload('res://game/bulles/bulle.tscn'),
 	"DOUBLET": preload('res://game/doublet/doublet.tscn')
 }
 

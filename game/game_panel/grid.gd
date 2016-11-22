@@ -3,6 +3,30 @@ extends Node2D
 
 var bulles 
 
+
+func fromDictionnary( d ):
+	for x in range(global.GRID_SIZE.x):
+		for y in range(global.GRID_SIZE.y):
+			if( d[x][y] ):
+				bulles[x][y] = global.BULLE_SCENES[ d[x][y] ].instance()
+				bulles[x][y].set_in_grid(Vector2(x,y))
+			else:
+				d[x][y] = null
+	grid.compute_neighbours()
+func toDictionnary():
+	var bulles_data = []
+	bulles_data.resize(global.GRID_SIZE.x)
+	for x in range(global.GRID_SIZE.x):
+		bulles_data[x] = []
+		bulles_data[x].resize(global.GRID_SIZE.y)
+		for y in range(global.GRID_SIZE.y):
+			if( bulles[x][y] ):
+				bulles_data[x] = bulles[x][y].type
+	return {
+		"bulles": bulles_data
+	}
+
+
 func _ready():
 	bulles = []
 	bulles.resize(global.GRID_SIZE.x)
@@ -11,7 +35,7 @@ func _ready():
 		bulles[x].resize(global.GRID_SIZE.y)
 	
 
-func solve():
+func compute_neighbours():
 	var neighbours = [null,null,null,null]
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
@@ -19,7 +43,8 @@ func solve():
 				for direction in range(global.DIRECTIONS.COUNT):
 					neighbours[direction] = get_neighbour_slot( Vector2(x,y), direction )
 				bulles[x][y].set_neighbours( neighbours )
-	
+func solve():
+	compute_neighbours()
 	var score = 0
 	
 	var bulles_to_pop = []
