@@ -6,8 +6,9 @@ var doublet
 var score = 0
 
 func fromDictionnary(d):
-	if( d.doublet ):
-		doublet = global.SCENES.DOUBLET.instance()
+	if( d.has("doublet") ):
+		if( !doublet ):
+			doublet = global.SCENES.DOUBLET.instance()
 		doublet.fromDictionnary(d.doublet)
 	score = d.score
 func toDictionnary():

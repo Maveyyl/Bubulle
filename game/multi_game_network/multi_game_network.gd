@@ -10,7 +10,7 @@ onready var info_panel_p2 = get_node('double_game_panel/info_panel_p2')
 
 func _ready():
 	
-	get_tree().connect("server_disconnected", self, "peer_disconnected")
+	get_tree().connect("server_disconnected", self, "server_disconnected")
 	get_tree().connect("network_peer_disconnected", self, "peer_disconnected")
 	set_fixed_process(true)
 	
@@ -21,12 +21,16 @@ master var right = false
 master var speed = false
 
 
-
-	
+func server_disconnected( ):
+	network_manager.disconnect()
+	scene_manager.change_scene_to_previous()
 func peer_disconnected( id ):
 	network_manager.disconnect()
 	scene_manager.change_scene_to_previous()
 	
+slave func sync_game( d ):
+	double_game_panel.fromDictionnary( d )
+
 func _fixed_process(delta):
 	if ( Input.is_action_just_pressed("escape") ):
 		network_manager.disconnect()
@@ -72,6 +76,7 @@ func _fixed_process(delta):
 			game_panel_ad.increase_doublet_falling_speed()
 		elif( !speed ):
 			game_panel_ad.decrease_doublet_falling_speed()
+		rpc("sync_game", double_game_panel.toDictionnary())
 	else:
 		if( Input.is_action_just_pressed("up_p1") ):
 			rset("up", true)

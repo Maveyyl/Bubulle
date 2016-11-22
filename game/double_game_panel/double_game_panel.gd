@@ -11,11 +11,11 @@ var p2_score = 0
 
 func fromDictionnary( d ):
 	game_panel_p1.fromDictionnary(d.game_panel_p1)
-	info_panel_p1.fromDIctionnary( d.info_panel_p1 )
+	info_panel_p1.fromDictionnary( d.info_panel_p1 )
 	p1_score = d.p1_score
 	
 	game_panel_p2.fromDictionnary(d.game_panel_p2)
-	info_panel_p2.fromDIctionnary( d.info_panel_p2 )
+	info_panel_p2.fromDictionnary( d.info_panel_p2 )
 	p2_score = d.p2_score
 func toDictionnary():
 	return {

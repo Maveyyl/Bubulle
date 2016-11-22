@@ -55,7 +55,7 @@ func fromDictionnary( d ):
 	lateral_move_counter = d.lateral_move_counter
 	rotating = d.rotating
 	clockwise = d.clockwise
-	current_rotation = d.current_rotationate
+	current_rotation = d.current_rotation
 	rotation_goal = d.rotation_goal
 	second_bulle_goal_pos = d.second_bulle_goal_pos
 func toDictionnary():

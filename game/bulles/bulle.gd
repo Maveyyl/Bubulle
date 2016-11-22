@@ -17,7 +17,7 @@ var falling_speed = 0
 
 var grid
 var grid_pos
-var neighbours = []
+var neighbours = [null,null,null,null]
 
 signal started_falling
 signal stopped_falling
@@ -36,7 +36,12 @@ func toDictionnary():
 		"falling_speed": falling_speed
 	}
 
-func _ready():
+func _ready():	
+	for direction in range(global.DIRECTIONS.COUNT):
+		if( neighbours[direction] && neighbours[direction].type == type ):
+			extents[direction].show()
+		else:
+			extents[direction].hide()
 	set_fixed_process(true)
 
 func _fixed_process(delta):	
@@ -90,10 +95,11 @@ func set_neighbours( neighbours ):
 	for direction in range(global.DIRECTIONS.COUNT):
 		self.neighbours.append( neighbours[direction ] )
 		
-		if( neighbours[direction] && neighbours[direction].type == type ):
-			extents[direction].show()
-		else:
-			extents[direction].hide()
+		if( extents != null ):
+			if( neighbours[direction] && neighbours[direction].type == type ):
+				extents[direction].show()
+			else:
+				extents[direction].hide()
 
 
 func explore_neighbourhood():

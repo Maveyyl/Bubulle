@@ -5,13 +5,16 @@ var bulles
 
 
 func fromDictionnary( d ):
+	var game_panel = get_parent().get_parent()
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
-			if( d[x][y] ):
-				bulles[x][y] = global.BULLE_SCENES[ d[x][y] ].instance()
-				bulles[x][y].set_in_grid(Vector2(x,y))
-			else:
-				d[x][y] = null
+			if( bulles[x][y] != null  && ( d.bulles[x][y] == null || d.bulles[x][y] != bulles[x][y].type) ):
+				game_panel.remove_bulle_from_grid( bulles[x][y] )
+			if( d.bulles[x][y] != null && bulles[x][y] == null ):
+				var bulle = global.BULLE_SCENES[ d.bulles[x][y] ].instance()
+				bulle.set_pos( grid_coord_to_pos(Vector2(x,y)))
+				game_panel.add_bulle_to_game(bulle)
+				game_panel.add_bulle_to_grid(bulle)
 	compute_neighbours()
 func toDictionnary():
 	var bulles_data = []
@@ -21,7 +24,7 @@ func toDictionnary():
 		bulles_data[x].resize(global.GRID_SIZE.y)
 		for y in range(global.GRID_SIZE.y):
 			if( bulles[x][y] ):
-				bulles_data[x] = bulles[x][y].type
+				bulles_data[x][y] = bulles[x][y].type
 	return {
 		"bulles": bulles_data
 	}
