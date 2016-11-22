@@ -5,6 +5,17 @@ onready var score_label = get_node('score_label')
 var doublet
 var score = 0
 
+func fromDictionnary(d):
+	if( d.doublet ):
+		doublet = global.SCRIPTS.DOUBLET.fromDictionnary(d.doublet)
+	score = d.score
+func toDictionnary():
+	var data = {}
+	if( doublet ):
+		data.doublet = doublet.toDictionnary()
+	data.score = score
+	return data
+
 func _ready():
 	pass
 

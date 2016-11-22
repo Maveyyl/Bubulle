@@ -22,7 +22,7 @@ var penalty_bulles = 0
 static func fromDictionnary(d):
 	var game_panel = global.SCENES.GAME_PANEL.instance()
 	game_panel.state = d.state
-	if( game_panel.doublet ):
+	if( d.doublet ):
 		game_panel.doublet = global.SCRIPTS.DOUBLET.fromDictionnary( d.doublet )
 	for i in range(falling_bulles):
 		game_panel.falling_bulles.append( global.SCRIPTS.BULLE.fromDictionnary(d.falling_bulles[i] ))
@@ -42,8 +42,8 @@ func toDictionnary():
 		popping_bulles_data.append( popping_bulles[i].toDictionnary() )
 		
 	var data = {
-		"stat": state,
-		"doublet": doublet.toDictionnary(),
+		"state": state,
+#		"doublet": doublet.toDictionnary(),
 		"falling_bulles": falling_bulles_data,
 		"popping_bulles": popping_bulles_data,
 		"cumulative_score": cumulative_score,
@@ -51,6 +51,8 @@ func toDictionnary():
 		"received_penalty": received_penalty,
 		"penalty_bulles": penalty_bulles
 	}
+	if( doublet ):
+		data.doublet = doublet.toDictionnary()
 	
 	return data
 
