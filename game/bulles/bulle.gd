@@ -24,12 +24,11 @@ signal stopped_falling
 signal started_popping
 signal stopped_popping
 
-static func fromDictionnary( d ):
-	var bulle = global.SCENES.BULLE.instance()
+func fromDictionnary( d ):
 	bulle.type = d.type
 	bulle.state = d.state
 	bulle.falling_speed = d.falling_speed
-	return bulle
+	neighbours = []
 func toDictionnary():
 	return {
 		"type": type,

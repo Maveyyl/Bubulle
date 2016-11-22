@@ -7,7 +7,8 @@ var score = 0
 
 func fromDictionnary(d):
 	if( d.doublet ):
-		doublet = global.SCRIPTS.DOUBLET.fromDictionnary(d.doublet)
+		doublet = global.SCENES.DOUBLET.instance()
+		doublet.fromDictionnary(d.doublet)
 	score = d.score
 func toDictionnary():
 	var data = {}

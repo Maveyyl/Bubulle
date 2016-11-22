@@ -23,11 +23,17 @@ static func fromDictionnary(d):
 	var game_panel = global.SCENES.GAME_PANEL.instance()
 	game_panel.state = d.state
 	if( d.doublet ):
-		game_panel.doublet = global.SCRIPTS.DOUBLET.fromDictionnary( d.doublet )
+		game_panel.doublet = global.SCENES.DOUBLET.instance()
+		game_panel.doublet.fromDictionnary( d.doublet )
+		game_panel.doublet.grid = grid
+		add_bulle_to_game( game_panel.doublet.main_bulle )
+		add_bulle_to_game( game_panel.doublet.second_bulle )
 	for i in range(falling_bulles):
 		game_panel.falling_bulles.append( global.SCRIPTS.BULLE.fromDictionnary(d.falling_bulles[i] ))
+		add_bulle_to_game( game_panel.falling_bulles[i] )
 	for i in range(popping_bulles):
 		game_panel.popping_bulles.append( global.SCRIPTS.BULLE.fromDictionnary(d.popping_bulles[i] ))
+		add_bulle_to_game( game_panel.popping_bulles[i] )
 	game_panel.cumulative_score = d.cumulative_score
 	game_panel.combo_count = d.combo_count
 	game_panel.received_penalty = d.received_penalty

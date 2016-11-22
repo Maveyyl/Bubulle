@@ -11,13 +11,11 @@ var p2_score = 0
 
 static func fromDictionnary( d ):
 	var double_game_panel = global.SCENES.DOUBLE_GAME_PANEL.instance()
-	double_game_panel.game_panel_p1 = global.SCRIPTS.GAME_PANEL.fromDictionnary(d.game_panel_p1)
-	double_game_panel.info_panel_p1 = global.SCENES.INFO_PANEL_LEFT.instance()
+	double_game_panel.game_panel_p1.fromDictionnary(d.game_panel_p1)
 	double_game_panel.info_panel_p1.fromDIctionnary( d.info_panel_p1 )
 	double_game_panel.p1_score = d.p1_score
 	
-	double_game_panel.game_panel_p2 = global.SCRIPTS.GAME_PANEL.fromDictionnary(d.game_panel_p2)
-	double_game_panel.info_panel_p2 = global.SCENES.INFO_PANEL_RIGHT.instance()
+	double_game_panel.game_panel_p2.fromDictionnary(d.game_panel_p2)
 	double_game_panel.info_panel_p2.fromDIctionnary( d.info_panel_p2 )
 	double_game_panel.p2_score = d.p2_score
 	return double_game_panel
