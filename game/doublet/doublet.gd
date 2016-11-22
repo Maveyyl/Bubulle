@@ -47,6 +47,31 @@ static func deserialize( data ):
 func serialize():
 	return [ main_bulle.type, second_bulle.type]
 
+static func fromDictionnary( d ):
+	var doublet = global.SCENES.DOUBLET.instance()
+	doublet.state = d.state
+	doublet.main_bulle = d.main_bulle
+	doublet.second_bulle = d.second_bulle
+	doublet.direction = d.direction
+	doublet.lateral_move_counter = d.lateral_move_counter
+	doublet.rotating = d.rotating
+	doublet.clockwise = d.clockwise
+	doublet.current_rotation = d.current_rotationate
+	doublet.rotation_goal = d.rotation_goal
+	doublet.second_bulle_goal_pos = d.second_bulle_goal_pos
+func toDictionnary():
+	return {
+		"state": state,
+		"main_bulle": main_bulle.toDictionnary(),
+		"second_bulle": second_bulle.toDictionnary(),
+		"direction": direction,
+		"lateral_move_counter": lateral_move_counter,
+		"rotating": rotating,
+		"clockwise": clockwise,
+		"current_rotation": current_rotation,
+		"rotation_goal": rotation_goal,
+		"second_bulle_goal_pos": second_bulle_goal_pos
+	}
 
 
 func _ready():
