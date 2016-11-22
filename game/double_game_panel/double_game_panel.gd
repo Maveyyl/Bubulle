@@ -18,7 +18,7 @@ func _ready():
 	set_fixed_process(true)
 	
 	# create a doublet randomly and init it in the info panel
-	add_random_doublet_to_pileine( game_panel_p1, info_panel_p1)
+	add_random_doublet_to_pipeline( game_panel_p1, info_panel_p1)
 	add_random_doublet_to_pipeline( game_panel_p2, info_panel_p2)
 
 
@@ -39,10 +39,10 @@ func _fixed_process(delta):
 		add_random_penalties(game_panel_p2)
 
 func add_random_doublet_to_pipeline( game_panel, info_panel):
-	doublet = global.SCRIPTS.DOUBLET.create_random()
+	var doublet = global.SCRIPTS.DOUBLET.create_random()
 	if( info_panel.doublet != null ):
 		game_panel.set_doublet(info_panel.doublet)
-	info_panel.doublet = doublet
+	info_panel.set_doublet( doublet )
 	
 func add_random_penalties( game_panel ):
 	var penalty_count
