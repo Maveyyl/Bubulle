@@ -9,10 +9,27 @@ onready var game_panel_p2 = get_node('game_panel_p2')
 onready var info_panel_p2 = get_node('info_panel_p2')
 var p2_score = 0
 
-var next_doublet_p1
-var next_doublet_p2
-var penalties_pos_p1
-var penalties_pos_p2
+static func fromDictionnary( d ):
+	var double_game_panel = global.SCENES.DOUBLE_GAME_PANEL.instance()
+	double_game_panel.game_panel_p1 = global.SCRIPTS.GAME_PANEL.fromDictionnary(d.game_panel_p1)
+	double_game_panel.info_panel_p1 = global.SCENES.INFO_PANEL_LEFT.instance()
+	double_game_panel.info_panel_p1.fromDIctionnary( d.info_panel_p1 )
+	double_game_panel.p1_score = d.p1_score
+	
+	double_game_panel.game_panel_p2 = global.SCRIPTS.GAME_PANEL.fromDictionnary(d.game_panel_p2)
+	double_game_panel.info_panel_p2 = global.SCENES.INFO_PANEL_RIGHT.instance()
+	double_game_panel.info_panel_p2.fromDIctionnary( d.info_panel_p2 )
+	double_game_panel.p2_score = d.p2_score
+	return double_game_panel
+func toDictionnary():
+	return {
+		"game_panel_p1": game_panel_p1.toDictionnary(),
+		"info_panel_p1": info_panel_p1.toDictionnary(),
+		"p1_score": p1_score,
+		"game_panel_p2": game_panel_p2.toDictionnary(),
+		"info_panel_p2": info_panel_p2.toDictionnary(),
+		"p2_score": p2_score,
+	}
 
 func _ready():
 	set_fixed_process(true)
