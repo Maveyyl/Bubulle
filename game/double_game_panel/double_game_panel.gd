@@ -21,7 +21,6 @@ func _ready():
 	add_random_doublet_to_pipeline( game_panel_p1, info_panel_p1)
 	add_random_doublet_to_pipeline( game_panel_p2, info_panel_p2)
 
-
 	
 func _fixed_process(delta):
 	# if game panel is IDLE

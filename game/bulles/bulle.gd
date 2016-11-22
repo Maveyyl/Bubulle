@@ -24,6 +24,16 @@ signal stopped_falling
 signal started_popping
 signal stopped_popping
 
+static func fromDictionnary( d ):
+	var bulle = global.SCENES.DOUBLET.instance()
+	bulle.state = d.state
+	bulle.falling_speed = d.falling_speed
+func toDictionnary():
+	return {
+		"state": state,
+		"falling_speed": falling_speed
+	}
+
 func _ready():
 	set_fixed_process(true)
 

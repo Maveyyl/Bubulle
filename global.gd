@@ -46,6 +46,7 @@ var SCRIPTS = {
 	"DOUBLET": preload('res://game/doublet/doublet.gd')
 }
 var SCENES = {
+	"BULLES": preload('res://game/bulles/bulle.tscn'),
 	"DOUBLET": preload('res://game/doublet/doublet.tscn')
 }
 
