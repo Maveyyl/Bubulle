@@ -45,11 +45,13 @@ var BULLE_TYPES = {
 var SCRIPTS = {
 	"BULLE": preload('res://game/bulles/bulle.gd'),
 	"DOUBLET": preload('res://game/doublet/doublet.gd'),
-	"DOUBLET": preload('res://game/game_panel/grid.gd'),
+	"GRID": preload('res://game/game_panel/grid.gd'),
+	"GAME_PANEL": preload('res://game/game_panel/game_panel.gd')
 }
 var SCENES = {
 	"BULLE": preload('res://game/bulles/bulle.tscn'),
-	"DOUBLET": preload('res://game/doublet/doublet.tscn')
+	"DOUBLET": preload('res://game/doublet/doublet.tscn'),
+	"GAME_PANEl": preload('res://game/game_panel/game_panel.tscn')
 }
 
 var BULLE_SCENES = [
