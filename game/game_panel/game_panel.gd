@@ -23,8 +23,8 @@ func fromDictionnary(d):
 	for i in range(falling_bulles.size()):
 		panel.remove_child(falling_bulles[i])
 	falling_bulles = []
-	for i in range(popping_bulles.size()):
-		panel.remove_child(popping_bulles[i])
+#	for i in range(popping_bulles.size()):
+#		panel.remove_child(popping_bulles[i])
 	popping_bulles = []
 	
 	
@@ -37,14 +37,15 @@ func fromDictionnary(d):
 		doublet.grid = grid
 		add_bulle_to_game( doublet.main_bulle )
 		add_bulle_to_game( doublet.second_bulle )
-	for i in range(falling_bulles.size()):
-		var bulle =  global.SCRIPTS.BULLE.fromDictionnary( d.falling_bulles[i] )
+	for i in range(d.falling_bulles.size()):
+		var bulle = global.BULLE_SCENES[ d.falling_bulles[i].type ].instance()
+		bulle.fromDictionnary( d.falling_bulles[i] )
 		add_bulle_to_game( bulle )
 		add_falling_bulle( bulle )
-	for i in range(popping_bulles.size()):
-		var bulle =  global.SCRIPTS.BULLE.fromDictionnary(d.popping_bulles[i] )
-		add_bulle_to_game( bulle )
-		add_popping_bulle( bulle )
+#	for i in range(popping_bulles.size()):
+#		var bulle =  global.SCRIPTS.BULLE.fromDictionnary(d.popping_bulles[i] )
+#		add_bulle_to_game( bulle )
+#		add_popping_bulle( bulle )
 	cumulative_score = d.cumulative_score
 	combo_count = d.combo_count
 	received_penalty = d.received_penalty
@@ -53,16 +54,16 @@ func toDictionnary():
 	var falling_bulles_data = []
 	for i in range(falling_bulles.size()):
 		falling_bulles_data.append( falling_bulles[i].toDictionnary() )
-	var popping_bulles_data = []
-	for i in range(popping_bulles.size()):
-		popping_bulles_data.append( popping_bulles[i].toDictionnary() )
-		
+#	var popping_bulles_data = []
+#	for i in range(popping_bulles.size()):
+#		popping_bulles_data.append( popping_bulles[i].toDictionnary() )
+#		
 	var data = {
 		"state": state,
 		"grid": grid.toDictionnary(),
 #		"doublet": doublet.toDictionnary(),
 		"falling_bulles": falling_bulles_data,
-		"popping_bulles": popping_bulles_data,
+#		"popping_bulles": popping_bulles_data,
 		"cumulative_score": cumulative_score,
 		"combo_count": combo_count,
 		"received_penalty": received_penalty,
@@ -117,6 +118,8 @@ func _fixed_process(delta):
 
 func add_bulle_to_game( bulle ):
 	bulle.grid = grid
+	if( bulle.is_connected( 'started_falling', self, 'add_falling_bulle' ) ):
+		return
 	bulle.connect('started_falling', self, 'add_falling_bulle')
 	bulle.connect('stopped_falling', self, 'remove_falling_bulle')
 	

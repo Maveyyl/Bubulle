@@ -28,17 +28,19 @@ func fromDictionnary( d ):
 	type = d.type
 	state = d.state
 	falling_speed = d.falling_speed
-	neighbours = []
+	neighbours = [null,null,null,null]
+	set_pos(d.pos)
 func toDictionnary():
 	return {
 		"type": type,
 		"state": state,
-		"falling_speed": falling_speed
+		"falling_speed": falling_speed,
+		"pos": get_pos()
 	}
 
 func _ready():	
 	for direction in range(global.DIRECTIONS.COUNT):
-		if( neighbours[direction] && neighbours[direction].type == type ):
+		if( neighbours[direction] != null && neighbours[direction].type == type ):
 			extents[direction].show()
 		else:
 			extents[direction].hide()

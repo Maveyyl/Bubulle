@@ -37,20 +37,25 @@ static func create_random( ):
 	doublet.set_main_bulle( main_bulle )
 	doublet.set_second_bulle( second_bulle )
 	return doublet
-static func deserialize( data ):
-	var main_bulle = global.BULLE_SCENES[ data[0] ].instance()
-	var second_bulle = global.BULLE_SCENES[ data[1] ].instance()
-	var doublet = global.SCENES.DOUBLET.instance()
-	doublet.set_main_bulle( main_bulle )
-	doublet.set_second_bulle( second_bulle )
-	return doublet
-func serialize():
-	return [ main_bulle.type, second_bulle.type]
 
 func fromDictionnary( d ):
 	state = d.state
-	main_bulle = global.BULLE_SCENES[ d.main_bulle ].instance()
-	second_bulle = global.BULLE_SCENES[ d.second_bulle ].instance()
+
+	if( main_bulle && main_bulle.type != d.main_bulle ):
+		remove_child(main_bulle)
+		main_bulle = null
+	if( !main_bulle ):
+		set_main_bulle( global.BULLE_SCENES[ d.main_bulle ].instance() )
+		
+		
+	if( second_bulle && second_bulle.type != d.second_bulle ):
+		remove_child(second_bulle)
+		second_bulle = null
+	if( !second_bulle ):
+		set_second_bulle( global.BULLE_SCENES[ d.second_bulle ].instance() )
+
+	set_pos( d.doublet_pos )
+	second_bulle.set_pos( d.second_bulle_pos )
 	direction = d.direction
 	lateral_move_counter = d.lateral_move_counter
 	rotating = d.rotating
@@ -63,6 +68,8 @@ func toDictionnary():
 		"state": state,
 		"main_bulle": main_bulle.type,
 		"second_bulle": second_bulle.type,
+		"doublet_pos": get_pos(),
+		"second_bulle_pos": second_bulle.get_pos(),
 		"direction": direction,
 		"lateral_move_counter": lateral_move_counter,
 		"rotating": rotating,
