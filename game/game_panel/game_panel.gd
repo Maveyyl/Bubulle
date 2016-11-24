@@ -204,6 +204,7 @@ func remove_falling_bulle( bulle ):
 func add_popping_bulle( bulle ):
 	state = global.GAME_PANEL_STATES.SOLVING
 	popping_bulle_count += 1
+	print(popping_bulle_count )
 func remove_popping_bulle( bulle ):
 	popping_bulle_count -= 1
 	
@@ -212,6 +213,7 @@ func remove_popping_bulle( bulle ):
 		if( neighbour && neighbour.type == global.BULLE_TYPES.BLACK ):
 			remove_black_bulle( neighbour )
 	
+	remove_bulle_from_grid(bulle)
 	
 
 	
