@@ -11,22 +11,32 @@ var p2_score = 0
 
 
 func fromDictionnary( d ):
-	game_panel_p1.fromDictionnary( d.game_panel_p1 )
-	info_panel_p1.fromDictionnary( d.info_panel_p1 )
-	p1_score = d.p1_score
+	if( d.has('game_panel_p1') ):
+		game_panel_p1.fromDictionnary( d.game_panel_p1 )
+	if( d.has('info_panel_p1') ):
+		info_panel_p1.fromDictionnary( d.info_panel_p1 )
+	if( d.has('p1_score') ):
+		p1_score = d.p1_score
 	
-	game_panel_p2.fromDictionnary( d.game_panel_p2 )
-	info_panel_p2.fromDictionnary( d.info_panel_p2 )
-	p2_score = d.p2_score
+	if( d.has('game_panel_p2') ):
+		game_panel_p2.fromDictionnary( d.game_panel_p2 )
+	if( d.has('info_panel_p2') ):
+		info_panel_p2.fromDictionnary( d.info_panel_p2 )
+	if( d.has('p2_score') ):
+		p2_score = d.p2_score
 func toDictionnary():
-	return {
-		"game_panel_p1": game_panel_p1.toDictionnary(),
-		"info_panel_p1": info_panel_p1.toDictionnary(),
-		"p1_score": p1_score,
-		"game_panel_p2": game_panel_p2.toDictionnary(),
-		"info_panel_p2": info_panel_p2.toDictionnary(),
-		"p2_score": p2_score,
-	}
+	if ( is_network_master() ):
+		return {
+			"game_panel_p1": game_panel_p1.toDictionnary(),
+			"info_panel_p1": info_panel_p1.toDictionnary(),
+			"p1_score": p1_score
+		}
+	else :
+		return {
+			"game_panel_p2": game_panel_p2.toDictionnary(),
+			"info_panel_p2": info_panel_p2.toDictionnary(),
+			"p2_score": p2_score
+		}
 
 func _ready():
 	set_fixed_process(true)
