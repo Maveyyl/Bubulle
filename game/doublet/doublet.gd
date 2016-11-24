@@ -129,7 +129,6 @@ func _fixed_process(delta):
 				
 				# remove the doublet from the game
 				rotating = false
-				queue_free()
 
 # states altering functions
 func set_idle():

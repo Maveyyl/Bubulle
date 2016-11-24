@@ -10,7 +10,7 @@ var doublet
 
 var falling_bulles = []
 
-var popping_bulles = []
+var popping_bulle_count = 0
 
 signal score(score)
 var cumulative_score = 0
@@ -23,29 +23,31 @@ func fromDictionnary(d):
 	for i in range(falling_bulles.size()):
 		panel.remove_child(falling_bulles[i])
 	falling_bulles = []
-#	for i in range(popping_bulles.size()):
-#		panel.remove_child(popping_bulles[i])
-	popping_bulles = []
+	popping_bulle_count = 0
 	
 	
 	state = d.state
 	grid.fromDictionnary(d.grid)
 	if( d.has("doublet") ):
-		if( !doublet ):
+		if( doublet == null ):
 			doublet = global.SCENES.DOUBLET.instance()
+			panel.add_child(doublet)
 		doublet.fromDictionnary( d.doublet )
 		doublet.grid = grid
 		add_bulle_to_game( doublet.main_bulle )
 		add_bulle_to_game( doublet.second_bulle )
+	elif( doublet != null):
+		if( doublet.get_parent() ):
+			doublet.get_parent().remove_child(doublet)
+		doublet = null
+		
 	for i in range(d.falling_bulles.size()):
 		var bulle = global.BULLE_SCENES[ d.falling_bulles[i].type ].instance()
 		bulle.fromDictionnary( d.falling_bulles[i] )
 		add_bulle_to_game( bulle )
 		add_falling_bulle( bulle )
-#	for i in range(popping_bulles.size()):
-#		var bulle =  global.SCRIPTS.BULLE.fromDictionnary(d.popping_bulles[i] )
-#		add_bulle_to_game( bulle )
-#		add_popping_bulle( bulle )
+
+	popping_bulle_count = d.popping_bulle_count
 	cumulative_score = d.cumulative_score
 	combo_count = d.combo_count
 	received_penalty = d.received_penalty
@@ -54,22 +56,19 @@ func toDictionnary():
 	var falling_bulles_data = []
 	for i in range(falling_bulles.size()):
 		falling_bulles_data.append( falling_bulles[i].toDictionnary() )
-#	var popping_bulles_data = []
-#	for i in range(popping_bulles.size()):
-#		popping_bulles_data.append( popping_bulles[i].toDictionnary() )
-#		
+
 	var data = {
 		"state": state,
 		"grid": grid.toDictionnary(),
 #		"doublet": doublet.toDictionnary(),
 		"falling_bulles": falling_bulles_data,
-#		"popping_bulles": popping_bulles_data,
+		"popping_bulle_count": popping_bulle_count,
 		"cumulative_score": cumulative_score,
 		"combo_count": combo_count,
 		"received_penalty": received_penalty,
 		"penalty_bulles": penalty_bulles
 	}
-	if( doublet ):
+	if( doublet != null ):
 		data.doublet = doublet.toDictionnary()
 	
 	return data
@@ -91,12 +90,12 @@ func _fixed_process(delta):
 			cumulative_score += global.popping_combo_score_compute( score, combo_count)
 	
 	# if game is solving, IE chains are being eliminated and bulles are all popped
-	if(  state == global.GAME_PANEL_STATES.SOLVING && popping_bulles.empty() ):
+	if(  state == global.GAME_PANEL_STATES.SOLVING && popping_bulle_count == 0 ):
 		# solve for falling bulles
 		grid.solve_falling()
 		
 	# if there's no bulle to fall and no bulles to pop and no doublet
-	if( !doublet && popping_bulles.empty() && falling_bulles.empty()):
+	if( !doublet && popping_bulle_count == 0 && falling_bulles.empty()):
 		# game is in an idle state
 		# if has to receive penalties
 		if( penalty_bulles != 0 && !received_penalty ):
@@ -110,7 +109,7 @@ func _fixed_process(delta):
 			cumulative_score = 0
 			combo_count = 0
 	# else if doublet is present
-	elif( doublet && popping_bulles.empty() && falling_bulles.empty()):
+	elif( doublet && popping_bulle_count == 0 && falling_bulles.empty()):
 		# game is in placing doublet state
 		state = global.GAME_PANEL_STATES.PLACING_DOUBLET
 
@@ -159,6 +158,8 @@ func remove_doublet( main_bulle, second_bulle ):
 	else:
 		second_bulle.set_falling()
 	
+	if( doublet.get_parent() ):
+		doublet.get_parent().remove_child(doublet)
 	doublet = null
 	
 func add_penalty( penalty ):
@@ -202,10 +203,9 @@ func remove_falling_bulle( bulle ):
 
 func add_popping_bulle( bulle ):
 	state = global.GAME_PANEL_STATES.SOLVING
-	popping_bulles.append(bulle)
+	popping_bulle_count += 1
 func remove_popping_bulle( bulle ):
-	popping_bulles.remove( popping_bulles.find(bulle))
-	remove_bulle_from_grid(bulle)
+	popping_bulle_count -= 1
 	
 	for direction in range(global.DIRECTIONS.COUNT):
 		var neighbour = bulle.neighbours[direction]

@@ -8,8 +8,14 @@ var p1_score = 0
 onready var game_panel_p2 = get_node('game_panel_p2')
 onready var info_panel_p2 = get_node('info_panel_p2')
 var p2_score = 0
+var message_number = 0
 
 func fromDictionnary( d ):
+	if( (d.message_number - message_number) != 1 ):
+		print("error")
+	print(d.message_number - message_number, " ", d.message_number, " ", message_number)
+	message_number = d.message_number
+		
 	game_panel_p1.fromDictionnary( d.game_panel_p1 )
 	info_panel_p1.fromDictionnary( d.info_panel_p1 )
 	p1_score = d.p1_score
@@ -18,7 +24,9 @@ func fromDictionnary( d ):
 	info_panel_p2.fromDictionnary( d.info_panel_p2 )
 	p2_score = d.p2_score
 func toDictionnary():
+	message_number+=1
 	return {
+		"message_number": message_number,
 		"game_panel_p1": game_panel_p1.toDictionnary(),
 		"info_panel_p1": info_panel_p1.toDictionnary(),
 		"p1_score": p1_score,

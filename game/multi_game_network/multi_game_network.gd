@@ -45,23 +45,26 @@ func _fixed_process(delta):
 		game_panel = game_panel_p2
 		game_panel_ad = game_panel_p1
 		
-	if( Input.is_action_pressed("up_p1") ):
-		game_panel.rotate_doublet_clockwise()
-	if( Input.is_action_pressed("down_p1") ):
-		game_panel.rotate_doublet_counterclockwise()
-		
-	if( Input.is_action_pressed("left_p1") ):
-		game_panel.move_doublet_left()
-	if( Input.is_action_pressed("right_p1") ):
-		game_panel.move_doublet_right()
-		
-	if( Input.is_action_pressed("speed_p1") ):
-		game_panel.increase_doublet_falling_speed()
-	elif( !Input.is_action_pressed("speed_p1") ):
-		game_panel.decrease_doublet_falling_speed()
 
 
 	if( is_network_master() ):
+		if( Input.is_action_pressed("up_p1") ):
+			game_panel.rotate_doublet_clockwise()
+		if( Input.is_action_pressed("down_p1") ):
+			game_panel.rotate_doublet_counterclockwise()
+			
+		if( Input.is_action_pressed("left_p1") ):
+			game_panel.move_doublet_left()
+		if( Input.is_action_pressed("right_p1") ):
+			game_panel.move_doublet_right()
+			
+		if( Input.is_action_pressed("speed_p1") ):
+			game_panel.increase_doublet_falling_speed()
+		elif( !Input.is_action_pressed("speed_p1") ):
+			game_panel.decrease_doublet_falling_speed()
+
+		
+		
 		if( up ):
 			game_panel_ad.rotate_doublet_clockwise()
 		if( down ):
