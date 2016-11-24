@@ -86,5 +86,5 @@ func _on_game_panel_p1_score( score ):
 
 func _on_game_panel_p2_score( score ):
 	p2_score += score
-	info_panel_p2.set_score(score)
+	info_panel_p2.set_score(p2_score)
 	game_panel_p1.add_penalty(global.score_to_penalty(score))
