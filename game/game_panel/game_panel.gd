@@ -33,18 +33,14 @@ func fromDictionnary(d):
 			doublet = global.SCENES.DOUBLET.instance()
 			panel.add_child(doublet)
 		doublet.fromDictionnary( d.doublet )
-		doublet.grid = grid
-		add_bulle_to_game( doublet.main_bulle )
-		add_bulle_to_game( doublet.second_bulle )
+		add_doublet_to_game(doublet)
 	elif( doublet != null):
-		if( doublet.get_parent() ):
-			doublet.get_parent().remove_child(doublet)
+		doublet.get_parent().remove_child(doublet)
 		doublet = null
 		
 	for i in range(d.falling_bulles.size()):
 		var bulle = global.BULLE_SCENES[ d.falling_bulles[i].type ].instance()
 		bulle.fromDictionnary( d.falling_bulles[i] )
-		add_bulle_to_game( bulle )
 		add_falling_bulle( bulle )
 
 	popping_bulle_count = d.popping_bulle_count
@@ -127,22 +123,28 @@ func add_bulle_to_game( bulle ):
 	
 func set_doublet( doublet ):
 	state = global.GAME_PANEL_STATES.PLACING_DOUBLET
-	self.doublet = doublet
 	received_penalty = false
-	
+
+	doublet.set_pos( doublet_default_pos )
+	doublet.set_falling()
+
+	add_doublet_to_game(doublet)
+func add_doublet_to_game( doublet ):
+	self.doublet = doublet
+	doublet.grid = grid
 	if( doublet.get_parent() != null ):
 		doublet.get_parent().remove_child(doublet)
 	panel.add_child(doublet)
-	doublet.set_pos( doublet_default_pos )
-	doublet.set_falling()
-	doublet.grid = grid
-	
-	doublet.connect("placed", self, "remove_doublet")
 	
 	add_bulle_to_game(doublet.main_bulle)
 	add_bulle_to_game(doublet.second_bulle)
+	
+	if( doublet.is_connected( 'placed', self, 'place_doublet' ) ):
+		return
+	doublet.connect("placed", self, "place_doublet")
 
-func remove_doublet( main_bulle, second_bulle ):
+
+func place_doublet( main_bulle, second_bulle ):
 	state = global.GAME_PANEL_STATES.DOUBLET_PLACED
 	
 	# test for both bulle if they can move bottom
@@ -180,6 +182,8 @@ func add_bulle_to_grid( bulle ):
 	if( bulle.get_parent() != null):
 		bulle.get_parent().remove_child(bulle)
 	panel.add_child(bulle)
+	add_bulle_to_game( bulle )
+	
 	var grid_pos = grid.pos_to_grid_coord(bulle.get_pos())
 	# necessary to make sure the bulle is at the slot's position
 	var grid_real_pos =  grid.grid_coord_to_pos( grid_pos )
@@ -196,6 +200,7 @@ func add_falling_bulle( bulle ):
 	if( bulle.get_parent() ):
 		bulle.get_parent().remove_child(bulle)
 	panel.add_child(bulle)
+	add_bulle_to_game( bulle )
 	falling_bulles.append(bulle)
 func remove_falling_bulle( bulle ):
 	falling_bulles.remove( falling_bulles.find(bulle))
@@ -204,7 +209,6 @@ func remove_falling_bulle( bulle ):
 func add_popping_bulle( bulle ):
 	state = global.GAME_PANEL_STATES.SOLVING
 	popping_bulle_count += 1
-	print(popping_bulle_count )
 func remove_popping_bulle( bulle ):
 	popping_bulle_count -= 1
 	
