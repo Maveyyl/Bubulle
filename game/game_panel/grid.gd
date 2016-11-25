@@ -6,26 +6,30 @@ var bulles
 
 func fromDictionnary( d ):
 	var game_panel = get_parent().get_parent()
+
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
-			if( bulles[x][y] != null  && ( d.bulles[x][y] == null || d.bulles[x][y] != bulles[x][y].type) ):
+			var idx = x * global.GRID_SIZE.y + y
+			var remote_type = (int(d.bulles[idx])-1)
+			if( bulles[x][y] != null  && ( remote_type == -1 || remote_type != bulles[x][y].type) ):
 				game_panel.remove_bulle_from_grid( bulles[x][y] )
-			if( d.bulles[x][y] != null && bulles[x][y] == null ):
-				var bulle = global.BULLE_SCENES[ d.bulles[x][y] ].instance()
+			if( remote_type != -1 && bulles[x][y] == null ):
+				var bulle = global.BULLE_SCENES[ remote_type ].instance()
 				bulle.set_pos( grid_coord_to_pos(Vector2(x,y)))
 				game_panel.add_bulle_to_grid(bulle)
+				
 	compute_neighbours()
 func toDictionnary():
-	var bulles_data = []
-	bulles_data.resize(global.GRID_SIZE.x)
+	var bulles_concat_data = ""
 	for x in range(global.GRID_SIZE.x):
-		bulles_data[x] = []
-		bulles_data[x].resize(global.GRID_SIZE.y)
 		for y in range(global.GRID_SIZE.y):
 			if( bulles[x][y] ):
-				bulles_data[x][y] = bulles[x][y].type
+				bulles_concat_data += str(bulles[x][y].type+1)
+			else:
+				bulles_concat_data += "0"
+	
 	return {
-		"bulles": bulles_data
+		"bulles": bulles_concat_data
 	}
 
 
