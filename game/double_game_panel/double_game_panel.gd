@@ -39,14 +39,14 @@ func toDictionnary():
 		}
 
 func _ready():
-	set_fixed_process(true)
+	set_process(true)
 	
 	# create a doublet randomly and init it in the info panel
 	add_random_doublet_to_pipeline( game_panel_p1, info_panel_p1)
 	add_random_doublet_to_pipeline( game_panel_p2, info_panel_p2)
 
 	
-func _fixed_process(delta):
+func _process(delta):
 	# if game panel is IDLE
 	if( game_panel_p1.state == global.GAME_PANEL_STATES.IDLE ):
 		add_random_doublet_to_pipeline( game_panel_p1, info_panel_p1 )

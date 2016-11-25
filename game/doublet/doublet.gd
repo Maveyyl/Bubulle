@@ -81,10 +81,10 @@ func toDictionnary():
 
 
 func _ready():
-	set_fixed_process(true)
+	set_process(true)
 
 	
-func _fixed_process(delta):
+func _process(delta):
 	# counter to reduce the lateral moves happening per seconds
 	if( lateral_move_counter < lateral_move_timer ):
 		lateral_move_counter+=delta

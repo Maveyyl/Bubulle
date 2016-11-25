@@ -71,10 +71,10 @@ func toDictionnary():
 
 
 func _ready():
-	set_fixed_process(true)
+	set_process(true)
 	pass
 
-func _fixed_process(delta):
+func _process(delta):
 	# if a doublet has been placed or if was in falling bulles states but all bulles felt
 	if( state ==  global.GAME_PANEL_STATES.DOUBLET_PLACED || 
 		(state ==  global.GAME_PANEL_STATES.PLACING_FALLING_BULLES && falling_bulles.empty() )

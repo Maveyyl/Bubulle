@@ -12,7 +12,7 @@ func _ready():
 	
 	get_tree().connect("server_disconnected", self, "server_disconnected")
 	get_tree().connect("network_peer_disconnected", self, "peer_disconnected")
-	set_fixed_process(true)
+	set_process(true)
 
 
 func server_disconnected( ):
@@ -25,7 +25,7 @@ func peer_disconnected( id ):
 remote func sync_game( d ):
 	double_game_panel.fromDictionnary( d )
 
-func _fixed_process(delta):
+func _process(delta):
 	if ( Input.is_action_just_pressed("escape") ):
 		network_manager.disconnect()
 		scene_manager.change_scene_to_previous()

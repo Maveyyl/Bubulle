@@ -44,9 +44,9 @@ func _ready():
 			extents[direction].show()
 		else:
 			extents[direction].hide()
-	set_fixed_process(true)
+	set_process(true)
 
-func _fixed_process(delta):	
+func _process(delta):	
 	if( state == global.BULLE_STATES.FALLING ):
 		# move the bulle down
 		set_pos(get_pos() + Vector2( 0, falling_speed ) )

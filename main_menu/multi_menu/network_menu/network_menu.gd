@@ -31,7 +31,7 @@ onready var label_game_starting_status = get_node("panel_game_starting/label_gam
 onready var button_start_game = get_node("panel_game_starting/button_start_game")
 
 func _ready():
-	set_fixed_process(true)
+	set_process(true)
 	
 	# server default values
 	server_text_edit_port.set_text( str(network_manager.DEFAULT_PORT) )
@@ -50,7 +50,7 @@ func _ready():
 	get_tree().connect("connection_failed", self, "connection_failed")
 	
 
-func _fixed_process(delta):
+func _process(delta):
 	if ( Input.is_action_just_pressed("escape") ):
 		network_manager.disconnect()
 		scene_manager.change_scene_to_previous()
