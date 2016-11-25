@@ -7,7 +7,8 @@ const SCENES = {
 
 	"main_menu": preload("res://main_menu/main_menu.tscn"),
 	"multi_menu": preload("res://main_menu/multi_menu/multi_menu.tscn"),
-	"network_menu": preload("res://main_menu/multi_menu/network_menu/network_menu.tscn")
+	"network_menu": preload("res://main_menu/multi_menu/network_menu/network_menu.tscn"),
+	"options_menu": preload("res://main_menu/options_menu/options_menu.tscn")
 }
 
 var current_scene

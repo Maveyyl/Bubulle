@@ -22,7 +22,7 @@ func _on_button_training_pressed():
 	pass
 
 func _on_button_options_pressed():
-#	scene_manager.change_scene_to("options")
+	scene_manager.change_scene_to("options_menu")
 	pass
 
 func _on_button_leave_pressed():
