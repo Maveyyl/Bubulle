@@ -100,6 +100,21 @@ var GAME_PANEL_STATES = {
 	"WAITING_FOR_PENALTIES": 6
 }
 
+var DEFAULT_BINDINGS = {
+	"up_p1": InputMap.get_action_list("up_p1")[0],
+	"down_p1": InputMap.get_action_list("down_p1")[0],
+	"left_p1": InputMap.get_action_list("left_p1")[0],
+	"right_p1": InputMap.get_action_list("right_p1")[0],
+	"speed_p1": InputMap.get_action_list("speed_p1")[0],
+	
+	"up_p2": InputMap.get_action_list("up_p2")[0],
+	"down_p2": InputMap.get_action_list("down_p2")[0],
+	"left_p2": InputMap.get_action_list("left_p2")[0],
+	"right_p2": InputMap.get_action_list("right_p2")[0],
+	"speed_p2": InputMap.get_action_list("speed_p2")[0]
+}
+
+
 
 
 
