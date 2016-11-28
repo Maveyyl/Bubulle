@@ -19,6 +19,8 @@ var combo_count = 0
 var received_penalty = false
 var penalty_bulles = 0
 
+signal game_ended()
+
 func fromDictionnary(d):
 	for i in range(falling_bulles.size()):
 		panel.remove_child(falling_bulles[i])
@@ -122,6 +124,9 @@ func add_bulle_to_game( bulle ):
 	bulle.connect('stopped_popping', self, 'remove_popping_bulle')
 	
 func set_doublet( doublet ):
+	if( grid.is_full() ):
+		emit_signal("game_ended")
+		return
 	state = global.GAME_PANEL_STATES.PLACING_DOUBLET
 	received_penalty = false
 

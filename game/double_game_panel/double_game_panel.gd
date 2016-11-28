@@ -1,5 +1,7 @@
 extends Node2D
 
+signal game_ended( is_p1_winner )
+
 
 onready var game_panel_p1 = get_node('game_panel_p1')
 onready var info_panel_p1 = get_node('info_panel_p1')
@@ -88,3 +90,23 @@ func _on_game_panel_p2_score( score ):
 	p2_score += score
 	info_panel_p2.set_score(p2_score)
 	game_panel_p1.add_penalty(global.score_to_penalty(score))
+
+
+func game_ended( is_p1_winner ):
+	print("game ended ", is_p1_winner)
+	set_process(false)
+	emit_signal("game_ended", is_p1_winner)
+	
+	var game_end_panel = scene_manager.SCENES.game_end.instance()
+	add_child(game_end_panel)
+	if( is_p1_winner ):
+		game_end_panel.set_winner( "Player 1")
+	else:
+		game_end_panel.set_winner ( "Player 2") 
+	game_end_panel.set_pos( OS.get_window_size()/2 )
+	
+func _on_game_panel_p1_game_ended():
+	game_ended( false )
+
+func _on_game_panel_p2_game_ended():
+	game_ended( true )

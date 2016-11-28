@@ -39,7 +39,10 @@ func _ready():
 	for x in range(global.GRID_SIZE.x):
 		bulles[x] = []
 		bulles[x].resize(global.GRID_SIZE.y)
-	
+
+func is_full():
+	return bulles[3][0] != null || bulles[3][1] != null
+
 
 func compute_neighbours():
 	var neighbours = [null,null,null,null]

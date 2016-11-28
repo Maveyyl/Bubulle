@@ -5,10 +5,12 @@ const SCENES = {
 	"multi_local": preload("res://game/multi_game_local/multi_game_local.tscn"),
 	"multi_network": preload("res://game/multi_game_network/multi_game_network.tscn"),
 
-	"main_menu": preload("res://main_menu/main_menu.tscn"),
-	"multi_menu": preload("res://main_menu/multi_menu/multi_menu.tscn"),
-	"network_menu": preload("res://main_menu/multi_menu/network_menu/network_menu.tscn"),
-	"options_menu": preload("res://main_menu/options_menu/options_menu.tscn")
+	"main_menu": preload("res://UI/main_menu/main_menu.tscn"),
+	"multi_menu": preload("res://UI/main_menu/multi_menu/multi_menu.tscn"),
+	"network_menu": preload("res://UI/main_menu/multi_menu/network_menu/network_menu.tscn"),
+	"options_menu": preload("res://UI/main_menu/options_menu/options_menu.tscn"),
+	
+	"game_end": preload("res://UI/game_end/game_end.tscn")
 }
 
 var current_scene

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=1]
 
-[ext_resource path="res://main_menu/options_menu/key_picker.gd" type="Script" id=1]
+[ext_resource path="res://UI/key_picker/key_picker.gd" type="Script" id=1]
 
 [node name="key_picker" type="Control"]
 
@@ -13,7 +13,7 @@ margin/top = 0.0
 margin/right = 40.0
 margin/bottom = 40.0
 script/script = ExtResource( 1 )
-name = "Turn Counterclockwise"
+name = "Name"
 action_name = "action_name"
 
 [node name="panel" type="Panel" parent="."]
@@ -38,7 +38,7 @@ margin/left = 10.0
 margin/top = 0.0
 margin/right = 100.0
 margin/bottom = 0.0
-text = "Turn Counterclockwise"
+text = "Name"
 align = 1
 valign = 1
 autowrap = true

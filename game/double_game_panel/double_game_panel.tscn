@@ -23,7 +23,11 @@ transform/pos = Vector2( 240, 0 )
 
 transform/pos = Vector2( 420, 0 )
 
+[connection signal="game_ended" from="game_panel_p1" to="." method="_on_game_panel_p1_game_ended"]
+
 [connection signal="score" from="game_panel_p1" to="." method="_on_game_panel_p1_score"]
+
+[connection signal="game_ended" from="game_panel_p2" to="." method="_on_game_panel_p2_game_ended"]
 
 [connection signal="score" from="game_panel_p2" to="." method="_on_game_panel_p2_score"]
 

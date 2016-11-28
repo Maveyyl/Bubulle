@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=1]
 
-[ext_resource path="res://main_menu/multi_menu/network_menu/network_menu.gd" type="Script" id=1]
+[ext_resource path="res://UI/main_menu/multi_menu/network_menu/network_menu.gd" type="Script" id=1]
 
 [node name="network_menu" type="Node2D"]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=1]
 
-[ext_resource path="res://main_menu/options_menu/options_menu.gd" type="Script" id=1]
-[ext_resource path="res://main_menu/options_menu/key_picker.tscn" type="PackedScene" id=2]
+[ext_resource path="res://UI/main_menu/options_menu/options_menu.gd" type="Script" id=1]
+[ext_resource path="res://UI/key_picker/key_picker.tscn" type="PackedScene" id=2]
 
 [node name="options_menu" type="Control"]
 
@@ -139,7 +139,7 @@ margin/left = 75.0
 margin/top = 60.0
 margin/right = 35.0
 margin/bottom = 100.0
-name = "Turn Clockwise"
+name = "Turn Clock Wise"
 action_name = "up_p1"
 
 [node name="key_picker_down" parent="panel_controls" instance=ExtResource( 2 )]
@@ -151,7 +151,7 @@ margin/left = 75.0
 margin/top = 110.0
 margin/right = 35.0
 margin/bottom = 150.0
-name = "Turn Counter Clockwise"
+name = "Turn Counter Clock Wise"
 action_name = "down_p1"
 
 [node name="key_picker_left" parent="panel_controls" instance=ExtResource( 2 )]
@@ -187,7 +187,7 @@ margin/left = 75.0
 margin/top = 260.0
 margin/right = 35.0
 margin/bottom = 300.0
-name = "Fast Fall"
+name = "Quick Fall"
 action_name = "speed_p1"
 
 [node name="panel_controls_p2" type="Panel" parent="."]
@@ -229,7 +229,7 @@ margin/left = 75.0
 margin/top = 60.0
 margin/right = 35.0
 margin/bottom = 100.0
-name = "Turn Clockwise"
+name = "Turn Clock Wise"
 action_name = "up_p2"
 
 [node name="key_picker_down" parent="panel_controls_p2" instance=ExtResource( 2 )]
@@ -241,7 +241,7 @@ margin/left = 75.0
 margin/top = 110.0
 margin/right = 35.0
 margin/bottom = 150.0
-name = "Turn Counter Clockwise"
+name = "Turn Counter Clock Wise"
 action_name = "down_p2"
 
 [node name="key_picker_left" parent="panel_controls_p2" instance=ExtResource( 2 )]
@@ -277,7 +277,7 @@ margin/left = 75.0
 margin/top = 260.0
 margin/right = 35.0
 margin/bottom = 300.0
-name = "Fast Fall"
+name = "Quick Fall"
 action_name = "speed_p2"
 
 [connection signal="pressed" from="panel/commit_button" to="." method="_on_commit_button_pressed"]
@@ -287,25 +287,5 @@ action_name = "speed_p2"
 [connection signal="pressed" from="panel/default_button" to="." method="_on_default_button_pressed"]
 
 [connection signal="pressed" from="panel/back_button" to="." method="_on_back_button_pressed"]
-
-[connection signal="event_set" from="panel_controls/key_picker_up" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls/key_picker_down" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls/key_picker_left" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls/key_picker_right" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls/key_picker_speed" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls_p2/key_picker_up" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls_p2/key_picker_down" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls_p2/key_picker_left" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls_p2/key_picker_right" to="." method="_on_key_picker_event_set"]
-
-[connection signal="event_set" from="panel_controls_p2/key_picker_speed" to="." method="_on_key_picker_event_set"]
 
 
