@@ -26,15 +26,24 @@ func fromDictionnary( d ):
 		info_panel_p2.fromDictionnary( d.info_panel_p2 )
 	if( d.has('p2_score') ):
 		p2_score = d.p2_score
-func toDictionnary():
-	if ( is_network_master() ):
+func toDictionnary(full_state):
+	if ( !full_state && is_network_master() ):
 		return {
 			"game_panel_p1": game_panel_p1.toDictionnary(),
 			"info_panel_p1": info_panel_p1.toDictionnary(),
 			"p1_score": p1_score
 		}
-	else :
+	elif( !full_state ) :
 		return {
+			"game_panel_p2": game_panel_p2.toDictionnary(),
+			"info_panel_p2": info_panel_p2.toDictionnary(),
+			"p2_score": p2_score
+		}
+	elif( full_state ):
+		return {
+			"game_panel_p1": game_panel_p1.toDictionnary(),
+			"info_panel_p1": info_panel_p1.toDictionnary(),
+			"p1_score": p1_score,
 			"game_panel_p2": game_panel_p2.toDictionnary(),
 			"info_panel_p2": info_panel_p2.toDictionnary(),
 			"p2_score": p2_score

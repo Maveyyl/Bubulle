@@ -24,6 +24,7 @@ var clockwise = false
 var current_rotation = 0
 var rotation_goal = 0
 var second_bulle_goal_pos = Vector2(0, -global.BULLE_SIZE.y ) # this is to ensure rotations update even though the rotation hasn't finished
+var second_bulle_state = 0
 
 # signals
 signal placed
@@ -209,7 +210,7 @@ func rotate_clockwise():
 		rotating = true
 		direction = (direction +1) % global.DIRECTIONS.COUNT
 		second_bulle_goal_pos = global.DIRECTIONS_NORMALS[ direction ]*global.BULLE_SIZE
-		
+		second_bulle_state = (second_bulle_state + 1)%4
 
 func rotate_counterclockwise():
 	if( !rotating && can_rotate_counterclockwise() ):
@@ -219,7 +220,7 @@ func rotate_counterclockwise():
 		rotating = true
 		direction = (direction -1 + global.DIRECTIONS.COUNT) % global.DIRECTIONS.COUNT
 		second_bulle_goal_pos = global.DIRECTIONS_NORMALS[ direction ]*global.BULLE_SIZE
-
+		second_bulle_state = ((second_bulle_state - 1)+4)%4
 
 	
 	
