@@ -116,9 +116,12 @@ var DEFAULT_BINDINGS = {
 
 
 
+func get_randi_update_seed( seed_ref ):
+	var rand = rand_seed(seed_ref[0])
+	seed_ref[0] = rand[1]
+	return rand[0]
 
-
-func get_penalty_random_slots(penalty_count):
+func get_penalty_random_slots(penalty_count, seed_ref):
 	var slots_line_1 = []
 	var slots_line_2 = []
 	
@@ -129,15 +132,15 @@ func get_penalty_random_slots(penalty_count):
 
 	if( penalty_count <= 5 ):
 		for i in range(6-penalty_count):
-			var rand = randi()%slots_line_1.size()
+			var rand = get_randi_update_seed( seed_ref )%slots_line_1.size()
 			slots_line_1.remove(rand)
 	else:
 		for i in range(1):
-			var rand = randi()%slots_line_1.size()
+			var rand = get_randi_update_seed( seed_ref )%slots_line_1.size()
 			slots_line_1.remove(rand)
 		penalty_count-=5
 		for i in range(6-penalty_count):
-			var rand = randi()%slots_line_2.size()
+			var rand = get_randi_update_seed( seed_ref )%slots_line_2.size()
 			slots_line_2.remove(rand)
 	
 	for i in range(slots_line_2.size()):

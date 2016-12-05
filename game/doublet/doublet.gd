@@ -29,10 +29,11 @@ var second_bulle_state = 0
 # signals
 signal placed
 
-static func create_random( ):
-	var main_bulle_type = randi()%(global.BULLE_TYPES.COUNT-1)
+static func create_random( seed_ref ):
+	var main_bulle_type = global.get_randi_update_seed(seed_ref)%(global.BULLE_TYPES.COUNT-1)
 	var main_bulle = global.BULLE_SCENES[ main_bulle_type ].instance()
-	var second_bulle_type = randi()%(global.BULLE_TYPES.COUNT-1)
+	
+	var second_bulle_type = global.get_randi_update_seed(seed_ref)%(global.BULLE_TYPES.COUNT-1)
 	var second_bulle = global.BULLE_SCENES[ second_bulle_type ].instance()
 	var doublet = global.SCENES.DOUBLET.instance()
 	doublet.set_main_bulle( main_bulle )
