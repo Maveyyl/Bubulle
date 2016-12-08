@@ -38,7 +38,7 @@ func fromDictionnary( d ):
 		p2_doublet_seed_ref = d.p2_doublet_seed_ref
 	if( d.has('p2_penalty_seed_ref') ):
 		p2_penalty_seed_ref = d.p2_penalty_seed_ref
-func toDictionnary(full_state):
+func toDictionnary(full_state = true):
 	if ( !full_state && is_network_master() ):
 		return {
 			"game_panel_p1": game_panel_p1.toDictionnary(),

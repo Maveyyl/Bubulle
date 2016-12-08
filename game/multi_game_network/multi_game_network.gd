@@ -55,5 +55,5 @@ func _process(delta):
 	elif( !Input.is_action_pressed("speed_p1") ):
 		game_panel.decrease_doublet_falling_speed()
 
-	rpc("sync_game", double_game_panel.toDictionnary())
+	rpc("sync_game", double_game_panel.toDictionnary(false))
 	
