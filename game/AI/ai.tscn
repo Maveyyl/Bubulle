@@ -1,9 +1,14 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=3 format=1]
 
 [ext_resource path="res://game/AI/ai.gd" type="Script" id=1]
+[ext_resource path="res://game/AI/doublet_placer.gd" type="Script" id=2]
 
 [node name="ai" type="Node2D"]
 
 script/script = ExtResource( 1 )
+
+[node name="doublet_placer" type="Node2D" parent="."]
+
+script/script = ExtResource( 2 )
 
 
