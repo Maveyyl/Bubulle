@@ -24,7 +24,7 @@ var clockwise = false
 var current_rotation = 0
 var rotation_goal = 0
 var second_bulle_goal_pos = Vector2(0, -global.BULLE_SIZE.y ) # this is to ensure rotations update even though the rotation hasn't finished
-var second_bulle_state = 0
+var second_bulle_state = global.DIRECTIONS.TOP
 
 # signals
 signal placed

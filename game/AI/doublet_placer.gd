@@ -22,11 +22,12 @@ func _process(delta):
 	var horizontally_placed = false
 	var vertically_placed = false
 	
-	var diff = doublet.second_bulle_state - doublet_second_bulle_goal_state
-	if( (diff > 0 && diff < 3 ) || ( diff < 0 && diff > -3 ) ):
-		game_panel.rotate_doublet_clockwise()
-	elif ( diff != 0):
-		game_panel.rotate_doublet_counterclockwise()
+	if( doublet.second_bulle_state != doublet_second_bulle_goal_state ):
+		var sens = get_rot_sens(doublet.second_bulle_state, doublet_second_bulle_goal_state, global.DIRECTIONS.COUNT)
+		if( sens ):
+			game_panel.rotate_doublet_clockwise()
+		else:
+			game_panel.rotate_doublet_counterclockwise()
 	else:
 		vertically_placed = true
 	
@@ -44,3 +45,5 @@ func _process(delta):
 	else:
 		game_panel.decrease_doublet_falling_speed()
 	
+func get_rot_sens( a, b, ring_size):
+	return ((a-b)+ring_size)%ring_size > (ring_size/2)
