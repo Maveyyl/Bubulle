@@ -1,7 +1,7 @@
 extends Node2D
 
 signal game_ended( is_p1_winner )
-
+var ended = false
 
 onready var game_panel_p1 = get_node('game_panel_p1')
 onready var info_panel_p1 = get_node('info_panel_p1')
@@ -38,6 +38,10 @@ func fromDictionnary( d ):
 		p2_doublet_seed_ref = d.p2_doublet_seed_ref
 	if( d.has('p2_penalty_seed_ref') ):
 		p2_penalty_seed_ref = d.p2_penalty_seed_ref
+	
+	if( get_node('game_end_panel') ):
+		remove_child(get_node('game_end_panel'))
+	set_process(true)
 func toDictionnary(full_state = true):
 	if ( !full_state && is_network_master() ):
 		return {
@@ -123,6 +127,7 @@ func _on_game_panel_p2_score( score ):
 
 func game_ended( is_p1_winner ):
 	print("game ended ", is_p1_winner)
+	ended = true
 	set_process(false)
 	emit_signal("game_ended", is_p1_winner)
 	
