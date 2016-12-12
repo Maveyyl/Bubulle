@@ -21,21 +21,30 @@ func _process(delta):
 		
 	var horizontally_placed = false
 	var vertically_placed = false
+	var r
 	
 	if( doublet.second_bulle_state != doublet_second_bulle_goal_state ):
 		var sens = get_rot_sens(doublet.second_bulle_state, doublet_second_bulle_goal_state, global.DIRECTIONS.COUNT)
 		if( sens ):
-			game_panel.rotate_doublet_clockwise()
+			r = game_panel.rotate_doublet_clockwise()
+			if( !r ):
+				vertically_placed = true
 		else:
-			game_panel.rotate_doublet_counterclockwise()
+			r = game_panel.rotate_doublet_counterclockwise()
+			if( !r ):
+				vertically_placed = true
 	else:
 		vertically_placed = true
 	
 	if( vertically_placed ):
 		if( doublet.get_main_bulle_grid_pos().x > doublet_main_bulle_goal_pos_x ):
-			game_panel.move_doublet_left()
+			r = game_panel.move_doublet_left()
+			if( !r ):
+				horizontally_placed = true
 		elif ( doublet.get_main_bulle_grid_pos().x < doublet_main_bulle_goal_pos_x ):
-			game_panel.move_doublet_right()
+			r = game_panel.move_doublet_right()
+			if( !r ):
+				horizontally_placed = true
 		else:
 			horizontally_placed = true
 

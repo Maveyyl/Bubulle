@@ -178,8 +178,10 @@ func can_rotate_counterclockwise():
 # falling functions
 func increase_falling_speed():
 	falling_speed = sped_up_falling_speed
+	return true
 func decrease_falling_speed():
 	falling_speed = initial_falling_speed
+	return true
 
 
 # lateral moves
@@ -188,12 +190,22 @@ func move_left():
 		if( can_move_left() ):
 			lateral_move_counter = 0
 			set_pos( get_pos() + Vector2( -global.BULLE_SIZE.x, 0 ))
+			return true
+		else:
+			return false
+	else:
+		return true
 			
 func move_right():
 	if( lateral_move_counter > lateral_move_timer):
 		if( can_move_right() ):
 			lateral_move_counter = 0
 			set_pos( get_pos() + Vector2( global.BULLE_SIZE.x, 0 ))
+			return true
+		else:
+			return false
+	else:
+		return true
 
 
 
@@ -212,6 +224,11 @@ func rotate_clockwise():
 		direction = (direction +1) % global.DIRECTIONS.COUNT
 		second_bulle_goal_pos = global.DIRECTIONS_NORMALS[ direction ]*global.BULLE_SIZE
 		second_bulle_state = (second_bulle_state + 1)%4
+		return true
+	elif( rotating ):
+		return true
+	else:
+		return false
 
 func rotate_counterclockwise():
 	if( !rotating && can_rotate_counterclockwise() ):
@@ -222,6 +239,11 @@ func rotate_counterclockwise():
 		direction = (direction -1 + global.DIRECTIONS.COUNT) % global.DIRECTIONS.COUNT
 		second_bulle_goal_pos = global.DIRECTIONS_NORMALS[ direction ]*global.BULLE_SIZE
 		second_bulle_state = ((second_bulle_state - 1)+4)%4
+		return true
+	elif( rotating ):
+		return true
+	else:
+		return false
 
 	
 	

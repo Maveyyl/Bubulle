@@ -31,7 +31,8 @@ func _ready():
 		
 	
 func _exit_tree():
-	simulation_scene_tree.finish()
+	if( simulation_scene_tree ):
+		simulation_scene_tree.finish()
 
 func _process(delta):
 #	if( get_viewport().is_set_as_render_target() ):

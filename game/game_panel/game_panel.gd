@@ -230,21 +230,27 @@ func remove_popping_bulle( bulle ):
 # commands given by parents
 func rotate_doublet_clockwise():
 	if( doublet ):
-		doublet.rotate_clockwise()
+		return doublet.rotate_clockwise()
+	return false
 func rotate_doublet_counterclockwise():
 	if( doublet ) :
-		doublet.rotate_counterclockwise()
+		return doublet.rotate_counterclockwise()
+	return false
 
 func move_doublet_left():
 	if( doublet ):
-		doublet.move_left()
+		return doublet.move_left()
+	return false
 func move_doublet_right():
 	if( doublet ):
-		doublet.move_right()
+		return doublet.move_right()
+	return false
 
 func increase_doublet_falling_speed():
 	if( doublet ):
-		doublet.increase_falling_speed()
+		return doublet.increase_falling_speed()
+	return false
 func decrease_doublet_falling_speed():
 	if( doublet ):
-		doublet.decrease_falling_speed()
+		return doublet.decrease_falling_speed()
+	return false
