@@ -14,3 +14,4 @@ script/script = ExtResource( 1 )
 
 
 [editable path="double_game_panel"]
+[editable path="ai"]

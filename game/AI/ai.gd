@@ -18,12 +18,15 @@ func _ready():
 		set_process(true)
 		simulation = global.SCRIPTS.SIMULATION.new()
 		
+		get_node('simulation_sprite').set_texture(simulation.get_root().get_render_target_texture())
 	
 func _exit_tree():
 	if( simulation ):
 		simulation.finish()
 
-func _process(delta):
+func _process(delta):		
+	get_node('simulation_sprite').set_texture(simulation.get_root().get_render_target_texture())
+	
 	# if simulation is not ready, return
 	if( !simulation.ready ):
 		return
@@ -39,7 +42,7 @@ func _process(delta):
 		doublet_placer.doublet_main_bulle_goal_pos_x = d[0]
 		doublet_placer.doublet_second_bulle_goal_state = d[1]
 	
-#	simulation.run_until_new_doublet()
+#	simulation.run_until_new_doublet(delta)
 
 
 

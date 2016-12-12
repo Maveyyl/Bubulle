@@ -10,8 +10,9 @@ var ready = false setget ,is_ready
 
 func _init():
 	get_root().set_as_render_target(true)
-	get_root().set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_DISABLED)
-	get_root().set_rect(Rect2(0, 0, 0, 0))
+#	get_root().set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_DISABLED)
+#	get_root().set_rect(Rect2(0, 0, 0, 0))
+	
 	init()
 	
 	change_scene_to( scene_manager.SCENES.solo )
@@ -28,11 +29,11 @@ func is_ready():
 		
 	return ready
 
-func run_until_new_doublet():
+func run_until_new_doublet( delta ):
 	if( double_game_panel.ended ):
 		return
 
 	var doublet = game_panel.doublet
 
 	while( doublet == game_panel.doublet && !double_game_panel.ended):
-		idle( 0.33333333 )
+		idle( delta )
