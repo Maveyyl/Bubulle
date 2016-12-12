@@ -12,7 +12,7 @@ var p1_penalty_seed_ref = [randi()]
 onready var game_panel_p2 = get_node('game_panel_p2')
 onready var info_panel_p2 = get_node('info_panel_p2')
 var p2_score = 0
-var p2_doublet_seed_ref = [randi()]
+var p2_doublet_seed_ref = [p1_doublet_seed_ref[0]]
 var p2_penalty_seed_ref = [randi()]
 
 
