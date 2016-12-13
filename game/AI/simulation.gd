@@ -12,8 +12,8 @@ var base_state
 
 func _init():
 	get_root().set_as_render_target(true)
-	get_root().set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_DISABLED)
-	get_root().set_rect(Rect2(0, 0, 0, 0))
+#	get_root().set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_DISABLED)
+#	get_root().set_rect(Rect2(0, 0, 0, 0))
 	
 	init()
 	

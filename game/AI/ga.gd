@@ -5,7 +5,7 @@ var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
 var max_generation_count = 10
-var max_execution_time = 1000
+var max_execution_time = 100
 
 var child_per_crossover = 2
 var orphan_count = 4
