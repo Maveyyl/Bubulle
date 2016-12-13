@@ -6,6 +6,7 @@ onready var grid = get_node("panel/grid")
 var state = global.GAME_PANEL_STATES.IDLE
 
 var doublet_default_pos = Vector2( (1+global.GRID_SIZE.x/2) * global.BULLE_SIZE.x , global.BULLE_SIZE.y * 2 ) -  global.BULLE_SIZE/2
+
 var doublet
 
 var falling_bulles = []

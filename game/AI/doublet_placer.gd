@@ -36,16 +36,17 @@ func _process(delta):
 	else:
 		vertically_placed = true
 	
-	if( doublet.get_main_bulle_grid_pos().x > doublet_main_bulle_goal_pos_x ):
-		r = game_panel.move_doublet_left()
-		if( !r ):
+	if( vertically_placed ):
+		if( doublet.get_main_bulle_grid_pos().x > doublet_main_bulle_goal_pos_x ):
+			r = game_panel.move_doublet_left()
+			if( !r ):
+				horizontally_placed = true
+		elif ( doublet.get_main_bulle_grid_pos().x < doublet_main_bulle_goal_pos_x ):
+			r = game_panel.move_doublet_right()
+			if( !r ):
+				horizontally_placed = true
+		else:
 			horizontally_placed = true
-	elif ( doublet.get_main_bulle_grid_pos().x < doublet_main_bulle_goal_pos_x ):
-		r = game_panel.move_doublet_right()
-		if( !r ):
-			horizontally_placed = true
-	else:
-		horizontally_placed = true
 
 		
 	if( horizontally_placed && vertically_placed):

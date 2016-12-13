@@ -6,6 +6,7 @@ onready var main = get_node("/root/main")
 
 const GRID_SIZE = Vector2(6, 12+2) # + 2 rows as buffer
 const BULLE_SIZE = Vector2(30, 30)
+const DOUBLET_DEFAULT_GRID_POS = Vector2( 3, 1)
 
 var DIRECTIONS = {
 	"LEFT": 0,
