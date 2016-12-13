@@ -42,7 +42,7 @@ func _process(delta):
 		doublet_placer.doublet_main_bulle_goal_pos_x = d[0]
 		doublet_placer.doublet_second_bulle_goal_state = d[1]
 	
-#	simulation.run_until_new_doublet(delta)
+	simulation.run_until_new_doublet(delta)
 
 
 
