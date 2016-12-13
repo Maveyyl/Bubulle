@@ -48,7 +48,8 @@ var SCRIPTS = {
 	"GRID": preload('res://game/game_panel/grid.gd'),
 	"GAME_PANEL": preload('res://game/game_panel/game_panel.gd'),
 	"DOUBLE_GAME_PANEL": preload('res://game/double_game_panel/double_game_panel.gd'),
-	"SIMULATION": preload('res://game/AI/simulation.gd')
+	"SIMULATION": preload('res://game/AI/simulation.gd'),
+	"GA": preload('res://game/AI/ga.gd')
 }
 var SCENES = {
 	"BULLE": preload('res://game/bulles/bulle.tscn'),

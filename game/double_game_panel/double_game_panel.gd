@@ -39,8 +39,9 @@ func fromDictionnary( d ):
 	if( d.has('p2_penalty_seed_ref') ):
 		p2_penalty_seed_ref = d.p2_penalty_seed_ref
 	
-	if( get_node('game_end_panel') ):
-		remove_child(get_node('game_end_panel'))
+	if( has_node('game_end') ):
+		remove_child(get_node('game_end'))
+		ended = false
 	set_process(true)
 func toDictionnary(full_state = true):
 	if ( !full_state && is_network_master() ):
@@ -137,7 +138,7 @@ func game_ended( is_p1_winner ):
 		game_end_panel.set_winner( "Player 1")
 	else:
 		game_end_panel.set_winner ( "Player 2") 
-	game_end_panel.set_pos( OS.get_window_size()/2 )
+	game_end_panel.set_pos( (OS.get_window_size()/2) + Vector2(0,100) )
 	
 func _on_game_panel_p1_game_ended():
 	game_ended( false )

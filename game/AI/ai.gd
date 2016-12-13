@@ -24,7 +24,7 @@ func _exit_tree():
 	if( simulation ):
 		simulation.finish()
 
-func _process(delta):		
+func _process(delta):
 	get_node('simulation_sprite').set_texture(simulation.get_root().get_render_target_texture())
 	
 	# if simulation is not ready, return
@@ -38,11 +38,20 @@ func _process(delta):
 	# if there's a new doublet to place, choose random location and rotation
 	if( doublet != game_panel.doublet ):
 		doublet = game_panel.doublet
-		var d = generate_random_placement()
+		
+		var double_game_panel_data = double_game_panel.toDictionnary(true)
+		simulation.set_base_state(double_game_panel_data)
+		
+		var ga = global.SCRIPTS.GA.new()
+		var d = ga.run( simulation )
 		doublet_placer.doublet_main_bulle_goal_pos_x = d[0]
 		doublet_placer.doublet_second_bulle_goal_state = d[1]
-	
-	simulation.run_until_new_doublet(delta)
+#		
+#		var d = generate_random_placement()
+#		doublet_placer.doublet_main_bulle_goal_pos_x = d[0]
+#		doublet_placer.doublet_second_bulle_goal_state = d[1]
+#
+#		simulation.run_until_new_doublet(delta)
 
 
 
