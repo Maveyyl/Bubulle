@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://UI/main_menu/tests_menu/tests_menu.gd" type="Script" id=1]
+
+[node name="tests_menu" type="Node2D"]
+
+script/script = ExtResource( 1 )
+
+[node name="panel" type="Panel" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 10.0
+margin/right = 210.0
+margin/bottom = 440.0
+
+[node name="Label" type="Label" parent="panel"]
+
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 10.0
+margin/right = 0.0
+margin/bottom = 24.0
+text = "Tests menu"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="button_test_solo_game_simulation" type="Button" parent="panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 60.0
+margin/right = 22.0
+margin/bottom = 80.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Solo Game Simulation"
+flat = false
+
+[connection signal="pressed" from="panel/button_test_solo_game_simulation" to="." method="_on_button_test_solo_game_simulation_pressed"]
+
+

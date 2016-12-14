@@ -33,3 +33,8 @@ func _on_button_leave_pressed():
 func _on_button_fork_pressed():
 	OS.execute(OS.get_executable_path(), OS.get_cmdline_args(), false)
 	pass
+
+
+func _on_button_test_pressed():
+	scene_manager.change_scene_to("tests_menu")
+	pass

@@ -140,6 +140,22 @@ shortcut = null
 text = "Duplicate Client"
 flat = false
 
+[node name="button_test" type="Button" parent="panel_misc"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 60.0
+margin/right = 56.0
+margin/bottom = 80.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Tests"
+flat = false
+
 [connection signal="pressed" from="panel_main/button_solo" to="." method="_on_button_solo_pressed"]
 
 [connection signal="pressed" from="panel_main/button_multi" to="." method="_on_button_multi_pressed"]
@@ -153,5 +169,7 @@ flat = false
 [connection signal="pressed" from="panel_main/button_leave" to="." method="_on_button_leave_pressed"]
 
 [connection signal="pressed" from="panel_misc/button_fork" to="." method="_on_button_fork_pressed"]
+
+[connection signal="pressed" from="panel_misc/button_test" to="." method="_on_button_test_pressed"]
 
 
