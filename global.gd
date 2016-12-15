@@ -89,10 +89,7 @@ var DOUBLET_STATES = {
 	"IDLE": 0,
 	"FALLING": 1
 }
-#var GRID_STATES = {
-#	"IDLE": 0,
-#	"SOLVING": 1
-#}
+
 var GAME_PANEL_STATES = {
 	"IDLE": 0,
 	"PLACING_DOUBLET": 1,

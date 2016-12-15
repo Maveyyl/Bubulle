@@ -51,6 +51,26 @@ shortcut = null
 text = "Solo Game Simulation"
 flat = false
 
+[node name="button_back" type="Button" parent="panel"]
+
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 30.0
+margin/right = 12.0
+margin/bottom = 10.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Back"
+flat = false
+
 [connection signal="pressed" from="panel/button_test_solo_game_simulation" to="." method="_on_button_test_solo_game_simulation_pressed"]
+
+[connection signal="pressed" from="panel/button_back" to="." method="_on_button_back_pressed"]
 
 

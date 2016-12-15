@@ -9,3 +9,7 @@ func _process(delta):
 
 func _on_button_test_solo_game_simulation_pressed():
 	scene_manager.change_scene_to("test_solo_game_simulation")
+
+
+func _on_button_back_pressed():
+	scene_manager.change_scene_to_previous()
