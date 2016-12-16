@@ -11,9 +11,9 @@ script/script = ExtResource( 1 )
 
 script/script = ExtResource( 2 )
 
-[node name="simulation_sprite" type="Sprite" parent="."]
+[node name="simulation_view" type="Node2D" parent="."]
 
-transform/pos = Vector2( 330, 330 )
-transform/scale = Vector2( 0.3, 0.3 )
+transform/pos = Vector2( 240, 240 )
+transform/scale = Vector2( 0.5, 0.5 )
 
 

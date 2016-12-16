@@ -33,16 +33,21 @@ func _process(delta):
 		
 	for x in range(global.GRID_SIZE.x):
 		for y in range(global.GRID_SIZE.y):
-			if( simulation.bulles[x][y] >= 0 ):
-				bulles[x][y].set_texture( bulles_textures[simulation.bulles[x][y]] )
+			if( simulation.bulles[x+1][y+1] >= 0 ):
+				bulles[x][y].set_texture( bulles_textures[simulation.bulles[x+1][y+1]] )
 				bulles[x][y].show()
 			else:
 				bulles[x][y].hide()
 				
 	if( Input.is_action_just_pressed('speed_p1') ):
 		simulation.generate_random_doublet()
-		var solution = generate_random_placement()
-		simulation.simulate_solution(solution)
+		var solution = []
+		for i in range(1):
+			var tmp = generate_random_placement()
+			solution.push_back(tmp[0])
+			solution.push_back(tmp[1])
+		var score = simulation.simulate_solution(solution)
+		print(score)
 
 
 

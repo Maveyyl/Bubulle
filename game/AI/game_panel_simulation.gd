@@ -1,5 +1,8 @@
 extends Reference
 
+var WALLED_GRID_SIZE = global.GRID_SIZE + Vector2(2,2)
+
+var base_state = null;
 
 var main_bulle = -1
 var second_bulle = -1
@@ -13,27 +16,36 @@ var penalty_seed_ref = [0]
 
 func _init():
 	bulles = []
-	bulles.resize(global.GRID_SIZE.x)
-	for x in range(global.GRID_SIZE.x):
+	bulles.resize(WALLED_GRID_SIZE.x)
+	for x in range(WALLED_GRID_SIZE.x):
 		bulles[x] = []
-		bulles[x].resize(global.GRID_SIZE.y)
-		for y in range(global.GRID_SIZE.y):
-			bulles[x][y] = -1
+		bulles[x].resize(WALLED_GRID_SIZE.y)
+		for y in range(WALLED_GRID_SIZE.y):
+			if( x == 0 || x == WALLED_GRID_SIZE.x -1 || y == 0 || y == WALLED_GRID_SIZE.y -1 ):
+				bulles[x][y] = -2
+			else:
+				bulles[x][y] = -1
 
+func set_base_state( state ):
+	base_state = state
+func reset_to_base_state():
+	fromDictionnary(base_state)
 func fromDictionnary( d ):
 	score = d.p2_score
 	doublet_seed_ref = [d.p2_doublet_seed_ref[0]]
-	penalty_seed_ref = [d.penalty_seed_ref[0]]
+	penalty_seed_ref = [d.p2_penalty_seed_ref[0]]
 	
 	penalty_bulles = d.game_panel_p2.penalty_bulles
 	
 	main_bulle = d.game_panel_p2.doublet.main_bulle
 	second_bulle = d.game_panel_p2.doublet.second_bulle
 	
-	for x in range(global.GRID_SIZE.x):
-		for y in range(global.GRID_SIZE.y):
-			var idx = x * global.GRID_SIZE.y + y
-			bulles[x][y] = d.game_panel_p2.grid.bulles[idx]
+	var idx = 0
+	for x in range(1,global.GRID_SIZE.x+1):
+		for y in range(1,global.GRID_SIZE.y+1):
+			bulles[x][y] = int(d.game_panel_p2.grid.bulles[idx])-1
+			idx += 1
+
 	
 func generate_random_doublet():
 	main_bulle = global.get_randi_update_seed(doublet_seed_ref)%(global.BULLE_TYPES.COUNT-1)
@@ -42,9 +54,9 @@ func generate_random_doublet():
 
 func apply_gravity():
 	var empty_index = -1
-	for x in range(global.GRID_SIZE.x):
+	for x in range(1,global.GRID_SIZE.x+1):
 		empty_index = -1
-		for y in range(global.GRID_SIZE.y-1,-1,-1):
+		for y in range(global.GRID_SIZE.y,0,-1):
 			# find first empty slot
 			if( empty_index == -1 && bulles[x][y] == -1 ):
 				# memorize slot's index
@@ -62,28 +74,16 @@ func get_neighbour_pos( pos, direction ):
 	return pos + global.DIRECTIONS_NORMALS[direction]
 func get_neighbour( pos, direction):
 	var neighbour_pos = get_neighbour_pos(pos, direction)
-	if( neighbour_pos.x < 0 ||
-	neighbour_pos.y < 0 ||
-	neighbour_pos.x >= global.GRID_SIZE.x ||
-	neighbour_pos.y >= global.GRID_SIZE.y ):
-		return -1
-	else:
-		return bulles[neighbour_pos.x][neighbour_pos.y]
+	return bulles[neighbour_pos.x][neighbour_pos.y]
 func get_slot_type( pos ):
-	if( pos.x < 0 ||
-	pos.y < 0 ||
-	pos.x >= global.GRID_SIZE.x ||
-	pos.y >= global.GRID_SIZE.y ):
-		return -2
-	else:
-		return bulles[pos.x][pos.y]
+	return bulles[pos.x][pos.y]
 	
 func solve():
 	var solving_score = 0
 	
-	for x in range(global.GRID_SIZE.x):
-		for y in range(global.GRID_SIZE.y):
-			if( bulles[x][y] != -1 ):
+	for x in range(1, global.GRID_SIZE.x+1):
+		for y in range(1, global.GRID_SIZE.y+1):
+			if( bulles[x][y] != -1 && bulles[x][y] != global.BULLE_TYPES.BLACK ):
 				var type = bulles[x][y]
 				var slots_to_pop = [ Vector2(x,y) ]
 				var slots_to_explore = [ Vector2(x,y) ]
@@ -158,8 +158,14 @@ func place_doublet( goal_pos ):
 	apply_gravity()
 
 
+func add_random_penalties():
+	var bulle_pos_array = global.get_penalty_random_slots( penalty_bulles, penalty_seed_ref )
+	penalty_bulles -= bulle_pos_array.size()
+	for i in range (bulle_pos_array.size()):
+		bulles[bulle_pos_array[i].x][bulle_pos_array[i].y] = global.BULLE_TYPES.BLACK
+	apply_gravity()
 
-func simulate_one_step():
+func simulate_solving_step():
 	var combo_count = 0
 	var cumulative_score = 0
 	var keep_solving = true
@@ -178,12 +184,24 @@ func simulate_one_step():
 		apply_gravity()
 	
 func simulate_solution( solution ):
+	var main_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS + Vector2(1,1)
+	var second_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS + global.DIRECTIONS_NORMALS[ global.DIRECTIONS.TOP ] + Vector2(1,1)
+	
 	var base_score = score
 	for i in range(0, solution.size(), 2):
+		# test if the game hasn't terminated
+		if( bulles[main_bulle_pos.x][main_bulle_pos.y] >= 0
+			&& bulles[second_bulle_pos.x][second_bulle_pos.y] >= 0 ):
+				break;
+		# first loop doublet is already generated
 		if( i != 0 ):
 			generate_random_doublet()
-		place_doublet( [solution[i], solution[i+1] ] )
-		simulate_one_step()
+		# place doublet in the given state
+		place_doublet( [solution[i]+1, solution[i+1] ] )
+		# simulate the game's process
+		simulate_solving_step()
+		if( penalty_bulles > 0 ):
+			add_random_penalties()
 		
 	var updated_score = score - base_score
 	return updated_score

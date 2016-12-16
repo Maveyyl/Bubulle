@@ -180,7 +180,7 @@ func add_penalties_to_game( bulle_pos_array ):
 	for i in range (bulle_pos_array.size()):
 		var black_bulle = global.BULLE_SCENES[ global.BULLE_TYPES.BLACK ].instance() 
 		add_bulle_to_game(black_bulle)
-		black_bulle.set_pos(bulle_pos_array[i])
+		black_bulle.set_pos(grid.grid_coord_to_pos(bulle_pos_array[i]))
 		black_bulle.set_falling()
 	
 

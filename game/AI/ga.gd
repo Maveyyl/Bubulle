@@ -4,7 +4,7 @@ extends Reference
 var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
-var max_generation_count = 10
+var max_generation_count = 100
 var max_execution_time = 100
 
 var child_per_crossover = 2
@@ -111,18 +111,14 @@ func compute_fitness( individual, simulation ):
 	var translated_gencode = []
 	translated_gencode.resize( individual.genetic_code_size )
 	
-	var initial_score = simulation.info_panel.score
+	var initial_score = simulation.score
 	
 	simulation.reset_to_base_state()
 	for i in range(0, individual.genetic_code_size, 2):
 		translated_gencode[i] = int(floor( individual.genetic_code[i]/(256/6)))
 		translated_gencode[i+1] = int(floor( individual.genetic_code[i+1]/(256/4)))
-		
-		simulation.set_doublet_placer_goal( translated_gencode[i], translated_gencode[i+1] )
-		simulation.run_until_new_doublet( 0.033 )
-		
-	var gained_score = simulation.info_panel.score - initial_score
-
+	
+	var gained_score = simulation.simulate_solution( translated_gencode )
 	individual.fitness_score = gained_score
 
 

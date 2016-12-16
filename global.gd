@@ -50,6 +50,7 @@ var SCRIPTS = {
 	"GAME_PANEL": preload('res://game/game_panel/game_panel.gd'),
 	"DOUBLE_GAME_PANEL": preload('res://game/double_game_panel/double_game_panel.gd'),
 	"SIMULATION": preload('res://game/AI/simulation.gd'),
+	"GAME_PANEL_SIMULATION": preload('res://game/AI/game_panel_simulation.gd'),
 	"GA": preload('res://game/AI/ga.gd')
 }
 var SCENES = {
@@ -126,9 +127,9 @@ func get_penalty_random_slots(penalty_count, seed_ref):
 	var slots_line_2 = []
 	
 	for i in range( GRID_SIZE.x ):
-		slots_line_1.append(Vector2( i, 0) * BULLE_SIZE + BULLE_SIZE/2 )
+		slots_line_1.append(Vector2( i, 0)  )
 		if( penalty_count > 5 ):
-			slots_line_2.append(Vector2( i, 1) * BULLE_SIZE + BULLE_SIZE/2 )
+			slots_line_2.append(Vector2( i, 1) )
 
 	if( penalty_count <= 5 ):
 		for i in range(6-penalty_count):

@@ -10,33 +10,36 @@ onready var doublet_placer = get_node('doublet_placer')
 
 var doublet
 
-var simulation
+var simulation = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
+var show_simulation = false
+onready var simulation_view = get_node('simulation_view')
+var bulles = [[]]
+var bulles_textures = [
+	preload('res://game/bulles/red/base_red.png'),
+	preload('res://game/bulles/green/base_green.png'),
+	preload('res://game/bulles/yellow/base_yellow.png'),
+	preload('res://game/bulles/purple/base_purple.png'),
+	preload('res://game/bulles/cyan/base_cyan.png'),
+	preload('res://game/bulles/black/base_black.png')
+]
 
 func _ready():
+	set_process(true)
 	
-	if( !get_viewport().is_set_as_render_target() ):
-		set_process(true)
-		simulation = global.SCRIPTS.SIMULATION.new()
-		
-		get_node('simulation_sprite').set_texture(simulation.get_root().get_render_target_texture())
+	if( show_simulation ):
+		bulles = []
+		bulles.resize(global.GRID_SIZE.x)
+		for x in range(global.GRID_SIZE.x):
+			bulles[x] = []
+			bulles[x].resize(global.GRID_SIZE.y)
+			for y in range(global.GRID_SIZE.y):
+				bulles[x][y] = Sprite.new()
+				simulation_view.add_child(bulles[x][y])
+				bulles[x][y].set_pos( Vector2( global.BULLE_SIZE.x * x, global.BULLE_SIZE.y * y) + global.BULLE_SIZE/2 )
 	
-func _exit_tree():
-	if( simulation ):
-		simulation.finish()
 
-func _process(delta):
-	get_node('simulation_sprite').set_texture(simulation.get_root().get_render_target_texture())
-	
-	# if simulation is not ready, return
-	if( !simulation.ready ):
-		return
-		
-	# if there's no doublet to place, do nothing
-	if( !game_panel.doublet  ):
-		return;
-	
-	# if there's a new doublet to place, choose random location and rotation
-	if( doublet != game_panel.doublet ):
+func _process(delta):	
+	if( game_panel.doublet && doublet != game_panel.doublet ):
 		doublet = game_panel.doublet
 		
 		var double_game_panel_data = double_game_panel.toDictionnary(true)
@@ -46,7 +49,18 @@ func _process(delta):
 		var d = ga.run( simulation )
 		doublet_placer.doublet_main_bulle_goal_pos_x = d[0]
 		doublet_placer.doublet_second_bulle_goal_state = d[1]
-#		
+
+		if( show_simulation ):
+			for x in range(global.GRID_SIZE.x):
+				for y in range(global.GRID_SIZE.y):
+					if( simulation.bulles[x][y] >= 0 ):
+						bulles[x][y].set_texture( bulles_textures[simulation.bulles[x][y]] )
+						bulles[x][y].show()
+					else:
+						bulles[x][y].hide()
+
+	# if there's a new doublet to place, choose random location and rotation
+#	if( doublet != game_panel.doublet ):
 #		var d = generate_random_placement()
 #		doublet_placer.doublet_main_bulle_goal_pos_x = d[0]
 #		doublet_placer.doublet_second_bulle_goal_state = d[1]
