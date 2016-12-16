@@ -10,9 +10,18 @@ onready var info_panel = solo_game.get_node('double_game_panel/info_panel_p2')
 
 var doublet
 
+var increase_speed = false
+
 func _ready():
 	set_process(true)
-	
+
+
+func set_goal_placement( d ):
+	doublet_main_bulle_goal_pos_x = d[0]
+	doublet_second_bulle_goal_state = d[1]
+func get_goal_placement():
+	return [ doublet_main_bulle_goal_pos_x, doublet_second_bulle_goal_state]
+
 func _process(delta):
 	if( !game_panel.doublet  ):
 		return;
@@ -49,7 +58,7 @@ func _process(delta):
 			horizontally_placed = true
 
 		
-	if( horizontally_placed && vertically_placed):
+	if( horizontally_placed && vertically_placed && increase_speed):
 		game_panel.increase_doublet_falling_speed()
 	else:
 		game_panel.decrease_doublet_falling_speed()

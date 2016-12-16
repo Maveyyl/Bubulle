@@ -2,7 +2,7 @@ extends Reference
 
 var WALLED_GRID_SIZE = global.GRID_SIZE + Vector2(2,2)
 
-var base_state = null;
+var base_state ;
 
 var main_bulle = -1
 var second_bulle = -1
@@ -26,10 +26,29 @@ func _init():
 			else:
 				bulles[x][y] = -1
 
-func set_base_state( state ):
-	base_state = state
+func set_base_state(  ):
+	base_state = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
+	base_state.score = score
+	base_state.doublet_seed_ref = [doublet_seed_ref[0]]
+	base_state.penalty_seed_ref = [penalty_seed_ref[0]]
+	base_state.penalty_bulles = penalty_bulles
+	base_state.main_bulle = main_bulle
+	base_state.second_bulle = second_bulle
+	
+	for x in range(1,global.GRID_SIZE.x+1):
+		for y in range(1,global.GRID_SIZE.y+1):
+			base_state.bulles[x][y] = bulles[x][y]
 func reset_to_base_state():
-	fromDictionnary(base_state)
+	score = base_state.score
+	doublet_seed_ref = [base_state.doublet_seed_ref[0]]
+	penalty_seed_ref = [base_state.penalty_seed_ref[0]]
+	penalty_bulles = base_state.penalty_bulles
+	main_bulle = base_state.main_bulle
+	second_bulle = base_state.second_bulle
+	
+	for x in range(1,global.GRID_SIZE.x+1):
+		for y in range(1,global.GRID_SIZE.y+1):
+			bulles[x][y] = base_state.bulles[x][y]
 func fromDictionnary( d ):
 	score = d.p2_score
 	doublet_seed_ref = [d.p2_doublet_seed_ref[0]]
@@ -50,7 +69,6 @@ func fromDictionnary( d ):
 func generate_random_doublet():
 	main_bulle = global.get_randi_update_seed(doublet_seed_ref)%(global.BULLE_TYPES.COUNT-1)
 	second_bulle = global.get_randi_update_seed(doublet_seed_ref)%(global.BULLE_TYPES.COUNT-1)
-
 
 func apply_gravity():
 	var empty_index = -1
@@ -113,8 +131,8 @@ func place_doublet( goal_pos ):
 	var horizontally_placed = false
 	var vertically_placed = false
 	
-	var main_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS
-	var second_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS + global.DIRECTIONS_NORMALS[ global.DIRECTIONS.TOP ]
+	var main_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS + Vector2(1,1)
+	var second_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS + global.DIRECTIONS_NORMALS[ global.DIRECTIONS.TOP ] + Vector2(1,1)
 	var second_bulle_state = global.DIRECTIONS.TOP
 
 	while( !stop ):
@@ -152,6 +170,7 @@ func place_doublet( goal_pos ):
 	
 		if( vertically_placed && horizontally_placed ):
 			stop = true
+			
 			bulles[main_bulle_pos.x][main_bulle_pos.y] = main_bulle
 			bulles[second_bulle_pos.x][second_bulle_pos.y] = second_bulle
 	
@@ -179,10 +198,9 @@ func simulate_solving_step():
 			combo_count += 1
 			cumulative_score += global.popping_combo_score_compute( solving_score, combo_count)
 			keep_solving = true
-		else:
-			score += cumulative_score
 		apply_gravity()
 	
+	score += cumulative_score
 func simulate_solution( solution ):
 	var main_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS + Vector2(1,1)
 	var second_bulle_pos = global.DOUBLET_DEFAULT_GRID_POS + global.DIRECTIONS_NORMALS[ global.DIRECTIONS.TOP ] + Vector2(1,1)
@@ -192,6 +210,7 @@ func simulate_solution( solution ):
 		# test if the game hasn't terminated
 		if( bulles[main_bulle_pos.x][main_bulle_pos.y] >= 0
 			&& bulles[second_bulle_pos.x][second_bulle_pos.y] >= 0 ):
+				score = -9999
 				break;
 		# first loop doublet is already generated
 		if( i != 0 ):

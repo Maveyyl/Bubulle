@@ -5,7 +5,8 @@ var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
 var max_generation_count = 100
-var max_execution_time = 100
+var max_execution_time = 2000
+var exterior_stop = false
 
 var child_per_crossover = 2
 var orphan_count = 4
@@ -13,7 +14,7 @@ var orphan_count = 4
 var mutation_rate = 0.05
 var mutation_value = 10
 
-var genetic_code_size = 4
+var genetic_code_size = 10
 
 func check_config_sanity():
 	return (reproductor_individual_count / 2 ) * child_per_crossover + orphan_count + selected_individual_count == individual_count
@@ -29,6 +30,8 @@ func run( simulation ):
 	if( !check_config_sanity() ):
 		return false
 		
+	exterior_stop = false
+		
 	# initialisations
 	best_individual = null
 	generation = 0
@@ -43,7 +46,7 @@ func run( simulation ):
 	execution_time += start_execution_time - OS.get_ticks_msec()
 	
 	# while execution time hasn't reached max time and generation hasn't reached max generation
-	while( execution_time < max_execution_time && generation < max_generation_count ):
+	while( execution_time < max_execution_time && generation < max_generation_count && !exterior_stop ):
 		# evaluate fitness of the generation
 		for i in range( individual_count ):
 			compute_fitness(individuals[i], simulation)
@@ -59,8 +62,7 @@ func run( simulation ):
 		# end loop, increment stop criteria
 		execution_time = OS.get_ticks_msec() - start_execution_time 
 		generation +=1
-	print("generation: ", generation, " best score: ", best_individual.fitness_score, " execution time: ", execution_time)
-	
+
 	
 	var translated_gencode = []
 	translated_gencode.resize( genetic_code_size )
@@ -68,7 +70,15 @@ func run( simulation ):
 		translated_gencode[i] = int(floor( best_individual.genetic_code[i]/(256/6)))
 		translated_gencode[i+1] = int(floor( best_individual.genetic_code[i+1]/(256/4)))
 	
-	return translated_gencode
+	print("generation: ", generation, 
+		" best score: ", best_individual.fitness_score, 
+		" solution: ", translated_gencode[0], " ", translated_gencode[1],
+		" execution time: ", execution_time)
+	
+	return {
+		"solution": translated_gencode,
+		"score": best_individual.fitness_score
+	}
 
 func create_next_gen():
 	var current_index = 0
