@@ -50,13 +50,14 @@ func _ready():
 	doublet_placer.set_goal_placement( generate_random_placement() )
 
 func _process(delta):
-	if( ga.generation > 5 || ga.execution_time >= ga.max_execution_time ):
+	if( ga.execution_time >= ga.max_execution_time ):
 		doublet_placer.increase_speed = true
+		ga.exterior_stop = true
 	else:
 		doublet_placer.increase_speed = false
 	
-	if( ga.generation > 5 || ga.execution_time >= ga.max_execution_time ):
-		ga.exterior_stop = true
+#	if( ga.generation > 10 || ga.execution_time >= ga.max_execution_time ):
+#		ga.exterior_stop = true
 		
 	if( game_panel.doublet && doublet != game_panel.doublet ):
 		doublet = game_panel.doublet
@@ -66,11 +67,8 @@ func _process(delta):
 		else:
 			var d = thread.wait_to_finish()
 			if( best_solution.size() == 0 || best_score < d.score):
-				print("change ", best_solution.size(), " ", best_score, " ", d.score)
 				best_solution = d.solution
 				best_score = d.score
-			else:
-				print("keep ", best_solution.size(), " ", best_score, " ", d.score)
 				
 			doublet_placer.set_goal_placement( best_solution )
 			best_solution.pop_front()

@@ -5,7 +5,7 @@ var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
 var max_generation_count = 100
-var max_execution_time = 2000
+var max_execution_time = 1000
 var exterior_stop = false
 
 var child_per_crossover = 2
@@ -49,7 +49,8 @@ func run( simulation ):
 	while( execution_time < max_execution_time && generation < max_generation_count && !exterior_stop ):
 		# evaluate fitness of the generation
 		for i in range( individual_count ):
-			compute_fitness(individuals[i], simulation)
+			if( !individuals[i].fitness_score_computed ):
+				compute_fitness(individuals[i], simulation)
 		
 		# sort the individuals by fitness score and remember the best
 		var tmp_best = sort_individuals()
@@ -138,10 +139,14 @@ func compute_fitness( individual, simulation ):
 
 
 class Individual extends Reference:
-	var fitness_score = 0
+	var fitness_score = 0 setget set_fitness_score
+	var fitness_score_computed = false
 	var genetic_code_size = 0 setget set_genetic_code_size
 	var genetic_code = []
 
+	func set_fitness_score( value ):
+		fitness_score = value
+		fitness_score_computed = true
 		
 	func set_genetic_code_size( size ):
 		genetic_code_size = size
