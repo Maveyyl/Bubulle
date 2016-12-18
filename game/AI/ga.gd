@@ -4,7 +4,7 @@ extends Reference
 var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
-var max_generation_count = 100
+var max_generation_count = 200
 var max_execution_time = 1000
 var exterior_stop = false
 
@@ -23,7 +23,6 @@ var generation = 0
 var execution_time = 0
 var individuals = []
 var best_individual
-
 
 
 func run( simulation ):
@@ -50,7 +49,9 @@ func run( simulation ):
 		# evaluate fitness of the generation
 		for i in range( individual_count ):
 			if( !individuals[i].fitness_score_computed ):
-				compute_fitness(individuals[i], simulation)
+#				compute_fitness([individuals[i], simulation])
+				thread_pool.add_job( self, "compute_fitness", [individuals[i], simulation.copy()] )
+		thread_pool.wait_to_finish()
 		
 		# sort the individuals by fitness score and remember the best
 		var tmp_best = sort_individuals()
@@ -118,20 +119,21 @@ func swap(a, id1, id2):
 	a[id1] = a[id2]
 	a[id2] = tmp
 
-func compute_fitness( individual, simulation ):
+func compute_fitness( arguments ):
+	var individual = arguments[0]
+	var simulation = arguments[1]
 	var translated_gencode = []
 	translated_gencode.resize( individual.genetic_code_size )
 	
 	var initial_score = simulation.score
 	
-	simulation.reset_to_base_state()
+#	simulation.reset_to_base_state()
 	for i in range(0, individual.genetic_code_size, 2):
 		translated_gencode[i] = int(floor( individual.genetic_code[i]/(256/6)))
 		translated_gencode[i+1] = int(floor( individual.genetic_code[i+1]/(256/4)))
 	
 	var gained_score = simulation.simulate_solution( translated_gencode )
 	individual.fitness_score = gained_score
-
 
 
 

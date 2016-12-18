@@ -38,6 +38,22 @@ func set_base_state(  ):
 	for x in range(1,global.GRID_SIZE.x+1):
 		for y in range(1,global.GRID_SIZE.y+1):
 			base_state.bulles[x][y] = bulles[x][y]
+func copy():
+	var copy = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
+	
+	copy.score = score
+	copy.doublet_seed_ref = [doublet_seed_ref[0]]
+	copy.penalty_seed_ref = [penalty_seed_ref[0]]
+	copy.penalty_bulles = penalty_bulles
+	copy.main_bulle = main_bulle
+	copy.second_bulle = second_bulle
+	
+	for x in range(1,global.GRID_SIZE.x+1):
+		for y in range(1,global.GRID_SIZE.y+1):
+			copy.bulles[x][y] = bulles[x][y]
+			
+#	copy.set_base_state()
+	return copy
 func reset_to_base_state():
 	score = base_state.score
 	doublet_seed_ref = [base_state.doublet_seed_ref[0]]
@@ -209,7 +225,8 @@ func simulate_solution( solution ):
 	for i in range(0, solution.size(), 2):
 		# test if the game hasn't terminated
 		if( bulles[main_bulle_pos.x][main_bulle_pos.y] >= 0
-			&& bulles[second_bulle_pos.x][second_bulle_pos.y] >= 0 ):
+			&& bulles[second_bulle_pos.x][second_bulle_pos.y] >= 0
+			&& bulles[main_bulle_pos.x][main_bulle_pos.y-1] >= 0 ):
 				score = -9999
 				break;
 		# first loop doublet is already generated

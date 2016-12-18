@@ -21,7 +21,7 @@ var best_score = -1
 var simulation = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
 
 
-var show_simulation = true
+var show_simulation = false
 onready var simulation_view = get_node('simulation_view')
 var bulles = [[]]
 var bulles_textures = [
@@ -50,7 +50,7 @@ func _ready():
 	doublet_placer.set_goal_placement( generate_random_placement() )
 
 func _process(delta):
-	if( ga.execution_time >= ga.max_execution_time ):
+	if( ga.execution_time >= ga.max_execution_time || ga.generation >= ga.max_generation_count ):
 		doublet_placer.increase_speed = true
 		ga.exterior_stop = true
 	else:
@@ -83,7 +83,7 @@ func _process(delta):
 		simulation.main_bulle = info_panel.doublet.main_bulle.type
 		simulation.second_bulle = info_panel.doublet.second_bulle.type
 
-		simulation.set_base_state()
+#		simulation.set_base_state()
 		
 		if( show_simulation ):
 			for x in range(global.GRID_SIZE.x):
@@ -96,6 +96,7 @@ func _process(delta):
 
 #		var d = ga.run( simulation )
 		thread.start( ga, "run", simulation)
+#		ga.run(simulation)
 #		var d = thread.wait_to_finish()
 #		doublet_placer.set_goal_placement( d )
 
