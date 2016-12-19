@@ -48,6 +48,7 @@ func _ready():
 				simulation_view.add_child(bulles[x][y])
 				bulles[x][y].set_pos( Vector2( global.BULLE_SIZE.x * x, global.BULLE_SIZE.y * y) + global.BULLE_SIZE/2 )
 
+	game_panel.add_penalty(20)
 	doublet_placer.set_goal_placement( generate_random_placement() )
 
 func _process(delta):
@@ -59,30 +60,42 @@ func _process(delta):
 
 	if( game_panel.doublet && doublet != game_panel.doublet ):
 		doublet = game_panel.doublet
-		
+		# if first decision, don't do anything
 		if( first_decision ):
 			first_decision = false
 		else:
+			
+			
+			# recover genetic algorithm results
 			ga_result = thread.wait_to_finish()
+			
+			# update current solution's score compared to environment
+			print("before ", best_score)
+			best_score = simulation.copy().simulate_solution( best_solution )
+			print("after ", best_score)
+			
+			# compare with new results
 			if( best_solution.size() == 0 || best_score < ga_result.score):
 				best_solution = ga_result.solution
 				best_score = ga_result.score
 			ga_result = null
 				
+			# put the best solution as next order
 			doublet_placer.set_goal_placement( best_solution )
 			best_solution.pop_front()
 			best_solution.pop_front()
 				
-			
+
 		
-		
+		# create base simulation with current context
 		var double_game_panel_data = double_game_panel.toDictionnary(true)
 		simulation.fromDictionnary(double_game_panel_data)
 		simulation.simulate_solution( doublet_placer.get_goal_placement() )
 		simulation.main_bulle = info_panel.doublet.main_bulle.type
 		simulation.second_bulle = info_panel.doublet.second_bulle.type
-
 		
+		thread.start( ga, "run", simulation.copy())
+			
 		if( show_simulation ):
 			for x in range(global.GRID_SIZE.x):
 				for y in range(global.GRID_SIZE.y):
@@ -92,7 +105,6 @@ func _process(delta):
 					else:
 						bulles[x][y].hide()
 
-		thread.start( ga, "run", simulation)
 #		ga_result = ga.run( simulation )
 #		doublet_placer.set_goal_placement( ga_result )
 

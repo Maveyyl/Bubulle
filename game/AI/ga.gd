@@ -111,13 +111,7 @@ func run( simulation ):
 		execution_time = OS.get_ticks_msec() - start_execution_time 
 		generation +=1
 
-
-	
-	var translated_gencode = []
-	translated_gencode.resize( genetic_code_size )
-	for i in range(0, genetic_code_size, 2):
-		translated_gencode[i] = int(floor( best_individual.genetic_code[i]/(256/6)))
-		translated_gencode[i+1] = int(floor( best_individual.genetic_code[i+1]/(256/4)))
+	var translated_gencode = translate_gencode( best_individual.genetic_code )
 	
 	print("generation: ", generation, 
 		" best score: ", best_individual.fitness_score, 
@@ -168,19 +162,17 @@ func swap(a, id1, id2):
 func compute_fitness( arguments ):
 	var individual = arguments[0]
 	var simulation = arguments[1]
-	var translated_gencode = []
-	translated_gencode.resize( individual.genetic_code_size )
-	
-	var initial_score = simulation.score
-	
-#	simulation.reset_to_base_state()
-	for i in range(0, individual.genetic_code_size, 2):
-		translated_gencode[i] = int(floor( individual.genetic_code[i]/(256/6)))
-		translated_gencode[i+1] = int(floor( individual.genetic_code[i+1]/(256/4)))
-	
-	var gained_score = simulation.simulate_solution( translated_gencode )
-	individual.fitness_score = gained_score
+	var translated_gencode = translate_gencode( individual.genetic_code )
+	individual.fitness_score = simulation.simulate_solution( translated_gencode )
 
+func translate_gencode( gencode ):
+	var translated_gencode = []
+	translated_gencode.resize( gencode.size() )
+	for i in range(0, gencode.size(), 2):
+		translated_gencode[i] = int(floor( gencode[i]/(256/6)))
+		translated_gencode[i+1] = int(floor( gencode[i+1]/(256/4)))
+	return translated_gencode
+	
 
 
 class Individual extends Reference:

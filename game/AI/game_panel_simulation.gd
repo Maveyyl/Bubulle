@@ -239,8 +239,9 @@ func place_doublet( goal_pos ):
 func add_random_penalties():
 	var bulle_pos_array = get_penalty_random_slots( penalty_bulles, penalty_seed_ref )
 	penalty_bulles -= bulle_pos_array.size()
+
 	for i in range (bulle_pos_array.size()):
-		bulles[bulle_pos_array[i].x][bulle_pos_array[i].y] = BULLE_TYPES.BLACK
+		bulles[bulle_pos_array[i].x+1][bulle_pos_array[i].y+1] = BULLE_TYPES.BLACK
 	apply_gravity()
 
 func simulate_solving_step():
