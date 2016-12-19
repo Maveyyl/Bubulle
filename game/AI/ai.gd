@@ -49,6 +49,7 @@ func _ready():
 
 	doublet_placer.set_goal_placement( generate_random_placement() )
 
+#var d 
 func _process(delta):
 	if( ga.execution_time >= ga.max_execution_time || ga.generation >= ga.max_generation_count ):
 		doublet_placer.increase_speed = true
@@ -56,9 +57,7 @@ func _process(delta):
 	else:
 		doublet_placer.increase_speed = false
 	
-#	if( ga.generation > 10 || ga.execution_time >= ga.max_execution_time ):
-#		ga.exterior_stop = true
-		
+
 	if( game_panel.doublet && doublet != game_panel.doublet ):
 		doublet = game_panel.doublet
 		
@@ -94,9 +93,8 @@ func _process(delta):
 					else:
 						bulles[x][y].hide()
 
-#		var d = ga.run( simulation )
+#		d = ga.run( simulation )
 		thread.start( ga, "run", simulation)
-#		ga.run(simulation)
 #		var d = thread.wait_to_finish()
 #		doublet_placer.set_goal_placement( d )
 

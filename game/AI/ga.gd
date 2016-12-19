@@ -4,8 +4,8 @@ extends Reference
 var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
-var max_generation_count = 200
-var max_execution_time = 1000
+var max_generation_count = 30
+var max_execution_time = 300
 var exterior_stop = false
 
 var child_per_crossover = 2
@@ -14,7 +14,7 @@ var orphan_count = 4
 var mutation_rate = 0.05
 var mutation_value = 10
 
-var genetic_code_size = 10
+var genetic_code_size = 6
 
 func check_config_sanity():
 	return (reproductor_individual_count / 2 ) * child_per_crossover + orphan_count + selected_individual_count == individual_count
@@ -49,21 +49,22 @@ func run( simulation ):
 		# evaluate fitness of the generation
 		for i in range( individual_count ):
 			if( !individuals[i].fitness_score_computed ):
-#				compute_fitness([individuals[i], simulation])
-				thread_pool.add_job( self, "compute_fitness", [individuals[i], simulation.copy()] )
+#				compute_fitness([individuals[i], simulation.copy()])
+				var err = thread_pool.add_job( self, "compute_fitness", [individuals[i], simulation.copy()] )
 		thread_pool.wait_to_finish()
-		
+
 		# sort the individuals by fitness score and remember the best
 		var tmp_best = sort_individuals()
 		if( !best_individual || tmp_best.fitness_score > best_individual.fitness_score ):
 			best_individual = tmp_best
-		
+
 		# create next generation
 		create_next_gen()
-		
+
 		# end loop, increment stop criteria
 		execution_time = OS.get_ticks_msec() - start_execution_time 
 		generation +=1
+
 
 	
 	var translated_gencode = []
@@ -111,7 +112,6 @@ func sort_individuals( ):
 				swap(individuals,i-1,i)
 				newn = i
 		n = newn
-	
 	return individuals[0]
 
 func swap(a, id1, id2):
@@ -134,9 +134,6 @@ func compute_fitness( arguments ):
 	
 	var gained_score = simulation.simulate_solution( translated_gencode )
 	individual.fitness_score = gained_score
-
-
-
 
 
 

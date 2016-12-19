@@ -12,7 +12,8 @@ func add_job( instance, method, userdata=NULL, priority=1):
 		"parameters": userdata,
 		"thread": thread
 	})
-	return thread.start(instance, method, userdata, priority)
+	var err = thread.start(instance, method, userdata, priority)
+	return err
 
 func wait_to_finish():
 	var result
@@ -20,7 +21,7 @@ func wait_to_finish():
 	for i in range(threads.size()):
 		# get the result of the job
 		threads[i].result = threads[i].thread.wait_to_finish()
-
+		
 	var r_threads = threads
 	threads = []
 	return r_threads
