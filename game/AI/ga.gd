@@ -13,7 +13,7 @@ var orphan_count = 4
 var mutation_rate = 0.05
 var mutation_value = 10
 
-var genetic_code_size = 12
+var genetic_code_size = 10
 
 func check_config_sanity():
 	return (reproductor_individual_count / 2 ) * child_per_crossover + orphan_count + selected_individual_count == individual_count

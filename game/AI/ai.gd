@@ -22,7 +22,7 @@ var best_score = -1
 var simulation = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
 
 
-var show_simulation = false
+var show_simulation = true
 onready var simulation_view = get_node('simulation_view')
 var bulles = [[]]
 var bulles_textures = [

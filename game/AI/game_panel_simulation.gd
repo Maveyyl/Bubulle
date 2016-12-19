@@ -158,6 +158,7 @@ func solve():
 		for y in range(1, GRID_SIZE.y+1):
 			if( bulles[x][y] != -1 && bulles[x][y] != BULLE_TYPES.BLACK ):
 				var type = bulles[x][y]
+				var slots_connected = [ Vector2(x,y) ]
 				var slots_to_pop = [ Vector2(x,y) ]
 				var slots_to_explore = [ Vector2(x,y) ]
 				var slots_explored = []
@@ -169,11 +170,14 @@ func solve():
 						var neighbour_pos = get_neighbour_pos(current_pos,d)
 						var neighbour_type = get_slot_type( neighbour_pos )
 						if( neighbour_type == type && !slots_explored.has(neighbour_pos)):
+							slots_connected.append( neighbour_pos )
 							slots_to_pop.append( neighbour_pos )
 							slots_to_explore.append( neighbour_pos )
+						elif( neighbour_type == BULLE_TYPES.BLACK ):
+							slots_to_pop.append( neighbour_pos )
 				
-				if( slots_to_pop.size() > 3 ):
-					solving_score += popping_score_compute(slots_to_pop.size())
+				if( slots_connected.size() > 3 ):
+					solving_score += popping_score_compute(slots_connected.size())
 					for i in range(slots_to_pop.size()):
 						var pos = slots_to_pop[i]
 						bulles[pos.x][pos.y] = -1
