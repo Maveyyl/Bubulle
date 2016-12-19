@@ -14,6 +14,7 @@ var first_decision = true
 
 var thread = Thread.new()
 var ga = global.SCRIPTS.GA.new()
+var ga_result
 
 var best_solution = []
 var best_score = -1
@@ -49,11 +50,9 @@ func _ready():
 
 	doublet_placer.set_goal_placement( generate_random_placement() )
 
-#var d 
 func _process(delta):
-	if( ga.execution_time >= ga.max_execution_time || ga.generation >= ga.max_generation_count ):
+	if( ga.is_ready() ):
 		doublet_placer.increase_speed = true
-		ga.exterior_stop = true
 	else:
 		doublet_placer.increase_speed = false
 	
@@ -64,10 +63,11 @@ func _process(delta):
 		if( first_decision ):
 			first_decision = false
 		else:
-			var d = thread.wait_to_finish()
-			if( best_solution.size() == 0 || best_score < d.score):
-				best_solution = d.solution
-				best_score = d.score
+			ga_result = thread.wait_to_finish()
+			if( best_solution.size() == 0 || best_score < ga_result.score):
+				best_solution = ga_result.solution
+				best_score = ga_result.score
+			ga_result = null
 				
 			doublet_placer.set_goal_placement( best_solution )
 			best_solution.pop_front()
@@ -82,7 +82,6 @@ func _process(delta):
 		simulation.main_bulle = info_panel.doublet.main_bulle.type
 		simulation.second_bulle = info_panel.doublet.second_bulle.type
 
-#		simulation.set_base_state()
 		
 		if( show_simulation ):
 			for x in range(global.GRID_SIZE.x):
@@ -93,12 +92,12 @@ func _process(delta):
 					else:
 						bulles[x][y].hide()
 
-#		d = ga.run( simulation )
 		thread.start( ga, "run", simulation)
-#		var d = thread.wait_to_finish()
-#		doublet_placer.set_goal_placement( d )
+#		ga_result = ga.run( simulation )
+#		doublet_placer.set_goal_placement( ga_result )
 
-
+func _exit_tree():
+	thread.wait_to_finish()
 
 
 

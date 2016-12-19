@@ -66,7 +66,6 @@ func get_penalty_random_slots(penalty_count, seed_ref):
 
 var WALLED_GRID_SIZE = GRID_SIZE + Vector2(2,2)
 
-var base_state ;
 
 var main_bulle = -1
 var second_bulle = -1
@@ -90,18 +89,6 @@ func _init():
 			else:
 				bulles[x][y] = -1
 
-func set_base_state(  ):
-	base_state = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
-	base_state.score = score
-	base_state.doublet_seed_ref = [doublet_seed_ref[0]]
-	base_state.penalty_seed_ref = [penalty_seed_ref[0]]
-	base_state.penalty_bulles = penalty_bulles
-	base_state.main_bulle = main_bulle
-	base_state.second_bulle = second_bulle
-	
-	for x in range(1,GRID_SIZE.x+1):
-		for y in range(1,GRID_SIZE.y+1):
-			base_state.bulles[x][y] = bulles[x][y]
 func copy():
 	var copy = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
 	
@@ -116,19 +103,7 @@ func copy():
 		for y in range(1,GRID_SIZE.y+1):
 			copy.bulles[x][y] = bulles[x][y]
 			
-#	copy.set_base_state()
 	return copy
-func reset_to_base_state():
-	score = base_state.score
-	doublet_seed_ref = [base_state.doublet_seed_ref[0]]
-	penalty_seed_ref = [base_state.penalty_seed_ref[0]]
-	penalty_bulles = base_state.penalty_bulles
-	main_bulle = base_state.main_bulle
-	second_bulle = base_state.second_bulle
-	
-	for x in range(1,GRID_SIZE.x+1):
-		for y in range(1,GRID_SIZE.y+1):
-			bulles[x][y] = base_state.bulles[x][y]
 func fromDictionnary( d ):
 	score = d.p2_score
 	doublet_seed_ref = [d.p2_doublet_seed_ref[0]]
