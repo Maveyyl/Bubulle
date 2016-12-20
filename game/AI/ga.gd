@@ -3,8 +3,8 @@
 var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
-var max_generation_count = 100 setget set_max_generation_count, get_max_generation_count
-var max_execution_time = 1000 setget set_max_execution_time, get_max_execution_time
+var max_generation_count = 100
+var max_execution_time = 1000
 
 var child_per_crossover = 2
 var orphan_count = 4
@@ -17,62 +17,30 @@ var genetic_code_size = 10
 func check_config_sanity():
 	return (reproductor_individual_count / 2 ) * child_per_crossover + orphan_count + selected_individual_count == individual_count
 
-var generation = 0 setget set_generation, get_generation
-var execution_time = 0 setget set_execution_time, get_execution_time
+var generation = 0
+var execution_time = 0
 var individuals = []
 var best_individual
 
 var mutex = Mutex.new()
+var ready = false setget set_ready,is_ready
 
-func set_max_generation_count(val):
+func set_ready(val):
 	mutex.lock()
-	max_generation_count = val
+	ready = val
 	mutex.unlock()
-func get_max_generation_count():
-	var r
-	mutex.lock()
-	r = max_generation_count
-	mutex.unlock()
-	return r
-func set_generation(val):
-	mutex.lock()
-	generation = val
-	mutex.unlock()
-func get_generation():
-	var r
-	mutex.lock()
-	r = generation
-	mutex.unlock()
-	return r
-func set_max_execution_time(val):
-	mutex.lock()
-	max_execution_time = val
-	mutex.unlock()
-func get_max_execution_time():
-	var r
-	mutex.lock()
-	r = max_execution_time
-	mutex.unlock()
-	return r
-func set_execution_time(val):
-	mutex.lock()
-	execution_time = val
-	mutex.unlock()
-func get_execution_time():
-	var r
-	mutex.lock()
-	r = execution_time
-	mutex.unlock()
-	return r
-	
-	
 func is_ready():
-	return execution_time >= max_execution_time || generation >= max_generation_count
+	var r
+	mutex.lock()
+	r = ready
+	mutex.unlock()
+	return r;
 
 
 func run( simulation ):
 	if( !check_config_sanity() ):
 		return false
+	self.ready = false
 		
 	# initialisations
 	best_individual = null
@@ -114,6 +82,8 @@ func run( simulation ):
 		" best score: ", best_individual.fitness_score, 
 		" solution: ", translated_gencode[0], " ", translated_gencode[1],
 		" execution time: ", execution_time)
+	
+	self.ready = true
 	
 	return {
 		"solution": translated_gencode,

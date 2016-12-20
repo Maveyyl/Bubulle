@@ -48,12 +48,11 @@ func _ready():
 				simulation_view.add_child(bulles[x][y])
 				bulles[x][y].set_pos( Vector2( global.BULLE_SIZE.x * x, global.BULLE_SIZE.y * y) + global.BULLE_SIZE/2 )
 
-	game_panel.add_penalty(20)
 	doublet_placer.set_goal_placement( generate_random_placement() )
 
 
 func _process(delta):
-	if( ga.is_ready() ):
+	if( ga.ready ):
 		doublet_placer.increase_speed = true
 	else:
 		doublet_placer.increase_speed = false
@@ -70,9 +69,7 @@ func _process(delta):
 			ga_result = thread.wait_to_finish()
 			
 			# update current solution's score compared to environment
-			print("before ", best_score)
 			best_score = simulation.copy().simulate_solution( best_solution )
-			print("after ", best_score)
 			
 			# compare with new results
 			if( best_solution.size() == 0 || best_score < ga_result.score):
@@ -98,17 +95,19 @@ func _process(delta):
 		thread.start( ga, "run", simulation.copy())
 			
 		if( show_simulation ):
-			for x in range(global.GRID_SIZE.x):
-				for y in range(global.GRID_SIZE.y):
-					if( simulation.bulles[x+1][y+1] >= 0 ):
-						bulles[x][y].set_texture( bulles_textures[simulation.bulles[x+1][y+1]] )
-						bulles[x][y].show()
-					else:
-						bulles[x][y].hide()
+			update_simulation_view()
 
 #		ga_result = ga.run( simulation )
 #		doublet_placer.set_goal_placement( ga_result )
 
+func update_simulation_view():
+	for x in range(global.GRID_SIZE.x):
+		for y in range(global.GRID_SIZE.y):
+			if( simulation.bulles[x+1][y+1] >= 0 ):
+				bulles[x][y].set_texture( bulles_textures[simulation.bulles[x+1][y+1]] )
+				bulles[x][y].show()
+			else:
+				bulles[x][y].hide()
 
 func _exit_tree():
 	thread.wait_to_finish()
