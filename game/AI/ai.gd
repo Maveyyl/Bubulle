@@ -15,6 +15,8 @@ var first_decision = true
 var thread = Thread.new()
 var ga = global.SCRIPTS.GA.new()
 var ga_result
+var ga_done = false
+var ga_execution_time
 
 var best_solution = []
 var best_score = -1
@@ -52,9 +54,12 @@ func _ready():
 
 
 func _process(delta):
-	if( ga.ready ):
+	if( ga.ready && !ga_done ):
 		doublet_placer.increase_speed = true
-	else:
+		ga_done = true
+		ga_execution_time = OS.get_ticks_msec() - ga_execution_time
+		print("ga execution time: ", ga_execution_time)
+	elif( !ga_done ):
 		doublet_placer.increase_speed = false
 	
 
@@ -76,6 +81,7 @@ func _process(delta):
 				best_solution = ga_result.solution
 				best_score = ga_result.score
 			ga_result = null
+			ga_done = false
 
 				
 			# put the best solution as next order
@@ -92,6 +98,7 @@ func _process(delta):
 		simulation.main_bulle = info_panel.doublet.main_bulle.type
 		simulation.second_bulle = info_panel.doublet.second_bulle.type
 		
+		ga_execution_time = OS.get_ticks_msec()
 		thread.start( ga, "run", simulation.copy())
 			
 		if( show_simulation ):

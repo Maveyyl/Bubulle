@@ -1,5 +1,3 @@
-
-
 var GRID_SIZE= Vector2(6, 12+2)
 var DOUBLET_DEFAULT_GRID_POS= Vector2( 3, 1)
 var DIRECTIONS= {
@@ -88,7 +86,7 @@ func _init():
 				bulles[x][y] = -1
 
 func copy():
-	var copy = global.SCRIPTS.GAME_PANEL_SIMULATION.new()
+	var copy = get_script().new()
 	
 	copy.score = score
 	copy.doublet_seed_ref = [doublet_seed_ref[0]]
@@ -152,30 +150,47 @@ func get_slot_type( pos ):
 func solve():
 	var solving_score = 0
 	
+	# for each bulle in grid that is not black
 	for x in range(1, GRID_SIZE.x+1):
 		for y in range(1, GRID_SIZE.y+1):
 			if( bulles[x][y] != -1 && bulles[x][y] != BULLE_TYPES.BLACK ):
+				# get type
 				var type = bulles[x][y]
+				# init list of connected bulles
 				var slots_connected = [ Vector2(x,y) ]
+				# init list of bulles that should be popped in case of 4 or more connected bulles of the same type
 				var slots_to_pop = [ Vector2(x,y) ]
+				# init list of slots to explore
 				var slots_to_explore = [ Vector2(x,y) ]
+				# init list of slots already explored
 				var slots_explored = []
 				
+				# for each slot to explore
 				while( !slots_to_explore.empty() ):
 					var current_pos = slots_to_explore.pop_front()
+					# set slot as explored
 					slots_explored.append(current_pos)
+					# for each neighbour slot
 					for d in range(DIRECTIONS.COUNT):
+						# get neighbour slot bulle's type
 						var neighbour_pos = get_neighbour_pos(current_pos,d)
 						var neighbour_type = get_slot_type( neighbour_pos )
+						# if neighbour bulle is of the same type as our initial bulle and hasn't been explored yet
 						if( neighbour_type == type && !slots_explored.has(neighbour_pos)):
+							# put it in the lists
 							slots_connected.append( neighbour_pos )
 							slots_to_pop.append( neighbour_pos )
 							slots_to_explore.append( neighbour_pos )
+						# if neighbour bulle is black
 						elif( neighbour_type == BULLE_TYPES.BLACK ):
+							# put it in to pop list
 							slots_to_pop.append( neighbour_pos )
 				
+				# if more than 3 bulles of the same type are connected
 				if( slots_connected.size() > 3 ):
+					# compute popping score
 					solving_score += popping_score_compute(slots_connected.size())
+					# remove these bulles and the neighbour black bulles
 					for i in range(slots_to_pop.size()):
 						var pos = slots_to_pop[i]
 						bulles[pos.x][pos.y] = -1

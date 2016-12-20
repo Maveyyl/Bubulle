@@ -1,9 +1,8 @@
 
-
 var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
-var max_generation_count = 100
+var max_generation_count = 20
 var max_execution_time = 1000
 
 var child_per_crossover = 2
@@ -46,14 +45,14 @@ func run( simulation ):
 	best_individual = null
 	generation = 0
 	execution_time = 0
-	var start_execution_time = OS.get_ticks_msec()
+#	var start_execution_time = OS.get_ticks_msec()
 	
 	# create first generation
 	individuals.resize( individual_count )
 	for i in range( individual_count ):
 		individuals[i] = Individual.orphan( genetic_code_size )
 	
-	execution_time += start_execution_time - OS.get_ticks_msec()
+#	execution_time += start_execution_time - OS.get_ticks_msec()
 	
 	# while execution time hasn't reached max time and generation hasn't reached max generation
 	while( execution_time < max_execution_time && generation < max_generation_count ):
@@ -73,7 +72,7 @@ func run( simulation ):
 		create_next_gen()
 
 		# end loop, increment stop criteria
-		execution_time = OS.get_ticks_msec() - start_execution_time 
+#		execution_time = OS.get_ticks_msec() - start_execution_time 
 		generation +=1
 
 	var translated_gencode = translate_gencode( best_individual.genetic_code )
