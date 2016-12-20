@@ -5,7 +5,6 @@ var reproductor_individual_count = 6
 var selected_individual_count = 2
 var max_generation_count = 100 setget set_max_generation_count, get_max_generation_count
 var max_execution_time = 1000 setget set_max_execution_time, get_max_execution_time
-var exterior_stop = false
 
 var child_per_crossover = 2
 var orphan_count = 4
@@ -75,8 +74,6 @@ func run( simulation ):
 	if( !check_config_sanity() ):
 		return false
 		
-	exterior_stop = false
-		
 	# initialisations
 	best_individual = null
 	generation = 0
@@ -91,7 +88,7 @@ func run( simulation ):
 	execution_time += start_execution_time - OS.get_ticks_msec()
 	
 	# while execution time hasn't reached max time and generation hasn't reached max generation
-	while( execution_time < max_execution_time && generation < max_generation_count && !exterior_stop ):
+	while( execution_time < max_execution_time && generation < max_generation_count ):
 		# evaluate fitness of the generation
 		for i in range( individual_count ):
 			if( !individuals[i].fitness_score_computed ):

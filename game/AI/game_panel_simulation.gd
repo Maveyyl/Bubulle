@@ -1,4 +1,3 @@
-extends Reference
 
 
 var GRID_SIZE= Vector2(6, 12+2)
@@ -43,7 +42,7 @@ func get_penalty_random_slots(penalty_count, seed_ref):
 	
 	for i in range( GRID_SIZE.x ):
 		slots_line_1.append(Vector2( i, 0)  )
-		if( penalty_count > 5 ):
+		if( penalty_count >= 5 ):
 			slots_line_2.append(Vector2( i, 1) )
 
 	if( penalty_count <= 5 ):
@@ -51,9 +50,8 @@ func get_penalty_random_slots(penalty_count, seed_ref):
 			var rand = get_randi_update_seed( seed_ref )%slots_line_1.size()
 			slots_line_1.remove(rand)
 	else:
-		for i in range(1):
-			var rand = get_randi_update_seed( seed_ref )%slots_line_1.size()
-			slots_line_1.remove(rand)
+		var rand = get_randi_update_seed( seed_ref )%slots_line_1.size()
+		slots_line_1.remove(rand)
 		penalty_count-=5
 		for i in range(6-penalty_count):
 			var rand = get_randi_update_seed( seed_ref )%slots_line_2.size()
@@ -237,7 +235,12 @@ func place_doublet( goal_pos ):
 
 
 func add_random_penalties():
-	var bulle_pos_array = get_penalty_random_slots( penalty_bulles, penalty_seed_ref )
+	var penalty_count
+	if( penalty_bulles > 10 ):
+		penalty_count = 10
+	else:
+		penalty_count = penalty_bulles
+	var bulle_pos_array = get_penalty_random_slots( penalty_count, penalty_seed_ref )
 	penalty_bulles -= bulle_pos_array.size()
 
 	for i in range (bulle_pos_array.size()):

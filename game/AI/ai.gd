@@ -51,6 +51,7 @@ func _ready():
 	game_panel.add_penalty(20)
 	doublet_placer.set_goal_placement( generate_random_placement() )
 
+
 func _process(delta):
 	if( ga.is_ready() ):
 		doublet_placer.increase_speed = true
@@ -65,7 +66,6 @@ func _process(delta):
 			first_decision = false
 		else:
 			
-			
 			# recover genetic algorithm results
 			ga_result = thread.wait_to_finish()
 			
@@ -79,6 +79,7 @@ func _process(delta):
 				best_solution = ga_result.solution
 				best_score = ga_result.score
 			ga_result = null
+
 				
 			# put the best solution as next order
 			doublet_placer.set_goal_placement( best_solution )
@@ -107,6 +108,7 @@ func _process(delta):
 
 #		ga_result = ga.run( simulation )
 #		doublet_placer.set_goal_placement( ga_result )
+
 
 func _exit_tree():
 	thread.wait_to_finish()
