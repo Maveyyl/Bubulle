@@ -19,6 +19,7 @@ func _ready():
 func set_goal_placement( d ):
 	doublet_main_bulle_goal_pos_x = d[0]
 	doublet_second_bulle_goal_state = d[1]
+	increase_speed = false
 func get_goal_placement():
 	return [ doublet_main_bulle_goal_pos_x, doublet_second_bulle_goal_state]
 

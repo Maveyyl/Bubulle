@@ -8,9 +8,13 @@ onready var info_panel = double_game_panel.get_node('info_panel_p2')
 
 onready var doublet_placer = get_node('doublet_placer')
 
+var difficulty = global.AI_DIFFICULTY.MEDIUM
+
 var doublet
 
 var first_decision = true
+var max_time_before_commit = 1
+var turn_duration = 0
 
 var thread = Thread.new()
 var ga = global.SCRIPTS.GA.new()
@@ -51,29 +55,65 @@ func _ready():
 				bulles[x][y].set_pos( Vector2( global.BULLE_SIZE.x * x, global.BULLE_SIZE.y * y) + global.BULLE_SIZE/2 )
 
 	doublet_placer.set_goal_placement( generate_random_placement() )
+	
+	set_difficulty(difficulty)
 
+func set_difficulty(val):
+	difficulty = val
+
+	if( difficulty == global.AI_DIFFICULTY.EASY ):
+		max_time_before_commit = 5
+		ga.genetic_code_size = 4
+		ga.max_generation_count = 10
+	elif( difficulty == global.AI_DIFFICULTY.MEDIUM ):
+		max_time_before_commit = 3.5
+		ga.genetic_code_size = 4
+		ga.max_generation_count = 20
+	elif( difficulty == global.AI_DIFFICULTY.HARD ):
+		max_time_before_commit = 2
+		ga.genetic_code_size = 6
+		ga.max_generation_count = 20
+	elif( difficulty == global.AI_DIFFICULTY.NIGHTMARE ):
+		max_time_before_commit = 1
+		ga.genetic_code_size = 20
+		ga.max_generation_count = 20
 
 func _process(delta):
+	turn_duration += delta
+	
+	# if ga has terminated
 	if( ga.ready && !ga_done ):
-		doublet_placer.increase_speed = true
+		# print ga execution time
 		ga_done = true
 		ga_execution_time = OS.get_ticks_msec() - ga_execution_time
 		print("ga execution time: ", ga_execution_time)
-	elif( !ga_done ):
-		doublet_placer.increase_speed = false
+		
+	# if enough time elapsed for current doublet
+	if( turn_duration > max_time_before_commit || 
+		( difficulty == global.AI_DIFFICULTY.NIGHTMARE && ga_done ) ):
+		# place it faster
+		doublet_placer.increase_speed = true
+		# tell ga to stop its calculations
+		ga.exterior_stop = true
 	
+	# if doublet has been placed
+	if( game_panel.doublet == null ):
+		# tell ga to stop its calculations
+		ga.exterior_stop = true
 
+	# when new doublet is put into game
 	if( game_panel.doublet && doublet != game_panel.doublet ):
+		turn_duration = 0
 		doublet = game_panel.doublet
-		# if first decision, don't do anything
+		# if it is the first decision, don't do anything
 		if( first_decision ):
 			first_decision = false
+		# if not first decision
 		else:
-			
-			# recover genetic algorithm results
+			# recover genetic algorithm results that was started from first decision
 			ga_result = thread.wait_to_finish()
 			
-			# update current solution's score compared to environment
+			# update current solution's score compared to current environment
 			best_score = simulation.copy().simulate_solution( best_solution )
 			
 			# compare with new results
@@ -82,15 +122,12 @@ func _process(delta):
 				best_score = ga_result.score
 			ga_result = null
 			ga_done = false
-
-				
+			
 			# put the best solution as next order
 			doublet_placer.set_goal_placement( best_solution )
 			best_solution.pop_front()
 			best_solution.pop_front()
 				
-
-		
 		# create base simulation with current context
 		var double_game_panel_data = double_game_panel.toDictionnary(true)
 		simulation.fromDictionnary(double_game_panel_data)
@@ -98,14 +135,14 @@ func _process(delta):
 		simulation.main_bulle = info_panel.doublet.main_bulle.type
 		simulation.second_bulle = info_panel.doublet.second_bulle.type
 		
+		# restart ga execution timer
 		ga_execution_time = OS.get_ticks_msec()
+		# start genetic algorithms
 		thread.start( ga, "run", simulation.copy())
 			
 		if( show_simulation ):
 			update_simulation_view()
-
-#		ga_result = ga.run( simulation )
-#		doublet_placer.set_goal_placement( ga_result )
+			
 
 func update_simulation_view():
 	for x in range(global.GRID_SIZE.x):

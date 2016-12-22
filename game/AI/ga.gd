@@ -3,7 +3,6 @@ var individual_count = 12
 var reproductor_individual_count = 6
 var selected_individual_count = 2
 var max_generation_count = 20
-var max_execution_time = 1000
 
 var child_per_crossover = 2
 var orphan_count = 4
@@ -17,12 +16,12 @@ func check_config_sanity():
 	return (reproductor_individual_count / 2 ) * child_per_crossover + orphan_count + selected_individual_count == individual_count
 
 var generation = 0
-var execution_time = 0
 var individuals = []
 var best_individual
 
 var mutex = Mutex.new()
 var ready = false setget set_ready,is_ready
+var exterior_stop = false setget set_exterior_stop, get_exterior_stop
 
 func set_ready(val):
 	mutex.lock()
@@ -34,28 +33,35 @@ func is_ready():
 	r = ready
 	mutex.unlock()
 	return r;
+func set_exterior_stop(val):
+	mutex.lock()
+	exterior_stop = val
+	mutex.unlock()
+func get_exterior_stop():
+	var r
+	mutex.lock()
+	r = exterior_stop
+	mutex.unlock()
+	return r;
 
 
 func run( simulation ):
 	if( !check_config_sanity() ):
 		return false
 	self.ready = false
+	self.exterior_stop = false
 		
 	# initialisations
 	best_individual = null
 	generation = 0
-	execution_time = 0
-#	var start_execution_time = OS.get_ticks_msec()
 	
 	# create first generation
 	individuals.resize( individual_count )
 	for i in range( individual_count ):
 		individuals[i] = Individual.orphan( genetic_code_size )
 	
-#	execution_time += start_execution_time - OS.get_ticks_msec()
-	
 	# while execution time hasn't reached max time and generation hasn't reached max generation
-	while( execution_time < max_execution_time && generation < max_generation_count ):
+	while( generation < max_generation_count && !self.exterior_stop ):
 		# evaluate fitness of the generation
 		for i in range( individual_count ):
 			if( !individuals[i].fitness_score_computed ):
@@ -72,15 +78,13 @@ func run( simulation ):
 		create_next_gen()
 
 		# end loop, increment stop criteria
-#		execution_time = OS.get_ticks_msec() - start_execution_time 
 		generation +=1
 
 	var translated_gencode = translate_gencode( best_individual.genetic_code )
 	
 	print("generation: ", generation, 
 		" best score: ", best_individual.fitness_score, 
-		" solution: ", translated_gencode[0], " ", translated_gencode[1],
-		" execution time: ", execution_time)
+		" solution: ", translated_gencode[0], " ", translated_gencode[1])
 	
 	self.ready = true
 	

@@ -115,6 +115,13 @@ var DEFAULT_BINDINGS = {
 	"speed_p2": InputMap.get_action_list("speed_p2")[0]
 }
 
+var AI_DIFFICULTY = {
+	"EASY": 0,
+	"MEDIUM": 1,
+	"HARD": 2,
+	"NIGHTMARE": 3
+}
+
 
 
 func get_randi_update_seed( seed_ref ):

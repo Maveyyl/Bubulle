@@ -278,18 +278,19 @@ func simulate_solving_step():
 			keep_solving = true
 		apply_gravity()
 	
-	score += cumulative_score
+	return cumulative_score
 func simulate_solution( solution ):
 	var main_bulle_pos = DOUBLET_DEFAULT_GRID_POS + Vector2(1,1)
 	var second_bulle_pos = DOUBLET_DEFAULT_GRID_POS + DIRECTIONS_NORMALS[ DIRECTIONS.TOP ] + Vector2(1,1)
-	
+
 	var base_score = score
+	var tmp_score
 	for i in range(0, solution.size(), 2):
 		# test if the game hasn't terminated
 		if( bulles[main_bulle_pos.x][main_bulle_pos.y] >= 0
-			&& bulles[second_bulle_pos.x][second_bulle_pos.y] >= 0
-			&& bulles[main_bulle_pos.x][main_bulle_pos.y-1] >= 0 ):
-				score = -9999
+			|| bulles[second_bulle_pos.x][second_bulle_pos.y] >= 0
+			|| bulles[main_bulle_pos.x][main_bulle_pos.y+1] >= 0 ):
+				score -= 9999
 				break;
 		# first loop doublet is already generated
 		if( i != 0 ):
@@ -297,7 +298,8 @@ func simulate_solution( solution ):
 		# place doublet in the given state
 		place_doublet( [solution[i]+1, solution[i+1] ] )
 		# simulate the game's process
-		simulate_solving_step()
+		tmp_score = simulate_solving_step()
+		score += (tmp_score * pow(0.95, i)) # some poisoning so it favoritises solutions with earlier scores
 		if( penalty_bulles > 0 ):
 			add_random_penalties()
 		
