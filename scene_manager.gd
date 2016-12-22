@@ -7,6 +7,7 @@ const SCENES = {
 	"test_solo_game_simulation": preload("res://game/tests/test_solo_game_simulation/test_solo_game_simulation.tscn"),
 
 	"main_menu": preload("res://UI/main_menu/main_menu.tscn"),
+	"solo_menu": preload("res://UI/main_menu/solo_menu/solo_menu.tscn"),
 	"multi_menu": preload("res://UI/main_menu/multi_menu/multi_menu.tscn"),
 	"network_menu": preload("res://UI/main_menu/multi_menu/network_menu/network_menu.tscn"),
 	"options_menu": preload("res://UI/main_menu/options_menu/options_menu.tscn"),
