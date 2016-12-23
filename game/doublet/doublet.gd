@@ -65,6 +65,7 @@ func fromDictionnary( d ):
 	current_rotation = d.current_rotation
 	rotation_goal = d.rotation_goal
 	second_bulle_goal_pos = d.second_bulle_goal_pos
+	falling_counter = d.falling_counter
 func toDictionnary():
 	return {
 		"state": state,
@@ -78,7 +79,8 @@ func toDictionnary():
 		"clockwise": clockwise,
 		"current_rotation": current_rotation,
 		"rotation_goal": rotation_goal,
-		"second_bulle_goal_pos": second_bulle_goal_pos
+		"second_bulle_goal_pos": second_bulle_goal_pos,
+		"falling_counter": falling_counter
 	}
 
 

@@ -39,10 +39,6 @@ func fromDictionnary( d ):
 	if( d.has('p2_penalty_seed_ref') ):
 		p2_penalty_seed_ref = d.p2_penalty_seed_ref
 	
-	if( has_node('game_end') ):
-		remove_child(get_node('game_end'))
-		ended = false
-	set_process(true)
 func toDictionnary(full_state = true):
 	if ( !full_state && is_network_master() ):
 		return {

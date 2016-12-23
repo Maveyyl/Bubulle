@@ -26,6 +26,9 @@ remote func sync_game( d ):
 	double_game_panel.fromDictionnary( d )
 
 func _process(delta):
+	if( !network_manager.is_active ):
+		set_process(false)
+		return
 	if ( Input.is_action_just_pressed("escape") ):
 		network_manager.disconnect()
 		scene_manager.change_scene_to_previous()
