@@ -119,7 +119,8 @@ var AI_DIFFICULTY = {
 	"EASY": 0,
 	"MEDIUM": 1,
 	"HARD": 2,
-	"NIGHTMARE": 3
+	"QUICK": 3,
+	"NIGHTMARE": 4
 }
 
 

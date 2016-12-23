@@ -11,6 +11,10 @@ func _on_nightmare_button_pressed():
 	scene_manager.change_scene_to("solo")
 	scene_manager.current_scene.get_node("ai").set_difficulty( global.AI_DIFFICULTY.NIGHTMARE )
 
+func _on_quick_button_pressed():
+	scene_manager.change_scene_to("solo")
+	scene_manager.current_scene.get_node("ai").set_difficulty( global.AI_DIFFICULTY.QUICK )
+
 func _on_hard_button_pressed():
 	scene_manager.change_scene_to("solo")
 	scene_manager.current_scene.get_node("ai").set_difficulty( global.AI_DIFFICULTY.HARD )

@@ -73,6 +73,10 @@ func set_difficulty(val):
 		max_time_before_commit = 2
 		ga.genetic_code_size = 6
 		ga.max_generation_count = 20
+	elif( difficulty == global.AI_DIFFICULTY.QUICK ):
+		max_time_before_commit = 0.5
+		ga.genetic_code_size = 20
+		ga.max_generation_count = 1
 	elif( difficulty == global.AI_DIFFICULTY.NIGHTMARE ):
 		max_time_before_commit = 1
 		ga.genetic_code_size = 20
@@ -90,7 +94,9 @@ func _process(delta):
 		
 	# if enough time elapsed for current doublet
 	if( turn_duration > max_time_before_commit || 
-		( difficulty == global.AI_DIFFICULTY.NIGHTMARE && ga_done ) ):
+		( ( difficulty == global.AI_DIFFICULTY.NIGHTMARE ||
+			difficulty == global.AI_DIFFICULTY.QUICK ) && 
+			ga_done ) ):
 		# place it faster
 		doublet_placer.increase_speed = true
 		# tell ga to stop its calculations
@@ -138,6 +144,7 @@ func _process(delta):
 		# restart ga execution timer
 		ga_execution_time = OS.get_ticks_msec()
 		# start genetic algorithms
+		# ga_result = ga.run( simulation.copy() )
 		thread.start( ga, "run", simulation.copy())
 			
 		if( show_simulation ):
@@ -154,7 +161,8 @@ func update_simulation_view():
 				bulles[x][y].hide()
 
 func _exit_tree():
-	thread.wait_to_finish()
+	if( thread && thread.is_active() ):
+		thread.wait_to_finish()
 
 
 

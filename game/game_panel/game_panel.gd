@@ -199,7 +199,8 @@ func add_bulle_to_grid( bulle ):
 	grid.set_slot( grid_pos, bulle)
 func remove_bulle_from_grid( bulle ):
 	grid.set_slot( bulle.grid_pos, null)
-	panel.remove_child(bulle)
+	if( bulle.get_parent() ):
+		panel.remove_child(bulle)
 	
 func add_falling_bulle( bulle ):
 	state = global.GAME_PANEL_STATES.PLACING_FALLING_BULLES

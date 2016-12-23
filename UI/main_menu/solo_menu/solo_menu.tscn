@@ -52,7 +52,7 @@ shortcut = null
 text = "Nightmare"
 flat = false
 
-[node name="hard_button" type="Button" parent="panel"]
+[node name="quick_button" type="Button" parent="panel"]
 
 anchor/right = 1
 focus/ignore_mouse = false
@@ -63,6 +63,23 @@ margin/left = 10.0
 margin/top = 110.0
 margin/right = 10.0
 margin/bottom = 130.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Quick Solver"
+flat = false
+
+[node name="hard_button" type="Button" parent="panel"]
+
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 160.0
+margin/right = 10.0
+margin/bottom = 180.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -77,9 +94,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 160.0
+margin/top = 210.0
 margin/right = 10.0
-margin/bottom = 180.0
+margin/bottom = 230.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -94,9 +111,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 210.0
+margin/top = 260.0
 margin/right = 10.0
-margin/bottom = 230.0
+margin/bottom = 280.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -123,6 +140,8 @@ text = "Back"
 flat = false
 
 [connection signal="pressed" from="panel/nightmare_button" to="." method="_on_nightmare_button_pressed"]
+
+[connection signal="pressed" from="panel/quick_button" to="." method="_on_quick_button_pressed"]
 
 [connection signal="pressed" from="panel/hard_button" to="." method="_on_hard_button_pressed"]
 
