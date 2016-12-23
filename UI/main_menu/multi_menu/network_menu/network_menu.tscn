@@ -19,43 +19,50 @@ margin/bottom = 440.0
 
 [node name="label_server" type="Label" parent="panel_server"]
 
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
 margin/top = 10.0
-margin/right = 50.0
+margin/right = 10.0
 margin/bottom = 24.0
 text = "Server"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
 [node name="label_port" type="Label" parent="panel_server"]
 
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
 margin/top = 100.0
-margin/right = 50.0
+margin/right = 10.0
 margin/bottom = 114.0
-text = "Port:"
+text = "Port"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
 [node name="text_edit_port" type="TextEdit" parent="panel_server"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 125.0
-margin/right = 90.0
+margin/right = 10.0
 margin/bottom = 150.0
 syntax_highlighting = false
 show_line_numbers = false
@@ -66,13 +73,14 @@ caret/caret_blink_speed = 0.65
 
 [node name="button_start_server" type="Button" parent="panel_server"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 250.0
-margin/right = 74.0
+margin/right = 10.0
 margin/bottom = 270.0
 toggle_mode = false
 enabled_focus_mode = 2
@@ -83,13 +91,14 @@ flat = false
 [node name="button_stop_server" type="Button" parent="panel_server"]
 
 visibility/visible = false
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 250.0
-margin/right = 94.0
+margin/right = 10.0
 margin/bottom = 270.0
 toggle_mode = false
 enabled_focus_mode = 2
@@ -99,14 +108,17 @@ flat = false
 
 [node name="label_status" type="Label" parent="panel_server"]
 
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
 margin/top = 310.0
-margin/right = 50.0
+margin/right = 10.0
 margin/bottom = 324.0
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -114,31 +126,14 @@ max_lines_visible = -1
 [node name="checkbox_ready" type="CheckBox" parent="panel_server"]
 
 visibility/visible = false
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 335.0
-margin/right = 40.0
-margin/bottom = 365.0
-toggle_mode = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Ready"
-flat = false
-align = 0
-
-[node name="checkbox_ready2" type="CheckBox" parent="panel_server"]
-
-visibility/visible = false
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 10.0
-margin/top = 335.0
-margin/right = 40.0
+margin/right = 10.0
 margin/bottom = 365.0
 toggle_mode = true
 enabled_focus_mode = 2
@@ -160,43 +155,50 @@ margin/bottom = 440.0
 
 [node name="label_client" type="Label" parent="panel_client"]
 
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
 margin/top = 10.0
-margin/right = 50.0
+margin/right = 10.0
 margin/bottom = 24.0
 text = "Client"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
 [node name="label_ip_addr" type="Label" parent="panel_client"]
 
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
 margin/top = 100.0
-margin/right = 50.0
+margin/right = 10.0
 margin/bottom = 114.0
-text = "Ip Addr:"
+text = "Ip Addr"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
 [node name="text_edit_ip_addr" type="TextEdit" parent="panel_client"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 125.0
-margin/right = 90.0
+margin/right = 10.0
 margin/bottom = 150.0
 syntax_highlighting = false
 show_line_numbers = false
@@ -207,28 +209,32 @@ caret/caret_blink_speed = 0.65
 
 [node name="label_port" type="Label" parent="panel_client"]
 
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
 margin/top = 175.0
-margin/right = 50.0
+margin/right = 10.0
 margin/bottom = 189.0
-text = "Port:"
+text = "Port"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
 [node name="text_edit_port" type="TextEdit" parent="panel_client"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 200.0
-margin/right = 90.0
+margin/right = 10.0
 margin/bottom = 225.0
 syntax_highlighting = false
 show_line_numbers = false
@@ -239,13 +245,14 @@ caret/caret_blink_speed = 0.65
 
 [node name="button_connect_client" type="Button" parent="panel_client"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 250.0
-margin/right = 74.0
+margin/right = 10.0
 margin/bottom = 270.0
 toggle_mode = false
 enabled_focus_mode = 2
@@ -256,13 +263,14 @@ flat = false
 [node name="button_disconnect_client" type="Button" parent="panel_client"]
 
 visibility/visible = false
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 250.0
-margin/right = 94.0
+margin/right = 10.0
 margin/bottom = 270.0
 toggle_mode = false
 enabled_focus_mode = 2
@@ -272,13 +280,15 @@ flat = false
 
 [node name="label_status" type="Label" parent="panel_client"]
 
+visibility/visible = false
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
 margin/top = 310.0
-margin/right = 50.0
+margin/right = 10.0
 margin/bottom = 324.0
 percent_visible = 1.0
 lines_skipped = 0
@@ -287,13 +297,14 @@ max_lines_visible = -1
 [node name="checkbox_ready" type="CheckBox" parent="panel_client"]
 
 visibility/visible = false
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 335.0
-margin/right = 40.0
+margin/right = 10.0
 margin/bottom = 365.0
 toggle_mode = true
 enabled_focus_mode = 2
@@ -316,15 +327,14 @@ margin/bottom = 300.0
 
 [node name="label_game_starting_status" type="Label" parent="panel_game_starting"]
 
-anchor/left = 2
-anchor/right = 2
+anchor/right = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 0.1
+margin/left = 10.0
 margin/top = 10.0
-margin/right = 0.9
+margin/right = 10.0
 margin/bottom = 60.0
 align = 1
 valign = 1
@@ -334,17 +344,16 @@ max_lines_visible = -1
 
 [node name="button_start_game" type="Button" parent="panel_game_starting"]
 
-anchor/left = 3
 anchor/top = 1
-anchor/right = 3
+anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 30.0
+margin/left = 10.0
 margin/top = 30.0
-margin/right = -30.0
+margin/right = 10.0
 margin/bottom = 10.0
 toggle_mode = false
 enabled_focus_mode = 2

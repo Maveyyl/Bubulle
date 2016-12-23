@@ -14,19 +14,38 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
 margin/top = 10.0
-margin/right = 160.0
+margin/right = 210.0
 margin/bottom = 440.0
+
+[node name="main_label" type="Label" parent="panel_main"]
+
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 10.0
+margin/right = 0.0
+margin/bottom = 30.0
+text = "Bubulle <3"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [node name="button_solo" type="Button" parent="panel_main"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 12.0
-margin/top = 10.0
-margin/right = 105.0
-margin/bottom = 30.0
+margin/left = 10.0
+margin/top = 60.0
+margin/right = 10.0
+margin/bottom = 80.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -35,14 +54,15 @@ flat = false
 
 [node name="button_multi" type="Button" parent="panel_main"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 60.0
-margin/right = 94.0
-margin/bottom = 80.0
+margin/top = 110.0
+margin/right = 10.0
+margin/bottom = 130.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -51,14 +71,15 @@ flat = false
 
 [node name="button_tutorial" type="Button" parent="panel_main"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 110.0
-margin/right = 70.0
-margin/bottom = 130.0
+margin/top = 160.0
+margin/right = 10.0
+margin/bottom = 180.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -67,14 +88,15 @@ flat = false
 
 [node name="button_training" type="Button" parent="panel_main"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 160.0
-margin/right = 72.0
-margin/bottom = 180.0
+margin/top = 210.0
+margin/right = 10.0
+margin/bottom = 230.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -83,14 +105,17 @@ flat = false
 
 [node name="button_options" type="Button" parent="panel_main"]
 
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 250.0
-margin/right = 73.0
-margin/bottom = 270.0
+margin/top = 80.0
+margin/right = 10.0
+margin/bottom = 60.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -99,14 +124,17 @@ flat = false
 
 [node name="button_leave" type="Button" parent="panel_main"]
 
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 300.0
-margin/right = 59.0
-margin/bottom = 320.0
+margin/top = 30.0
+margin/right = 10.0
+margin/bottom = 10.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -115,25 +143,45 @@ flat = false
 
 [node name="panel_misc" type="Panel" parent="."]
 
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 500.0
+margin/left = 450.0
 margin/top = 10.0
 margin/right = 650.0
-margin/bottom = 440.0
+margin/bottom = -376.0
+
+[node name="dev_command_label" type="Label" parent="panel_misc"]
+
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 10.0
+margin/top = 10.0
+margin/right = 10.0
+margin/bottom = 30.0
+text = "Dev Commands"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [node name="button_fork" type="Button" parent="panel_misc"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 10.0
-margin/right = 124.0
-margin/bottom = 30.0
+margin/top = 60.0
+margin/right = 10.0
+margin/bottom = 80.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -142,14 +190,15 @@ flat = false
 
 [node name="button_test" type="Button" parent="panel_misc"]
 
+anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 60.0
-margin/right = 56.0
-margin/bottom = 80.0
+margin/top = 110.0
+margin/right = 10.0
+margin/bottom = 130.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
