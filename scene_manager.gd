@@ -4,6 +4,7 @@ const SCENES = {
 	"solo": preload("res://game/solo_game/solo_game.tscn"),
 	"multi_local": preload("res://game/multi_game_local/multi_game_local.tscn"),
 	"multi_network": preload("res://game/multi_game_network/multi_game_network.tscn"),
+	"training": preload("res://game/training_game/training_game.tscn"),
 	"test_solo_game_simulation": preload("res://game/tests/test_solo_game_simulation/test_solo_game_simulation.tscn"),
 
 	"main_menu": preload("res://UI/main_menu/main_menu.tscn"),

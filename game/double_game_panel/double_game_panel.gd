@@ -134,7 +134,7 @@ func game_ended( is_p1_winner ):
 		game_end_panel.set_winner( "Player 1")
 	else:
 		game_end_panel.set_winner ( "Player 2") 
-	game_end_panel.set_pos( (OS.get_window_size()/2) + Vector2(0,100) )
+	game_end_panel.set_pos( global.GAME_END_PANEL_POS )
 	
 func _on_game_panel_p1_game_ended():
 	game_ended( false )

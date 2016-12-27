@@ -20,8 +20,7 @@ func _on_button_tutorial_pressed():
 	pass
 
 func _on_button_training_pressed():
-#	scene_manager.change_scene_to("training")
-	pass
+	scene_manager.change_scene_to("training")
 
 func _on_button_options_pressed():
 	scene_manager.change_scene_to("options_menu")
