@@ -78,6 +78,10 @@ caret/block_caret = false
 caret/caret_blink = false
 caret/caret_blink_speed = 0.65
 
+[connection signal="focus_enter" from="panel/text_edit_nickname" to="." method="_on_text_edit_nickname_focus_enter"]
+
+[connection signal="focus_exit" from="panel/text_edit_nickname" to="." method="_on_text_edit_nickname_focus_exit"]
+
 [connection signal="focus_enter" from="panel/text_input" to="." method="_on_text_input_focus_enter"]
 
 [connection signal="focus_exit" from="panel/text_input" to="." method="_on_text_input_focus_exit"]

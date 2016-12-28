@@ -39,6 +39,9 @@ func _process(delta):
 			})
 		
 		text_input.set_text("")
+		release_focus()
+		text_input.release_focus()
+		text_edit_nickname.release_focus()
 
 func add_chat_message( d, own ):
 	
@@ -64,6 +67,17 @@ func _on_text_input_focus_enter():
 
 
 func _on_text_input_focus_exit():
+	emit_signal("chat_focus_exit")
+	chat_focused = false
+	set_process(false)
+
+
+func _on_text_edit_nickname_focus_enter():
+	emit_signal("chat_focus_enter")
+	chat_focused = true
+	set_process(false)
+
+func _on_text_edit_nickname_focus_exit():
 	emit_signal("chat_focus_exit")
 	chat_focused = false
 	set_process(false)

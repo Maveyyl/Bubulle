@@ -8,7 +8,7 @@ const GRID_SIZE = Vector2(6, 12+2) # + 2 rows as buffer
 const BULLE_SIZE = Vector2(30, 30)
 const DOUBLET_DEFAULT_GRID_POS = Vector2( 3, 1)
 
-var GAME_END_PANEL_POS = (OS.get_window_size()/2)
+var GAME_END_PANEL_POS = (OS.get_window_size()/2) + Vector2(0,-25)
 
 var DIRECTIONS = {
 	"LEFT": 0,
