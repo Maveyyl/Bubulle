@@ -30,6 +30,8 @@ onready var panel_game_starting = get_node("panel_game_starting")
 onready var label_game_starting_status = get_node("panel_game_starting/label_game_starting_status")
 onready var button_start_game = get_node("panel_game_starting/button_start_game")
 
+onready var chat = get_node("chat")
+
 func _ready():
 	set_process(true)
 	
@@ -149,7 +151,8 @@ func _on_button_start_game_pressed():
 	start_game()
 slave func start_game():
 	scene_manager.change_scene_to( "multi_network" )
-
+	
+	scene_manager.current_scene.set_chat( chat )
 
 
 
@@ -171,6 +174,8 @@ func set_ui_state_default():
 	server_label_status.set_text("")
 	client_label_status.set_text("")
 	
+	chat.hide()
+	
 func set_ui_state_listenning():
 	ui_state = UI_STATES.LISTENNING
 	
@@ -185,6 +190,8 @@ func set_ui_state_listenning():
 	panel_game_starting.hide()
 	
 	server_label_status.set_text("Waiting for\nclient connection...")
+	
+	chat.hide()
 	
 func set_ui_state_client_connected():
 	ui_state = UI_STATES.CLIENT_CONNECTED
@@ -205,6 +212,8 @@ func set_ui_state_client_connected():
 	
 	server_label_status.set_text("Client connected")
 	
+	chat.show()
+	
 	
 	
 func set_ui_state_connecting():
@@ -221,6 +230,8 @@ func set_ui_state_connecting():
 	panel_game_starting.hide()
 	
 	client_label_status.set_text("Connecting to\nserver...")
+	
+	chat.hide()
 	
 	
 func set_ui_state_connected():
@@ -242,6 +253,8 @@ func set_ui_state_connected():
 	
 	server_label_status.set_text("")
 	client_label_status.set_text("Connected to server")
+	
+	chat.show()
 
 
 

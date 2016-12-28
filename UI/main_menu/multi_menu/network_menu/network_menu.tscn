@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=3 format=1]
 
 [ext_resource path="res://UI/main_menu/multi_menu/network_menu/network_menu.gd" type="Script" id=1]
+[ext_resource path="res://UI/chat/chat.tscn" type="PackedScene" id=2]
 
 [node name="network_menu" type="Node2D"]
 
@@ -316,14 +317,18 @@ align = 0
 [node name="panel_game_starting" type="Panel" parent="."]
 
 visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 270.0
-margin/top = 150.0
-margin/right = 420.0
-margin/bottom = 300.0
+margin/left = -210.0
+margin/top = -68.0
+margin/right = -390.0
+margin/bottom = -218.0
 
 [node name="label_game_starting_status" type="Label" parent="panel_game_starting"]
 
@@ -360,6 +365,14 @@ enabled_focus_mode = 2
 shortcut = null
 text = "Start"
 flat = false
+
+[node name="chat" parent="." instance=ExtResource( 2 )]
+
+visibility/visible = false
+margin/left = 330.0
+margin/top = 350.0
+margin/right = 330.0
+margin/bottom = 350.0
 
 [connection signal="pressed" from="panel_server/button_start_server" to="." method="_on_button_start_server_pressed"]
 

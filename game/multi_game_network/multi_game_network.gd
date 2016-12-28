@@ -8,6 +8,9 @@ onready var info_panel_p1 = get_node('double_game_panel/info_panel_p1')
 onready var game_panel_p2 = get_node('double_game_panel/game_panel_p2')
 onready var info_panel_p2 = get_node('double_game_panel/info_panel_p2')
 
+onready var chat = get_node("chat")
+var chat_focused = false
+
 func _ready():
 	
 	get_tree().connect("server_disconnected", self, "server_disconnected")
@@ -42,21 +45,34 @@ func _process(delta):
 		game_panel = game_panel_p2
 		game_panel_ad = game_panel_p1
 		
-
-	if( Input.is_action_pressed("up_p1") ):
-		game_panel.rotate_doublet_clockwise()
-	if( Input.is_action_pressed("down_p1") ):
-		game_panel.rotate_doublet_counterclockwise()
-		
-	if( Input.is_action_pressed("left_p1") ):
-		game_panel.move_doublet_left()
-	if( Input.is_action_pressed("right_p1") ):
-		game_panel.move_doublet_right()
-		
-	if( Input.is_action_pressed("speed_p1") ):
-		game_panel.increase_doublet_falling_speed()
-	elif( !Input.is_action_pressed("speed_p1") ):
-		game_panel.decrease_doublet_falling_speed()
+	if( !chat_focused ):
+		if( Input.is_action_pressed("up_p1") ):
+			game_panel.rotate_doublet_clockwise()
+		if( Input.is_action_pressed("down_p1") ):
+			game_panel.rotate_doublet_counterclockwise()
+			
+		if( Input.is_action_pressed("left_p1") ):
+			game_panel.move_doublet_left()
+		if( Input.is_action_pressed("right_p1") ):
+			game_panel.move_doublet_right()
+			
+		if( Input.is_action_pressed("speed_p1") ):
+			game_panel.increase_doublet_falling_speed()
+		elif( !Input.is_action_pressed("speed_p1") ):
+			game_panel.decrease_doublet_falling_speed()
 
 	rpc("sync_game", double_game_panel.toDictionnary(false))
 	
+func set_chat( chat ):
+	remove_child(self.chat)
+	chat.get_parent().remove_child(chat)
+	add_child(chat)
+	self.chat = chat
+	
+	chat.connect("chat_focus_enter", self, "chat_focus_enter")
+	chat.connect("chat_focus_exit", self, "chat_focus_exit")
+
+func chat_focus_enter():
+	chat_focused = true
+func chat_focus_exit():
+	chat_focused = false

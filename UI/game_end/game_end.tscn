@@ -20,10 +20,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = -100.0
-margin/top = -100.0
-margin/right = 100.0
-margin/bottom = 100.0
+margin/left = -90.0
+margin/top = -50.0
+margin/right = 90.0
+margin/bottom = 50.0
 
 [node name="label_game_over" type="Label" parent="panel"]
 
